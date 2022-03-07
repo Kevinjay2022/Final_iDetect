@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".FragmentDriverProfile">
+
+    <!-- Driver Profile Layout-->
+    <LinearLayout
+        android:id="@+id/driverProfileLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#B6AEAE"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Customer ID"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="294dp" />
+
+                <TextView
+                    android:id="@+id/viewCID"
+                    android:layout_width="256dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:text="17397998"
+                    android:textColor="#0029FF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Name:"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="329dp" />
+
+                <TextView
+                    android:id="@+id/viewName"
+                    android:layout_width="256dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:text="Niño Rodney O. Arranguez"
+                    android:textColor="#0029FF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Address"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="364dp" />
+
+                <TextView
+                    android:id="@+id/viewAddress"
+                    android:layout_width="256dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:text="Deca Homes Subd., Bacayan, Cebu City"
+                    android:textColor="#0029FF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Email"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="405dp" />
+
+                <TextView
+                    android:id="@+id/viewEmail"
+                    android:layout_width="256dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:text="bradik68@gmail.com"
+                    android:textColor="#0029FF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Contact"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="450dp" />
+
+                <TextView
+                    android:id="@+id/viewContact"
+                    android:layout_width="256dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:text="09123456789"
+                    android:textColor="#0029FF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:ems="10"
+                    android:layout_weight="1"
+                    android:text="Date of Birth"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="491dp" />
+
+                <TextView
+                    android:id="@+id/viewDoB"
+                    android:layout_width="256dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:text="February 10, 1998"
+                    android:textColor="#0029FF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Buttons-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="bottom"
+                android:layout_marginBottom="10dp">
+
+                <Button
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Edit Profile"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="5dp"
+                    android:text="LogOut"
+                    android:textAllCaps="false"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- Update Profile layout-->
+    <LinearLayout
+        android:id="@+id/driverUpdateProfileLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/ic_baseline_arrow_back_24"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Update Profile"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#B6AEAE"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Customer ID"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="294dp" />
+
+                <TextView
+                    android:id="@+id/updateCustomerID"
+                    android:layout_width="256dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:text="17397998"
+                    android:textColor="#0029FF"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Name:"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="329dp" />
+
+                <EditText
+                    android:id="@+id/updateProfileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:paddingStart="10dp"
+                    android:inputType="textPersonName"
+                    android:text="Niño Rodney O. Arranguez"
+                    android:textColor="#0029FF"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Address"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"/>
+
+                <EditText
+                    android:id="@+id/updateProfileAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:paddingStart="10dp"
+                    android:inputType="textMultiLine"
+                    android:text="Deca Homes Subd., Bacayan, Cebu City"
+                    android:textColor="#0029FF"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Email"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="405dp" />
+
+                <EditText
+                    android:id="@+id/updateProfileEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:paddingStart="10dp"
+                    android:inputType="textEmailAddress"
+                    android:text="bradik68@gmail.com"
+                    android:textColor="#0029FF"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:text="Contact"
+                    android:ems="10"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/updateProfileContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:paddingStart="10dp"
+                    android:inputType="number"
+                    android:text="09123456789"
+                    android:textColor="#0029FF"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="24dp"
+                    android:ems="10"
+                    android:text="Date of Birth"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="491dp" />
+
+                <EditText
+                    android:id="@+id/updateProfileBirthDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:paddingStart="10dp"
+                    android:inputType="date"
+                    android:text="February 10, 1998"
+                    android:textColor="#0029FF"/>
+
+            </LinearLayout>
+
+            <!-- Buttons-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom"
+                android:layout_marginBottom="10dp">
+
+                <Button
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_gravity="center"
+                    android:text="Save"
+                    android:textAllCaps="false"/>
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

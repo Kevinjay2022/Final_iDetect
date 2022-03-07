@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/orderCardBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="15dp"
+        android:backgroundTint="#C0EAC1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/CustNameTB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="Customer Name"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/customerOrderUnderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ordering Items"
+                android:textSize="12dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="15dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/expandableItemLists"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/customerOrderLine1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/line_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ListView
+                    android:id="@+id/customerOrderListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="130dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/customerOrderLine1"/>
+
+                <ImageView
+                    android:id="@+id/customerOrderLine2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/line_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/customerOrderListView" />
+
+                <TextView
+                    android:id="@+id/customerOrderPricing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Php 0.00"
+                    android:layout_marginEnd="18dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/customerOrderLine2"/>
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:text="Total price: "
+                    app:layout_constraintEnd_toStartOf="@+id/customerOrderPricing"
+                    app:layout_constraintTop_toBottomOf="@+id/customerOrderLine2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView20">
+
+                    <Button
+                        android:id="@+id/acceptOrderBtn"
+                        android:layout_width="183dp"
+                        android:layout_height="51dp"
+                        android:background="@drawable/bind1"
+                        android:backgroundTint="#22C129"
+                        android:text="Accept Order"
+                        android:layout_weight="1"
+                        android:layout_margin="3dp"
+                        android:textColor="@color/white" />
+
+                    <Button
+                        android:id="@+id/cancelOrderBtn"
+                        android:layout_width="183dp"
+                        android:layout_height="51dp"
+                        android:background="@drawable/bind1"
+                        android:backgroundTint="#F44336"
+                        android:text="Cancel Order"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

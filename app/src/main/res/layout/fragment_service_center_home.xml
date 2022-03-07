@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragmentServiceCenterHome">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Upper Container-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Customers"
+                        android:textSize="18dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+
+                    <Button
+                        android:id="@+id/updateServiceBTN"
+                        android:layout_width="120dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="right"
+                        android:background="@drawable/bind1"
+                        android:backgroundTint="#6BBCC6"
+                        android:text="Update services"
+                        android:textSize="10dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Services Button-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/updateServicesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EFE9E9"
+                    app:cardCornerRadius="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Update Services"
+                            android:layout_marginStart="14sp"
+                            android:layout_marginTop="3dp"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#A19C9C"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="3dp"/>
+
+                        <EditText
+                            android:id="@+id/ServicesTextViewLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:ems="10"
+                            android:background="@color/white"
+                            android:gravity="start|top"
+                            android:inputType="textMultiLine"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"/>
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="Save"
+                            android:textAllCaps="false"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"/>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Customer Service Btn-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/customerServiceCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EFE9E9"
+                    app:cardCornerRadius="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/customerServiceTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Customer Service"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="20dp"
+                                android:layout_marginStart="15dp"/>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                app:cardCornerRadius="15dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginTop="10dp"
+                                android:backgroundTint="#EBFF0000">
+
+                                <TextView
+                                    android:id="@+id/customerServiceCounter"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="0"
+                                    android:gravity="center"/>
+                            </androidx.cardview.widget.CardView>
+
+                        </RelativeLayout>
+
+                        <!-- Expandable layout-->
+                        <LinearLayout
+                            android:id="@+id/customerServiceExpandable"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#8F8E8E"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/CustomerServiceListviewExpand"
+                                android:layout_width="match_parent"
+                                android:layout_height="300dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Store Button-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/storeCardBTN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EFE9E9"
+                    app:cardCornerRadius="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:gravity="end">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="60dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10sp"
+                            android:backgroundTint="#C0EAC1"
+                            app:cardCornerRadius="20sp">
+
+                            <TextView
+                                android:id="@+id/ItemAddedCounter"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="0"
+                                android:textColor="@color/black"
+                                android:gravity="center"
+                                android:textSize="16sp"/>
+
+                        </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Store"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="20dp"/>
+
+                    <!-- Store layout Add Items Expandable-->
+                    <LinearLayout
+                        android:id="@+id/addItemsLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#B6B1B1"
+                            android:layout_marginBottom="5dp"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/ItemImageView"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp" />
+
+                            <Button
+                                android:id="@+id/homeAddPicBTN"
+                                android:layout_width="200dp"
+                                android:layout_height="40dp"
+                                android:text="Add Picture"
+                                android:layout_gravity="bottom"/>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            app:cardCornerRadius="9dp"
+                            android:layout_marginTop="2dp">
+
+                            <EditText
+                                android:id="@+id/AddItemNameTB"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:ems="10"
+                                android:background="@android:color/transparent"
+                                android:inputType="textPersonName"
+                                android:textSize="12dp"
+                                android:hint="Item Name"
+                                android:paddingStart="10dp"/>
+
+                        </androidx.cardview.widget.CardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="2dp">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="200dp"
+                                android:layout_height="30dp"
+                                app:cardCornerRadius="9dp"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="2dp">
+
+                                <EditText
+                                    android:id="@+id/AddItemPriceTB"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:ems="10"
+                                    android:background="@android:color/transparent"
+                                    android:inputType="numberDecimal"
+                                    android:textSize="12dp"
+                                    android:hint="Item price"
+                                    android:paddingStart="10dp"/>
+
+                            </androidx.cardview.widget.CardView>
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="100dp"
+                                android:layout_height="30dp"
+                                app:cardCornerRadius="9dp"
+                                android:layout_weight="1">
+
+                                <EditText
+                                    android:id="@+id/AddItemQtyTB"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:ems="10"
+                                    android:background="@android:color/transparent"
+                                    android:inputType="number"
+                                    android:textSize="12sp"
+                                    android:hint="Item Qty"
+                                    android:paddingStart="10dp"/>
+
+                            </androidx.cardview.widget.CardView>
+
+                        </LinearLayout>
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            app:cardCornerRadius="9dp"
+                            android:layout_marginTop="2dp">
+
+                            <Spinner
+                                android:id="@+id/AddItemCatSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="15dp"/>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <Button
+                            android:id="@+id/AddItemBTNSave"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:background="@drawable/bind"
+                            android:backgroundTint="#9F9797"
+                            android:text="Save item" />
+                    </LinearLayout>
+
+                    <!-- Store layout Display Expandable-->
+                    <LinearLayout
+                        android:id="@+id/storeDisplayExpandable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#5E5D5D"
+                            android:layout_marginTop="50dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"/>
+
+                        <Button
+                            android:id="@+id/homeStoreAddItemBTN"
+                            android:layout_width="fill_parent"
+                            android:layout_height="47dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:text="Add Items"
+                            android:textAllCaps="false"
+                            android:background="@drawable/bind"
+                            android:backgroundTint="#9F9B9B"/>
+
+                        <LinearLayout
+                            android:id="@+id/orderBTNs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="3dp">
+
+                            <Button
+                                android:id="@+id/homeOrderBTN"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="3dp"
+                                android:text="4 wheelers"
+                                android:layout_weight="1"
+                                android:textAllCaps="false"/>
+
+                            <Button
+                                android:id="@+id/homeOrderBTN2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="3dp"
+                                android:text="6 wheelers"
+                                android:textAllCaps="false"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/homeOrderBTN3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="3dp"
+                                android:text="Tools"
+                                android:textAllCaps="false"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:orientation="vertical">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/homeOrderGridView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Bottom Container-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Orders Button -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/orderCardViewBTN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EFE9E9"
+                    app:cardCornerRadius="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Orders"
+                            android:layout_marginTop="21dp"
+                            android:layout_marginBottom="21dp"
+                            android:layout_marginStart="15dp"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:cardCornerRadius="15dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#EBFF0000">
+
+                            <TextView
+                                android:id="@+id/OrdersCounter"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="0"
+                                android:gravity="center"/>
+                        </androidx.cardview.widget.CardView>
+
+                    </RelativeLayout>
+
+
+                    <!-- Order Expandable Layout-->
+                    <LinearLayout
+                        android:id="@+id/orderLayoutExpandable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="60dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="#716E6E" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/OrderRecycleView"
+                            android:layout_width="match_parent"
+                            android:layout_height="350dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Statistics"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#757272"
+                    android:layout_margin="5dp"/>
+
+                <!-- Layout for Statistics-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="4dp"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

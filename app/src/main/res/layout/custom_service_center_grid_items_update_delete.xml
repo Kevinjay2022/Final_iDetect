@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="3dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/CardItemBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:contentPadding="6dp"
+        android:scrollbars="vertical"
+        android:focusable="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:padding="6dp"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ItemNameTB"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:padding="3dp"
+                    android:text="Item_Name"
+                    android:textStyle="bold"
+                    android:textSize="12sp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/itemPrice"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:layout_weight="1"
+                        android:text="Price"
+                        android:textSize="10dp"/>
+
+                    <TextView
+                        android:id="@+id/item_quantity"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        android:paddingEnd="8dp"
+                        android:layout_weight="1"
+                        android:text="Item stock"
+                        android:textSize="10sp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/itemStockSold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:text="quantity sold"
+                    android:textSize="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/itemEditBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:text="Edit"
+                        android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:layout_weight="1"/>
+
+                    <Button
+                        android:id="@+id/itemDeleteBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:text="Delete"
+                        android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+</LinearLayout>

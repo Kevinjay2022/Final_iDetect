@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.idetect">
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ManifestOrder" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-permission
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-permission
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-permission
+        android:name="android.hardware.camera.front.autofocus"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CapstoneProject">
+        <activity
+            android:name=".CustomServiceCenterAutoPartsViewItems"
+            android:exported="false" />
+        <activity
+            android:name=".FragmentServiceCenterAutoPartsCart"
+            android:exported="false" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".FragmentServiceCenterMechanics"
+            android:exported="false" />
+        <activity
+            android:name=".RegistrationServiceCenter"
+            android:exported="true" />
+        <activity
+            android:name=".Login"
+            android:exported="true"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".RegistrationOfFourUsers"
+            android:exported="true" />
+        <activity
+            android:name=".FragmentServiceCenterNavigation"
+            android:exported="true" />
+        <activity
+            android:name=".FragmentAutoPartsNavigation"
+            android:exported="true" />
+        <activity
+            android:name=".FragmentMechanicHome"
+            android:exported="true" />
+        <activity
+            android:name=".FragmentDriverNavigationHome"
+            android:exported="true" />
+        <activity
+            android:name=".RegistrationDriver"
+            android:exported="true" />
+        <activity
+            android:name=".RegistrationAutoParts"
+            android:exported="true" />
+        <activity
+            android:name=".RegistrationMechanic"
+            android:exported="true" />
+    </application>
+
+</manifest>

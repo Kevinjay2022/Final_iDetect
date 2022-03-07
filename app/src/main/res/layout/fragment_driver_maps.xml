@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        map:cardCornerRadius="5dp"
+        android:layout_margin="10dp">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/mapSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:background="#D3CDCD"
+            map:queryHint="Search"
+            map:iconifiedByDefault="false"
+            android:focusable="false"/>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+</RelativeLayout>

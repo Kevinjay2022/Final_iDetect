@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="4dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/auto_partsShopName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="J R Repair shop"
+                android:textStyle="bold"
+                android:layout_marginStart="4dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location: "
+                    android:textSize="11dp"/>
+
+                <TextView
+                    android:id="@+id/customerLocationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Consolacion"
+                    android:textSize="11dp"
+                    android:layout_marginStart="5dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <!-- Status text view of the customer ilisan ra ang visibility og text-->
+        <TextView
+            android:id="@+id/customerStatus"
+            android:visibility="visible"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Processing"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:layout_marginEnd="10dp"/>
+
+    </LinearLayout>
+
+    <!-- Expandable for viewing the customer details -->
+    <LinearLayout
+        android:id="@+id/customerItemExpandable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Item"
+                android:layout_weight="1"
+                android:paddingStart="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:layout_weight="1"
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:paddingEnd="20dp"/>
+
+        </LinearLayout>
+
+        <!-- List view for items selected from customer-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/ItemListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:divider="@null"/>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#857E7E"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total price: "
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:layout_marginEnd="15dp"/>
+
+        </LinearLayout>
+
+        <!-- Buttons for accept and cancel-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="70dp"
+                android:text="Accept Order"
+                android:backgroundTint="#4CAF50"
+                android:layout_margin="5dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="70dp"
+                android:text="Cancel Order"
+                android:backgroundTint="#F44336"
+                android:layout_margin="5dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
