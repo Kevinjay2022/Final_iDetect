@@ -10,6 +10,48 @@
         <entry key="..\:/Capstone/app/src/main/res/layout/fragment_on_call_mechanic.xml" value="0.36666666666666664" />
         <entry key="..\:/Capstone/app/src/main/res/layout/fragment_update_mechanic.xml" value="0.36666666666666664" />
         <entry key="..\:/Capstone/app/src/main/res/menu/bottom_navigation.xml" value="0.36666666666666664" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.121875" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/cart_view.xml" value="0.5" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_add_to_customer_item_layout_dialog.xml" value="0.33" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_autoparts_list_customers.xml" value="0.5" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_autoparts_list_customers_items.xml" value="0.2" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_autoparts_list_customers_items_history.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_autoparts_list_customers_items_history_names.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_autoparts_list_items.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_autoparts_list_notifications.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_autoparts_mylist_customers.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_driver_list_notification.xml" value="0.5" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_item_layout_dialog.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_mechanic_notification.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_customer_orders.xml" value="0.15081521739130435" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_customer_orders_items.xml" value="0.33" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_customer_services.xml" value="0.5" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_driver_customer.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_mechanics.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_on_call_mechanic.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_mechanic_update_dialog.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_service_center_auto_parts_view_items.xml" value="0.33" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_service_center_grid_items_update_delete.xml" value="0.12182971014492754" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_auto_parts_customer_history.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_auto_parts_home.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_auto_parts_navigation.xml" value="0.33" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_auto_parts_notification.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_auto_parts_store.xml" value="0.16" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_driver_maps.xml" value="0.15" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_driver_navigation_home.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_driver_notification.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_driver_visit_shop.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_mechanic_home.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_mechanic_notification.xml" value="0.33" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_mechanic_posts.xml" value="0.18" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_service_center_auto_parts.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_service_center_customers.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_service_center_home.xml" value="0.2" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_service_center_mechanics.xml" value="0.25" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_service_center_navigation.xml" value="0.22" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/profile.xml" value="0.10572916666666667" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_mechanic.xml" value="0.2" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/visit_sheet.xml" value="0.25" />
         <entry key="..\:/Users/Charlene/Downloads/EICKER_ONLINE CLASS SY  2021 - 2022/Capstone42/Android App/Capstone_Project V2.1/app/src/main/res/layout/custom_driver_selected_shop.xml" value="0.22" />
         <entry key="..\:/Users/Charlene/Downloads/EICKER_ONLINE CLASS SY  2021 - 2022/Capstone42/Android App/Capstone_Project V2.1/app/src/main/res/layout/fragment_auto_parts_navigation.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Charlene/Downloads/EICKER_ONLINE CLASS SY  2021 - 2022/Capstone42/Android App/Capstone_Project V2.1/app/src/main/res/layout/fragment_driver_maps.xml" value="0.20416666666666666" />
@@ -273,7 +315,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -46,14 +46,15 @@
                         android:layout_width="120dp"
                         android:layout_height="30dp"
                         android:layout_gravity="right"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/bind1"
                         android:backgroundTint="#6BBCC6"
                         android:text="Update services"
                         android:textSize="10dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginEnd="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- Services Button-->
@@ -61,13 +62,13 @@
                     android:id="@+id/updateServicesLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#EFE9E9"
-                    app:cardCornerRadius="15dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="5dp"
-                    android:visibility="gone">
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:backgroundTint="#EFE9E9"
+                    android:visibility="gone"
+                    app:cardCornerRadius="15dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -77,35 +78,30 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Update Services"
                             android:layout_marginStart="14sp"
-                            android:layout_marginTop="3dp"/>
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#A19C9C"
                             android:layout_marginTop="3dp"
-                            android:layout_marginBottom="3dp"/>
+                            android:text="Update Services" />
 
                         <EditText
                             android:id="@+id/ServicesTextViewLine"
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
-                            android:ems="10"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
                             android:background="@color/white"
+                            android:ems="10"
                             android:gravity="start|top"
                             android:inputType="textMultiLine"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp"/>
+                            tools:ignore="SpeakableTextPresentCheck" />
 
                         <Button
+                            android:id="@+id/btnSave"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:text="Save"
-                            android:textAllCaps="false"
                             android:layout_marginStart="30dp"
-                            android:layout_marginEnd="30dp"/>
+                            android:layout_marginEnd="30dp"
+                            android:text="Save"
+                            android:textAllCaps="false" />
 
 
                     </LinearLayout>
@@ -137,10 +133,34 @@
                                 android:id="@+id/customerServiceTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Customer Service"
+                                android:layout_marginStart="15dp"
                                 android:layout_marginTop="20dp"
                                 android:layout_marginBottom="20dp"
-                                android:layout_marginStart="15dp"/>
+                                android:text="Customer Service" />
+
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/newIssueCard"
+                                android:layout_width="60dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:backgroundTint="#C0EAC1"
+                                android:visibility="gone"
+                                app:cardCornerRadius="15dp">
+
+                                <TextView
+                                    android:id="@+id/newIssueCounter"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="10dp"
+                                    android:gravity="center"
+                                    android:text="2"
+                                    android:textAlignment="textStart"
+                                    android:textColor="#000000"
+                                    tools:ignore="RtlCompat" />
+                            </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
                                 android:layout_width="30dp"
@@ -155,8 +175,9 @@
                                     android:id="@+id/customerServiceCounter"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:gravity="center"
                                     android:text="0"
-                                    android:gravity="center"/>
+                                    android:textColor="#FFFFFF" />
                             </androidx.cardview.widget.CardView>
 
                         </RelativeLayout>
@@ -165,23 +186,23 @@
                         <LinearLayout
                             android:id="@+id/customerServiceExpandable"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="300dp"
                             android:orientation="vertical"
                             android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:background="#8F8E8E"
                                 android:layout_marginStart="8dp"
-                                android:layout_marginEnd="8dp"/>
+                                android:layout_marginEnd="8dp"
+                                android:background="#8F8E8E" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/CustomerServiceListviewExpand"
                                 android:layout_width="match_parent"
                                 android:layout_height="300dp"
                                 android:layout_marginStart="8dp"
-                                android:layout_marginEnd="8dp"/>
+                                android:layout_marginEnd="8dp" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -244,8 +265,8 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="#B6B1B1"
-                            android:layout_marginBottom="5dp"/>
+                            android:layout_marginBottom="5dp"
+                            android:background="#B6B1B1" />
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
@@ -261,92 +282,97 @@
                                 android:id="@+id/homeAddPicBTN"
                                 android:layout_width="200dp"
                                 android:layout_height="40dp"
+                                android:layout_gravity="bottom"
                                 android:text="Add Picture"
-                                android:layout_gravity="bottom"/>
+                                tools:ignore="TouchTargetSizeCheck" />
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            app:cardCornerRadius="9dp"
-                            android:layout_marginTop="2dp">
+                            android:layout_marginTop="2dp"
+                            app:cardCornerRadius="9dp">
 
                             <EditText
                                 android:id="@+id/AddItemNameTB"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:ems="10"
                                 android:background="@android:color/transparent"
-                                android:inputType="textPersonName"
-                                android:textSize="12dp"
+                                android:ems="10"
                                 android:hint="Item Name"
-                                android:paddingStart="10dp"/>
+                                android:inputType="textPersonName"
+                                android:paddingStart="10dp"
+                                android:textSize="12dp" />
 
                         </androidx.cardview.widget.CardView>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="2dp">
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal">
 
                             <androidx.cardview.widget.CardView
                                 android:layout_width="200dp"
                                 android:layout_height="30dp"
-                                app:cardCornerRadius="9dp"
+                                android:layout_marginEnd="2dp"
                                 android:layout_weight="1"
-                                android:layout_marginEnd="2dp">
+                                app:cardCornerRadius="9dp">
 
                                 <EditText
                                     android:id="@+id/AddItemPriceTB"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:ems="10"
                                     android:background="@android:color/transparent"
-                                    android:inputType="numberDecimal"
-                                    android:textSize="12dp"
+                                    android:ems="10"
                                     android:hint="Item price"
-                                    android:paddingStart="10dp"/>
+                                    android:inputType="numberDecimal"
+                                    android:paddingStart="10dp"
+                                    android:textSize="12dp" />
 
                             </androidx.cardview.widget.CardView>
+
                             <androidx.cardview.widget.CardView
                                 android:layout_width="100dp"
                                 android:layout_height="30dp"
-                                app:cardCornerRadius="9dp"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                app:cardCornerRadius="9dp">
 
                                 <EditText
                                     android:id="@+id/AddItemQtyTB"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:ems="10"
                                     android:background="@android:color/transparent"
-                                    android:inputType="number"
-                                    android:textSize="12sp"
+                                    android:ems="10"
                                     android:hint="Item Qty"
-                                    android:paddingStart="10dp"/>
+                                    android:inputType="number"
+                                    android:paddingStart="10dp"
+                                    android:textSize="12sp" />
 
                             </androidx.cardview.widget.CardView>
 
                         </LinearLayout>
+
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            app:cardCornerRadius="9dp"
-                            android:layout_marginTop="2dp">
+                            android:layout_marginTop="2dp"
+                            app:cardCornerRadius="9dp">
 
                             <Spinner
                                 android:id="@+id/AddItemCatSpinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="15dp"
-                                android:layout_marginEnd="15dp"/>
+                                android:layout_marginEnd="15dp"
+                                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                         </androidx.cardview.widget.CardView>
 
                         <Button
                             android:id="@+id/AddItemBTNSave"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="48dp"
                             android:layout_marginTop="2dp"
                             android:layout_marginBottom="2dp"
                             android:background="@drawable/bind"
@@ -365,58 +391,71 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="#5E5D5D"
-                            android:layout_marginTop="50dp"
                             android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"/>
+                            android:layout_marginTop="50dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="#5E5D5D" />
 
                         <Button
                             android:id="@+id/homeStoreAddItemBTN"
                             android:layout_width="fill_parent"
                             android:layout_height="47dp"
                             android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
                             android:layout_marginTop="2dp"
+                            android:layout_marginEnd="10dp"
                             android:layout_marginBottom="2dp"
+                            android:background="@drawable/bind"
+                            android:backgroundTint="#9F9B9B"
                             android:text="Add Items"
                             android:textAllCaps="false"
-                            android:background="@drawable/bind"
-                            android:backgroundTint="#9F9B9B"/>
+                            tools:ignore="TouchTargetSizeCheck" />
 
                         <LinearLayout
                             android:id="@+id/orderBTNs"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginStart="3dp"
-                            android:layout_marginEnd="3dp">
+                            android:layout_marginEnd="3dp"
+                            android:orientation="horizontal">
 
-                            <Button
+                            <TextView
                                 android:id="@+id/homeOrderBTN"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="3dp"
-                                android:text="4 wheelers"
                                 android:layout_weight="1"
-                                android:textAllCaps="false"/>
+                                android:background="@color/teal_200"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:text="4 wheelers"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white" />
 
-                            <Button
+                            <TextView
                                 android:id="@+id/homeOrderBTN2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="3dp"
+                                android:layout_weight="1"
+                                android:background="@color/purple_700"
+                                android:gravity="center"
+                                android:padding="10dp"
                                 android:text="6 wheelers"
                                 android:textAllCaps="false"
-                                android:layout_weight="1"/>
+                                android:textColor="@color/white" />
 
-                            <Button
+                            <TextView
                                 android:id="@+id/homeOrderBTN3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="3dp"
+                                android:layout_weight="1"
+                                android:background="@color/purple_700"
+                                android:gravity="center"
+                                android:padding="10dp"
                                 android:text="Tools"
                                 android:textAllCaps="false"
-                                android:layout_weight="1"/>
+                                android:textColor="@color/white" />
 
                         </LinearLayout>
 
@@ -428,7 +467,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/homeOrderGridView"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent" />
 
                         </LinearLayout>
 
@@ -457,6 +496,75 @@
 
                 <!-- Orders Button -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/myOrderCardViewBTN"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:backgroundTint="#EFE9E9"
+                    app:cardCornerRadius="15dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="21dp"
+                            android:layout_marginBottom="21dp"
+                            android:text="My Orders" />
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:backgroundTint="#EBFF0000"
+                            app:cardCornerRadius="15dp">
+
+                            <TextView
+                                android:id="@+id/myOrdersCounter"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textColor="#FFFFFF" />
+                        </androidx.cardview.widget.CardView>
+
+                    </RelativeLayout>
+
+
+                    <!-- Order Expandable Layout-->
+                    <LinearLayout
+                        android:id="@+id/myOrderLayoutExpandable"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="60dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="#716E6E" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/myOrderRecycleView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/orderCardViewBTN"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -480,6 +588,28 @@
                             android:layout_marginStart="15dp"/>
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/newOrderCard"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:backgroundTint="#C0EAC1"
+                            android:visibility="gone"
+                            app:cardCornerRadius="15dp">
+
+                            <TextView
+                                android:id="@+id/newOrdersCounter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:gravity="center"
+                                android:text="2"
+                                android:textAlignment="textStart"
+                                android:textColor="#000000"
+                                tools:ignore="RtlCompat" />
+                        </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             app:cardCornerRadius="15dp"
@@ -492,9 +622,12 @@
                                 android:id="@+id/OrdersCounter"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:gravity="center"
                                 android:text="0"
-                                android:gravity="center"/>
+                                android:textColor="#FFFFFF" />
+
                         </androidx.cardview.widget.CardView>
+
 
                     </RelativeLayout>
 
@@ -503,24 +636,22 @@
                     <LinearLayout
                         android:id="@+id/orderLayoutExpandable"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="300dp"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginTop="60dp"
                             android:layout_marginStart="10dp"
+                            android:layout_marginTop="60dp"
                             android:layout_marginEnd="10dp"
                             android:background="#716E6E" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/OrderRecycleView"
                             android:layout_width="match_parent"
-                            android:layout_height="350dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"/>
+                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 
@@ -543,7 +674,79 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:layout_margin="4dp"/>
+                    android:layout_margin="4dp">
+
+                    <LinearLayout
+                        android:id="@+id/dashboardExpandable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="20dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="Total Items Sold"
+                                    android:textAlignment="center" />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginBottom="4dp"
+                                    android:background="#837B7B" />
+
+                                <TextView
+                                    android:id="@+id/totalItemSoldTextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:textSize="25dp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:text="Total Sale"
+                                    android:textAlignment="center" />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginBottom="4dp"
+                                    android:background="#837B7B" />
+
+                                <TextView
+                                    android:id="@+id/totalSaleTextViewMoney"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+                </FrameLayout>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

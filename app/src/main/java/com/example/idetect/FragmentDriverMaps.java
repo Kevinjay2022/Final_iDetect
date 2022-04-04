@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,9 +50,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class FragmentDriverMaps extends Fragment{
@@ -58,7 +65,8 @@ public class FragmentDriverMaps extends Fragment{
     boolean gps_enabled = false;
     boolean network_enabled = false;
 
-    private SearchView searchView;
+    private SearchView searchTxt;
+    ImageView srcButton;
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
     Location myLocation;
@@ -69,7 +77,7 @@ public class FragmentDriverMaps extends Fragment{
     CameraUpdate cameraUpdate;
     boolean locationPermission = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
-
+    String shopID;
 
 
     @Nullable
@@ -77,6 +85,16 @@ public class FragmentDriverMaps extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragMap = inflater.inflate(R.layout.fragment_driver_maps, container, false);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        searchTxt = fragMap.findViewById(R.id.mapSearch);
+        srcButton = fragMap.findViewById(R.id.srcButton);
+
+        srcButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                geolocate();
+            }
+        });
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -91,13 +109,27 @@ public class FragmentDriverMaps extends Fragment{
                         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomDialogTheme);
                         View bottomView = LayoutInflater.from(getContext()).inflate(R.layout.visit_sheet, (LinearLayout) fragMap.findViewById(R.id.visitContainer));
                         TextView txtview = bottomView.findViewById(R.id.visitCenter);
+                        TextView tvName = bottomView.findViewById(R.id.visit_name);
+                        TextView tvAdd = bottomView.findViewById(R.id.visit_address);
+                        TextView tvPhone = bottomView.findViewById(R.id.visit_contact);
+                        ImageView profPic = bottomView.findViewById(R.id.imageProf);
 
                         FirebaseDatabase.getInstance().getReference("USERS").child(uid)
                                 .addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         String name = snapshot.child("name").getValue(String.class);
-                                        txtview.setText(name);
+                                        String add = snapshot.child("address").getValue(String.class);
+                                        String phone = snapshot.child("phonenum").getValue(String.class);
+                                        String image = ""+ snapshot.child("image").getValue();
+                                        shopID = ""+ snapshot.child("uid").getValue();
+                                        tvName.setText(name);
+                                        tvAdd.setText(add);
+                                        tvPhone.setText(phone);
+                                        if (image.isEmpty())
+                                            Picasso.get().load(R.drawable.customers_logo_nav).into(profPic);
+                                        else
+                                            Picasso.get().load(image).into(profPic);
                                     }
 
                                     @Override
@@ -105,6 +137,15 @@ public class FragmentDriverMaps extends Fragment{
 
                                     }
                                 });
+                        txtview.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                Intent i = new Intent(getActivity(), FragmentDriverVisitShop.class);
+                                i.putExtra("shopID", shopID);
+                                startActivity(i);
+                            }
+                        });
 
 
                         bottomSheetDialog.setContentView(bottomView);
@@ -195,7 +236,7 @@ public class FragmentDriverMaps extends Fragment{
             return;
         }
         mMap.setMyLocationEnabled(true);
-        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>()    {
             @Override
             public void onSuccess(Location location) {
                 if(location != null){
@@ -254,7 +295,7 @@ public class FragmentDriverMaps extends Fragment{
 
                                                         MarkerOptions markerOptions = new MarkerOptions();
                                                         markerOptions.position(end);
-                                                        markerOptions.title(name);
+                                                        markerOptions.title(name +"\n"+ds.child("address").getValue(String.class));
                                                         markerOptions.snippet(uid);
                                                         mMap.addMarker(markerOptions);
                                                     }
@@ -290,12 +331,13 @@ public class FragmentDriverMaps extends Fragment{
 
                         TextView title = new TextView(getActivity());
                         title.setTextColor(Color.BLACK);
-                        title.setGravity(Gravity.CENTER);
                         title.setTypeface(null, Typeface.BOLD);
                         title.setText(marker.getTitle());
 
                         TextView snippet = new TextView(getActivity());
-                        snippet.setTextColor(Color.GRAY);
+                        snippet.setTextColor(Color.WHITE);
+                        snippet.setWidth(0);
+                        snippet.setHeight(0);
                         snippet.setText(marker.getSnippet());
 
                         info.addView(title);
@@ -307,5 +349,22 @@ public class FragmentDriverMaps extends Fragment{
             }
         });
 
+
+    }
+    private void geolocate(){
+        String strSearch = searchTxt.getQuery().toString();
+
+        Geocoder geocoder = new Geocoder(getActivity());
+        List<Address> list = new ArrayList<>();
+
+        try{
+            list = geocoder.getFromLocationName(strSearch, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (list.size() > 0){
+            Address address = list.get(0);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 15f));
+        }
     }
 }

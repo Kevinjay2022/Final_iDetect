@@ -1,11 +1,17 @@
 package com.example.idetect.Adapters;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,26 +21,47 @@ import com.bumptech.glide.Glide;
 import com.example.idetect.CustomServiceCenterAutoPartsViewItems;
 import com.example.idetect.Models.ItemsModel;
 import com.example.idetect.R;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.orhanobut.dialogplus.DialogPlus;
 
-public class ServCentItemsAdapter extends FirebaseRecyclerAdapter<ItemsModel, ServCentItemsAdapter.myViewHolder> {
-    /**
-     * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
-     * {@link FirebaseRecyclerOptions} for configuration options.
-     *
-     * @param options
-     */
-    public ServCentItemsAdapter(@NonNull FirebaseRecyclerOptions<ItemsModel> options) {
-        super(options);
+import java.util.HashMap;
+import java.util.List;
+
+public class DisplayStoreItemsAdapter extends RecyclerView.Adapter<DisplayStoreItemsAdapter.ViewHolder> {
+
+    public DisplayStoreItemsAdapter(Context context, List<ItemsModel> model) {
+        this.context = context;
+        this.modelList = model;
+    }
+
+    private Context context;
+    private List<ItemsModel> modelList;
+
+    @NonNull
+    @Override
+    public DisplayStoreItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_service_center_grid_items, parent, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull ItemsModel model) {
+    public void onBindViewHolder(@NonNull DisplayStoreItemsAdapter.ViewHolder holder, int position) {
+        ItemsModel model = modelList.get(position);
+
+
         holder.ItemName.setText(model.getItem_Name());
         holder.ItemPrice.setText("₱ " + model.getPrice() + ".00");
         holder.ItemQTY.setText(model.getQty() + " left");
-        holder.ItemSold.setText(model.getSold() + " sold");
+        if (model.getSold() == null){
+            holder.ItemSold.setText("0 sold");
+        }else
+            holder.ItemSold.setText(model.getSold() + " sold");
 
         Glide.with(holder.ItemImg.getContext())
                 .load(model.getItem_Surl())
@@ -53,30 +80,29 @@ public class ServCentItemsAdapter extends FirebaseRecyclerAdapter<ItemsModel, Se
                 view.getContext().startActivity(intent);
             }
         });
+
     }
 
-    @NonNull
     @Override
-    public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_service_center_grid_items, parent, false);
-        return new myViewHolder(itemView);
+    public int getItemCount() {
+        return modelList.size();
     }
 
-    class myViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         TextView ItemName, ItemPrice, ItemSold, ItemQTY;
         ImageView ItemImg;
-        CardView CardItemBTN; // sa button nga item
+        CardView CardItemBTN;
 
-        public myViewHolder(@NonNull View itemView) {
+
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             ItemName = itemView.findViewById(R.id.ItemNameTB);
             ItemPrice = (TextView)itemView.findViewById(R.id.itemPrice);
             ItemQTY = (TextView)itemView.findViewById(R.id.item_quantity);
             ItemSold = (TextView)itemView.findViewById(R.id.itemStockSold);
             ItemImg = itemView.findViewById(R.id.item_image);
 
-            CardItemBTN = itemView.findViewById(R.id.CardItemBTN);// sa button nga item
+            CardItemBTN = itemView.findViewById(R.id.CardItemBTN);
         }
     }
 }

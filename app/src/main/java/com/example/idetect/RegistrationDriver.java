@@ -134,6 +134,7 @@ public class RegistrationDriver extends AppCompatActivity {
                     DatabaseReference reference = database.getReference("USERS");
                     reference.child(uid).setValue(hashMap);
 
+                    FirebaseAuth.getInstance().signOut();
                     Toast.makeText(RegistrationDriver.this, "Register Successful!...\n" + firebaseUser.getEmail(), Toast.LENGTH_SHORT).show();
                     finish();
 

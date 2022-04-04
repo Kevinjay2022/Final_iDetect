@@ -1,39 +1,66 @@
 package com.example.idetect.Models;
 
 public class ServCentMechOnCallModel {
-    String firstname, address, Input_Details;
+    String birth, certificate, key, mechID, skills, status;
 
     ServCentMechOnCallModel(){
 
     }
 
-    public ServCentMechOnCallModel(String firstname, String address, String input_Details) {
-        this.firstname = firstname;
-        this.address = address;
-        Input_Details = input_Details;
+    public ServCentMechOnCallModel(String birth, String certificate, String key, String mechID, String skills, String status) {
+        this.birth = birth;
+        this.certificate = certificate;
+        this.key = key;
+        this.mechID = mechID;
+        this.skills = skills;
+        this.status = status;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getBirth() {
+        return birth;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setBirth(String birth) {
+        this.birth = birth;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCertificate() {
+        return certificate;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
     }
 
-    public String getInput_Details() {
-        return Input_Details;
+    public String getKey() {
+        return key;
     }
 
-    public void setInput_Details(String input_Details) {
-        Input_Details = input_Details;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getMechID() {
+        return mechID;
+    }
+
+    public void setMechID(String mechID) {
+        this.mechID = mechID;
+    }
+
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

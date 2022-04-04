@@ -49,7 +49,7 @@ public class RegistrationMechanic extends AppCompatActivity {
 
     CardView logGmailBtn;
 
-    EditText regMchFNme, regMchLNme, regMchEml, regMchPhne, regMchPass, regMchAddrss, regMchBrthDte;
+    EditText regMchFNme, regMchLNme, regMchEml, regMchPhne, regMchPass, regMchAddrss;
     Button regMchDtls;
     RadioGroup regMchGndr;
     RadioButton addRadioBtn;
@@ -106,31 +106,6 @@ public class RegistrationMechanic extends AppCompatActivity {
                 }
             }
         });
-
-
-        regMchBrthDte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(RegistrationMechanic.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener, year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                String date = month+"/"+day+"/"+ year;
-                regMchBrthDte.setText(date);
-            }
-        };
-
-
     }
 
     private void registerUser(String email, String password) {
@@ -143,7 +118,6 @@ public class RegistrationMechanic extends AppCompatActivity {
                     firebaseUser = mAuth.getCurrentUser();
                     String email = firebaseUser.getEmail();
                     String uid = firebaseUser.getUid();
-                    String uniqueID = UUID.randomUUID().toString();
 
                     int radioId = regMchGndr.getCheckedRadioButtonId();
                     addRadioBtn = findViewById(radioId);
@@ -155,18 +129,16 @@ public class RegistrationMechanic extends AppCompatActivity {
                     hashMap.put("phonenum", regMchPhne.getText().toString().trim());
                     hashMap.put("password", regMchPass.getText().toString().trim());
                     hashMap.put("address", regMchAddrss.getText().toString().trim());
-                    hashMap.put("birthdate", regMchBrthDte.getText().toString().trim());
                     hashMap.put("gender", addRadioBtn.getText().toString().trim());
                     hashMap.put("uid", uid);
-                    hashMap.put("uniqeid", uniqueID);
                     hashMap.put("acctype", "mechanic");
-                    hashMap.put("Input_Details", "empty");
-                    hashMap.put("post", "no");
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                    DatabaseReference reference = database.getReference("USERS");
+                    DatabaseReference reference = database.getReference().child("USERS");
                     reference.child(uid).setValue(hashMap);
+
+                    FirebaseAuth.getInstance().signOut();
 
                     Toast.makeText(RegistrationMechanic.this, "Register Successful!...\n" + firebaseUser.getEmail(), Toast.LENGTH_SHORT).show();
                     finish();
@@ -239,7 +211,6 @@ public class RegistrationMechanic extends AppCompatActivity {
         regMchPhne = findViewById(R.id.regMechPhoneEdtTxt);
         regMchPass = findViewById(R.id.regMechPassEdtTxttTxt);
         regMchAddrss = findViewById(R.id.regMechAddressEdtTxt);
-        regMchBrthDte = findViewById(R.id.regMechBirthEdtTxt);
         regMchGndr = findViewById(R.id.regMechGenderRBGrp);
         regMchDtls = findViewById(R.id.regMechBTN);
 

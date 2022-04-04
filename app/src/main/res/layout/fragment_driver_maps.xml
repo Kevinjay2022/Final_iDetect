@@ -17,15 +17,32 @@
         map:cardCornerRadius="5dp"
         android:layout_margin="10dp">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/mapSearch"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="5dp"
-            android:background="#D3CDCD"
-            map:queryHint="Search"
-            map:iconifiedByDefault="false"
-            android:focusable="false"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/mapSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:elevation="5dp"
+                android:background="#D3CDCD"
+                map:queryHint="Search"
+                map:iconifiedByDefault="false"
+                android:focusable="false"/>
+
+            <ImageView
+                android:id="@+id/srcButton"
+                android:layout_gravity="center"
+                android:background="@drawable/places_ic_search"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+
+
+        </LinearLayout>
+
 
     </androidx.cardview.widget.CardView>
 

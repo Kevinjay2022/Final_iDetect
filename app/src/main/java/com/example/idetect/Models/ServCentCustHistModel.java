@@ -1,48 +1,57 @@
 package com.example.idetect.Models;
 
 public class ServCentCustHistModel {
-    String Customer_Name, Customer_Address, Vehicle_Model, Vehicle_type;
+    String ID, key, model, type, shopID;
 
     ServCentCustHistModel(){
 
     }
 
-    public ServCentCustHistModel(String customer_Name, String customer_Address, String vehicle_Model, String vehicle_type) {
-        Customer_Name = customer_Name;
-        Customer_Address = customer_Address;
-        Vehicle_Model = vehicle_Model;
-        Vehicle_type = vehicle_type;
+    public ServCentCustHistModel(String ID, String key, String model, String type, String shopID) {
+        this.ID = ID;
+        this.key = key;
+        this.model = model;
+        this.type = type;
+        this.shopID = shopID;
     }
 
-    public String getCustomer_Name() {
-        return Customer_Name;
+    public String getID() {
+        return ID;
     }
 
-    public void setCustomer_Name(String customer_Name) {
-        Customer_Name = customer_Name;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
-    public String getCustomer_Address() {
-        return Customer_Address;
+    public String getKey() {
+        return key;
     }
 
-    public void setCustomer_Address(String customer_Address) {
-        Customer_Address = customer_Address;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getVehicle_Model() {
-        return Vehicle_Model;
+    public String getModel() {
+        return model;
     }
 
-    public void setVehicle_Model(String vehicle_Model) {
-        Vehicle_Model = vehicle_Model;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getVehicle_type() {
-        return Vehicle_type;
+    public String getType() {
+        return type;
     }
 
-    public void setVehicle_type(String vehicle_type) {
-        Vehicle_type = vehicle_type;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getShopID() {
+        return shopID;
+    }
+
+    public void setShopID(String shopID) {
+        this.shopID = shopID;
     }
 }

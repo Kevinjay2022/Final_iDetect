@@ -2,7 +2,9 @@ package com.example.idetect;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,9 +29,12 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
 
     Button backBTN;
     LinearLayout addToCart, BuyNow;
-    TextView ItemName, ItemPrice;
+    TextView ItemName, ItemPrice, itemCount, itemTotalPrice;
+    CardView minusBTN, plusBTN;
 
-    String itemKey, imagePrice, imagePic;
+    String itemKey, imagePrice, imagePic, ShopUID;
+    int Counter = 1, stocks = 0;
+    float price = 0.2f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,60 +44,117 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
         addToCart = findViewById(R.id.itemAddCartBTN);
         BuyNow = findViewById(R.id.itemBuyNowBTN);
 
+        minusBTN = findViewById(R.id.CardMinusBtn);
+        plusBTN = findViewById(R.id.CardPlusBtn);
+        itemTotalPrice = findViewById(R.id.itemTotalPrice);
+        itemCount = findViewById(R.id.ItemCounterTxt);
         ItemName = findViewById(R.id.itemDisplayName);
         ItemPrice = findViewById(R.id.itemDisplayPrice);
         //ItemQty = findViewById(R.id.)
 
-        backBTN = findViewById(R.id.backItemBTN);
-        backBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
         if(getIntent().hasExtra("ItemKey")){
             itemKey = getIntent().getStringExtra("ItemKey");
 
             setImageB(itemKey);
         }
 
+        plusBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Counter++;
+                if(Counter >= stocks){
+                    Toast.makeText(view.getContext(), "You have reach the maximum item.", Toast.LENGTH_SHORT).show();
+                    Counter = stocks;
+                }
+                itemTotalPrice.setText(""+(price * Counter));
+                itemCount.setText(Counter + "");
+            }
+        });
+        minusBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Counter--;
+                if(Counter <= 1){
+                    Counter = 1;
+                }
+                itemTotalPrice.setText(""+(price * Counter));
+                itemCount.setText(Counter + "");
+            }
+        });
+
+        backBTN = findViewById(R.id.backItemBTN);
+        backBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference().child("ITEM_CART").orderByChild("ItemKey").equalTo(itemKey).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("ITEM_CART").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(!snapshot.exists()){
+                        boolean flag = false;
+                        for (DataSnapshot ds : snapshot.getChildren()){
+                            if (ds.child("ItemKey").getValue().toString().equals(itemKey)) {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag){
                             String key = FirebaseDatabase.getInstance().getReference().child("ITEM_CART").push().getKey();
 
-                            HashMap<Object, String> Map = new HashMap<>();
+                            HashMap<String, Object> Map = new HashMap<>();
                             Map.put("ItemKey", itemKey);
                             Map.put("CartKey", key);
                             Map.put("ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
                             //Integer.parseInt(imagePrice);
 
-                            FirebaseDatabase.getInstance().getReference().child("ITEM_CART").child(key).setValue(Map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Toast.makeText(view.getContext(), "Added to cart.", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(view.getContext(), "Error", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Item already added.", Toast.LENGTH_SHORT).show();
+                            FirebaseDatabase.getInstance().getReference().child("ITEM_CART").child(key).setValue(Map);
+                            Toast.makeText(view.getContext(), "Added to cart.", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
 
+            }
+        });
+        BuyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String orderKey = FirebaseDatabase.getInstance().getReference().child("ORDERS").push().getKey();
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                hashMap.put("ShopUID", ShopUID);
+                hashMap.put("key", orderKey);
+                hashMap.put("ItemKey", itemKey);
+                hashMap.put("Qty", ""+Counter);
+                hashMap.put("status", "pending");
+                hashMap.put("seen", "new");
+
+                String key = FirebaseDatabase.getInstance().getReference().child("AUTO_PARTS_NOTIFY").push().getKey();
+                HashMap<String, Object> hashMap1 = new HashMap<>();
+                hashMap1.put("shopID", ShopUID);
+                hashMap1.put("ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                hashMap1.put("key", key);
+                hashMap1.put("feedback", "pending");
+                hashMap1.put("seen", "new");
+
+                FirebaseDatabase.getInstance().getReference().child("AUTO_PARTS_NOTIFY").child(key).setValue(hashMap1);
+
+                FirebaseDatabase.getInstance().getReference().child("ORDERS").child(orderKey).setValue(hashMap)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(CustomServiceCenterAutoPartsViewItems.this, "Wait for approval", Toast.LENGTH_SHORT).show();
+                                onBackPressed();
+                            }
+                        });
             }
         });
     }
@@ -114,8 +176,12 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
                             .load(itemsModel.getItem_Surl())
                             .into(DispImage);
                     DispyName.setText(itemsModel.getItem_Name());
+                    price = Float.parseFloat(itemsModel.getPrice());
                     DispPrice.setText("₱ " + itemsModel.getPrice() + ".00");
-                    DispQty.setText("Stock: " + itemsModel.getQty());
+                    stocks = Integer.parseInt(itemsModel.getQty());
+                    DispQty.setText("Stock: " + stocks);
+                    itemTotalPrice.setText(""+(price * Counter));
+                    ShopUID = itemsModel.getShopUID();
                 }
             }
 
@@ -125,5 +191,11 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
+        super.onBackPressed();
     }
 }

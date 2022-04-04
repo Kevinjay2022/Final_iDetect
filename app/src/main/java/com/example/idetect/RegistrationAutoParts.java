@@ -123,6 +123,7 @@ public class RegistrationAutoParts extends AppCompatActivity {
                     DatabaseReference reference = database.getReference("USERS");
                     reference.child(uid).setValue(hashMap);
 
+                    FirebaseAuth.getInstance().signOut();
                     Toast.makeText(RegistrationAutoParts.this, "Register Successful!...\n" + firebaseUser.getEmail(), Toast.LENGTH_SHORT).show();
                     finish();
 

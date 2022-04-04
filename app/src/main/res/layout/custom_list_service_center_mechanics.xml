@@ -52,8 +52,8 @@
             android:id="@+id/detailsExpandMechLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="28dp"
+            android:orientation="vertical"
             android:visibility="gone">
 
             <LinearLayout
@@ -64,15 +64,16 @@
                 <TextView
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="Address"/>
+                    android:text="Address" />
 
                 <TextView
                     android:id="@+id/addressMechTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Text"/>
+                    android:text="Text" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,15 +82,16 @@
                 <TextView
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="Birth date"/>
+                    android:text="Birth date" />
 
                 <TextView
                     android:id="@+id/birthMechTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Text"/>
+                    android:text="Text" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,15 +100,16 @@
                 <TextView
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="Gender"/>
+                    android:text="Gender" />
 
                 <TextView
                     android:id="@+id/genderMechTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Text"/>
+                    android:text="Text" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,14 +118,14 @@
                 <TextView
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="skills"/>
+                    android:text="skills" />
 
                 <TextView
                     android:id="@+id/skillsMechTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Text"/>
+                    android:text="Text" />
             </LinearLayout>
 
             <LinearLayout
@@ -134,18 +137,37 @@
                     android:id="@+id/EditMechBTN"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:text="Edit"
                     android:layout_weight="1"
+                    android:text="Edit"
                     android:textAllCaps="false"
-                    android:textColor="#4C4949"/>
+                    android:textColor="#4C4949" />
+
+                <Button
+                    android:id="@+id/DeleteMechBTN"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="Delete"
+                    android:textAllCaps="false"
+                    android:textColor="#4C4949" />
+
                 <Button
                     android:id="@+id/DisableMechBTN"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:text="Disable"
                     android:layout_weight="1"
+                    android:text="In-Active"
                     android:textAllCaps="false"
-                    android:textColor="#4C4949"/>
+                    android:textColor="#4C4949" />
+
+                <Button
+                    android:id="@+id/activeMechBTN"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="Active"
+                    android:textAllCaps="false"
+                    android:textColor="#4C4949" />
             </LinearLayout>
 
         </LinearLayout>

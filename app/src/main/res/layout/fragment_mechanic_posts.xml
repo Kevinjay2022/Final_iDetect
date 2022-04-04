@@ -36,10 +36,11 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:backgroundTint="#BDB9B9"
-            android:text="Add Post"
+            android:text="Create Post"
             android:textAllCaps="false"
             android:textSize="20dp"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            tools:ignore="DuplicateClickableBoundsCheck" />
 
         <Button
             android:id="@+id/Edit_postBTN"
@@ -51,7 +52,19 @@
             android:text="Edit Post"
             android:textAllCaps="false"
             android:textSize="20dp"
-            android:visibility="visible"/>
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/cancel_postBTN"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#FF2B2B"
+            android:text="Cancel Edit"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -67,11 +80,11 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            android:backgroundTint="#FDF9F9"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp">
+            android:layout_marginEnd="15dp"
+            android:backgroundTint="#FDF9F9"
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,17 +95,17 @@
                     android:id="@+id/create_mechanicNameCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Jason Gars"
-                    android:textSize="23sp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp"/>
+                    android:text="Jason Gars"
+                    android:textSize="23sp" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#5C5959"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"/>
+                    android:layout_marginEnd="5dp"
+                    android:background="#5C5959" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -101,68 +114,131 @@
 
                     <LinearLayout
                         android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1">
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        <EditText
-                            android:id="@+id/Create_mechanicDetailsInput"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:gravity="start|top"
-                            android:inputType="textMultiLine"
-                            android:textSize="12dp"
-                            android:hint="Input your information or talent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"/>
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
 
-                        <EditText
-                            android:id="@+id/Create_mechanicAddressInput"
+                            <TextView
+                                android:id="@+id/textView12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Address" />
+
+                            <TextView
+                                android:id="@+id/Create_mechanicAddressInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:ems="10"
+                                android:textSize="12sp"
+                                tools:ignore="TouchTargetSizeCheck" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:layout_marginTop="10dp"
-                            android:inputType="textMultiLine"
-                            android:textSize="12sp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:hint="Address kung asa ka puyo"/>
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView13"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Skills:" />
+
+                            <EditText
+                                android:id="@+id/Create_mechanicDetailsInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:ems="10"
+                                android:gravity="start|top"
+                                android:hint="Input your skills or talent"
+                                android:inputType="textMultiLine"
+                                android:textSize="12dp"
+                                tools:ignore="TouchTargetSizeCheck" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <ImageView
                         android:layout_width="1dp"
                         android:layout_height="250dp"
+                        android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:background="#5C5959"
-                        android:layout_gravity="center"/>
+                        android:background="#5C5959" />
 
                     <LinearLayout
                         android:layout_width="200dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:layout_weight="1"
-                        android:gravity="center">
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView15"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Birth date: " />
+
+                                <ImageView
+                                    android:id="@+id/calendarBtn"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/ic_baseline_calendar_today_24" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/createTxtBdate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp" />
+                        </LinearLayout>
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="160dp"
-                            android:layout_height="160dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             app:cardCornerRadius="5dp">
 
-                            <ImageView
-                                android:layout_width="160dp"
-                                android:layout_height="160dp"/>
-
-                            <Button
-                                android:id="@+id/createPostSelectImage"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Select Image"
-                                android:textAllCaps="false"
-                                android:layout_gravity="center"/>
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/createCertificateImage"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="160dp" />
+
+                                <Button
+                                    android:id="@+id/createPostSelectImage"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom"
+                                    android:text="Select Image"
+                                    android:textAllCaps="false" />
+
+                            </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
 
@@ -175,9 +251,9 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#5C5959"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp" />
+                    android:layout_marginEnd="5dp"
+                    android:background="#5C5959" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -188,12 +264,12 @@
                         android:id="@+id/createSaveDataBTN"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
-                        android:textAllCaps="false"
                         android:layout_marginStart="100dp"
-                        android:layout_marginEnd="100dp"
                         android:layout_marginTop="20dp"
+                        android:layout_marginEnd="100dp"
                         android:layout_marginBottom="20dp"
-                        android:text="Save"/>
+                        android:text="Save"
+                        android:textAllCaps="false" />
 
                 </LinearLayout>
 
@@ -214,11 +290,11 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            app:cardCornerRadius="10dp"
-            android:backgroundTint="#FDF9F9"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp">
+            android:layout_marginEnd="15dp"
+            android:backgroundTint="#FDF9F9"
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -226,7 +302,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/mechanicNameCard"
+                    android:id="@+id/displayMechanicNameCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -235,12 +311,11 @@
                     android:textSize="23sp" />
 
                 <ImageView
-                    android:id="@+id/upperLine"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#5C5959"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"/>
+                    android:layout_marginEnd="5dp"
+                    android:background="#5C5959" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -249,29 +324,52 @@
 
                     <LinearLayout
                         android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/mechanicDetailsView"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="I am a mechanic bla bla bla"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginTop="10dp"
-                            android:textSize="12sp"/>
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/mechanicAddressDetailsView"
+                            <TextView
+                                android:id="@+id/textView9"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Address:" />
+
+                            <TextView
+                                android:id="@+id/displayMechanicAddressDetailsView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="Address nako"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Address nako"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginTop="10dp"
-                            android:textSize="12sp"/>
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Skills:" />
+
+                            <TextView
+                                android:id="@+id/displayMechanicDetailsView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="I am a mechanic bla bla bla"
+                                android:textSize="12sp" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -279,26 +377,59 @@
                         android:id="@+id/horizontalLineCenter"
                         android:layout_width="1dp"
                         android:layout_height="250dp"
+                        android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:background="#5C5959"
-                        android:layout_gravity="center"/>
+                        android:background="#5C5959" />
 
                     <LinearLayout
                         android:layout_width="200dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:layout_weight="1"
-                        android:gravity="center">
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Birth date: " />
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/ic_baseline_calendar_today_24" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/displayTxtBdate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp" />
+                        </LinearLayout>
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="160dp"
                             android:layout_height="160dp"
+                            android:layout_gravity="center"
                             app:cardCornerRadius="5dp">
 
                             <ImageView
+                                android:id="@+id/displayCertImg"
                                 android:layout_width="160dp"
-                                android:layout_height="160dp"/>
+                                android:layout_height="160dp" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -312,9 +443,9 @@
                     android:id="@+id/underLine"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#5C5959"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp" />
+                    android:layout_marginEnd="5dp"
+                    android:background="#5C5959" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -325,21 +456,21 @@
                         android:id="@+id/ratingTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rating"
+                        android:layout_marginStart="5dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginStart="5dp"/>
+                        android:text="Rating" />
 
                     <RatingBar
                         android:id="@+id/mechanicRatingView"
-                        android:clickable="false"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:clickable="false"
                         android:numStars="5"
                         android:rating="4.3"
-                        android:stepSize="0.5"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginStart="10dp"/>
+                        android:stepSize="0.5" />
                 </LinearLayout>
 
             </LinearLayout>

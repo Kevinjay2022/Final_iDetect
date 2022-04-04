@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loginStatus() {
+        //FirebaseAuth.getInstance().signOut();
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseDatabase.getInstance().getReference("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .addListenerForSingleValueEvent(new ValueEventListener() {

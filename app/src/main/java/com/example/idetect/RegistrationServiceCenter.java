@@ -247,6 +247,7 @@ public class RegistrationServiceCenter extends AppCompatActivity {
                     DatabaseReference reference2 = database.getReference("LAT_LNG");
                     reference2.child(uid).setValue(hashMap2);
 
+                    FirebaseAuth.getInstance().signOut();
                     Toast.makeText(RegistrationServiceCenter.this, "Register Successful!...\n" + firebaseUser.getEmail(), Toast.LENGTH_SHORT).show();
                     finish();
                 }

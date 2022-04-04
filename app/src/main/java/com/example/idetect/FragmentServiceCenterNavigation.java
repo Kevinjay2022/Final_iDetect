@@ -3,6 +3,7 @@ package com.example.idetect;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -31,6 +32,7 @@ public class FragmentServiceCenterNavigation extends AppCompatActivity {
                     selectedFragment = new FragmentServiceCenterHome();
                     break;
                 case R.id.nav_shop:
+
                     selectedFragment = new FragmentServiceCenterAutoParts();
                     break;
                 case R.id.nav_mechanic:

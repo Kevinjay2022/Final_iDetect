@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -29,12 +30,13 @@
         android:id="@+id/itemNameEdit"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:textSize="14sp"
-        android:paddingStart="10dp"
-        android:inputType="textMultiLine"
-        android:background="@drawable/box_input"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp" />
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/box_input"
+        android:inputType="textMultiLine"
+        android:paddingStart="10dp"
+        android:textSize="14sp"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:layout_width="match_parent"
@@ -47,12 +49,13 @@
         android:id="@+id/itemPriceEdit"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:textSize="14sp"
-        android:paddingStart="10dp"
-        android:inputType="number"
-        android:background="@drawable/box_input"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp" />
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/box_input"
+        android:inputType="number"
+        android:paddingStart="10dp"
+        android:textSize="14sp"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <TextView
         android:layout_width="match_parent"
@@ -65,12 +68,13 @@
         android:id="@+id/itemQtyEdit"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:textSize="14sp"
-        android:paddingStart="10dp"
-        android:inputType="number"
-        android:background="@drawable/box_input"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp" />
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/box_input"
+        android:inputType="number"
+        android:paddingStart="10dp"
+        android:textSize="14sp"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/EditSaveBtn"

@@ -24,30 +24,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp">
+        android:layout_margin="5dp">
 
         <TextView
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Customer Names"
             android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quantity Items"
+            android:text="No. of Items"
+            android:textAlignment="textEnd"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
     </LinearLayout>
 
     <!-- List for the customers-->
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:scrollbars="none"
-        android:divider="@null"/>
+        android:layout_height="match_parent"
+        tools:listitem="@layout/custom_autoparts_list_customers_items_history_names"
+        android:layout_margin="5dp"/>
 
 </LinearLayout>
