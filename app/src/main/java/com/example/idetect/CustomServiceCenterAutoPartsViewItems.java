@@ -93,15 +93,18 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference().child("ITEM_CART").addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("ITEM_CART").orderByChild("ID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         boolean flag = false;
                         for (DataSnapshot ds : snapshot.getChildren()){
                             if (ds.child("ItemKey").getValue().toString().equals(itemKey)) {
                                 flag = true;
+                                Toast.makeText(getApplicationContext(), "Added to cart.", Toast.LENGTH_SHORT).show();
                                 break;
-                            }
+                            }else
+                                flag = false;
                         }
                         if (!flag){
                             String key = FirebaseDatabase.getInstance().getReference().child("ITEM_CART").push().getKey();
@@ -112,6 +115,7 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
                             Map.put("ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
                             //Integer.parseInt(imagePrice);
 
+                            assert key != null;
                             FirebaseDatabase.getInstance().getReference().child("ITEM_CART").child(key).setValue(Map);
                             Toast.makeText(view.getContext(), "Added to cart.", Toast.LENGTH_SHORT).show();
                         }

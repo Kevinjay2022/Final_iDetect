@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.example.idetect.Models.ItemsModel;
 import com.example.idetect.Models.OrderModel;
 import com.example.idetect.Models.ServCentMechListModel;
+import com.example.idetect.Models.ServCentMechOnCallModel;
 import com.example.idetect.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -185,6 +186,25 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(context, "Item removed", Toast.LENGTH_SHORT).show();
+                                if (model.getMech_type().equals("on-call")) {
+                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                    hashMap.put("status", "not hired");
+                                    FirebaseDatabase.getInstance().getReference().child("MECHANIC_POST").orderByChild("mechID").equalTo(model.getMechID())
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                                        ServCentMechOnCallModel model1 = ds.getValue(ServCentMechOnCallModel.class);
+                                                        FirebaseDatabase.getInstance().getReference().child("MECHANIC_POST").child(model1.getKey()).updateChildren(hashMap);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+                                }
                             }
                         });
 
