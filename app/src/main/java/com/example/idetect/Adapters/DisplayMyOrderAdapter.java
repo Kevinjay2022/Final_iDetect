@@ -1,12 +1,17 @@
 package com.example.idetect.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAdapter.ViewHolder> {
+
 
     public DisplayMyOrderAdapter(Context context, List<OrderModel> model) {
         this.context = context;
@@ -65,6 +71,8 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
                             }else if (orderModel.getStatus().equals("complete")) {
                                 holder.customerStatus.setText("Received");
                                 holder.receiveBtn.setVisibility(View.GONE);
+                                if (snapshot.child("rate").getValue().toString().equals("0"))
+                                    holder.itemRate.setVisibility(View.VISIBLE);
                                 holder.cancelBtn.setVisibility(View.GONE);
                             }else if (orderModel.getStatus().equals("cancel"))
                                 holder.customerStatus.setText("Not process");
@@ -117,6 +125,96 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
                     }
                 });
 
+
+
+        holder.itemRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+                LinearLayout layout = new LinearLayout(context);
+                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                layout.setLayoutParams(parms);
+
+                layout.setGravity(Gravity.CENTER);
+                layout.setPadding(2, 2, 2, 2);
+
+                TextView tv = new TextView(context);
+                tv.setText("Rate");
+                tv.setPadding(40, 40, 40, 40);
+                tv.setGravity(Gravity.START);
+                tv.setTextSize(20);
+                RatingBar r = new RatingBar(context);
+                //how many starts you want to show,parent layout width must be wrap_content
+                r.setNumStars(5);
+                r.setRating(Float.parseFloat("1.0"));
+
+                LinearLayout.LayoutParams parms1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layout.addView(r, parms1);
+                r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                        holder.rateValue = ratingBar.getRating();
+                    }
+                });
+                alertDialogBuilder.setView(layout);
+                alertDialogBuilder.setTitle("Rate me");
+                alertDialogBuilder.setCustomTitle(tv);
+
+                alertDialogBuilder.setCancelable(false);
+
+                // Setting Negative "Cancel" Button
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+
+                // Setting Positive "OK" Button
+                alertDialogBuilder.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("rate", ""+holder.rateValue);
+                        FirebaseDatabase.getInstance().getReference().child("ORDERS").child(model.getKey()).updateChildren(hashMap);
+                        FirebaseDatabase.getInstance().getReference().child("ORDERS").orderByChild("ItemKey").equalTo(model.getItemKey())
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot ds1: snapshot.getChildren()){
+                                            OrderModel orderModel = ds1.getValue(OrderModel.class);
+                                            holder.getRateValue = holder.getRateValue + Float.parseFloat(orderModel.getRate());
+                                            holder.rateCount++;
+                                        }
+                                        String totalRate = String.valueOf(holder.getRateValue / holder.rateCount);
+                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("rate", totalRate);
+                                        FirebaseDatabase.getInstance().getReference().child("ITEMS").child(model.getItemKey()).updateChildren(hashMap);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                        holder.itemRate.setVisibility(View.GONE);
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                try {
+                    alertDialog.show();
+                } catch (Exception e) {
+                    // WindowManager$BadTokenException will be caught and the app would
+                    // not display the 'Force Close' message
+                    e.printStackTrace();
+                }
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,6 +263,7 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
                             @Override
                             public void onSuccess(Void unused) {
                                 holder.expand.setVisibility(View.GONE);
+                                holder.itemRate.setVisibility(View.VISIBLE);
                                 holder.customerStatus.setText("Received");
                             }
                         });
@@ -173,6 +272,8 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
 
     }
 
+
+
     @Override
     public int getItemCount() {
         return modelList.size();
@@ -180,15 +281,19 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView shopNameTV, shopAddressTV, customerStatus, orderName, orderQty, orderPrice, orderTotal;
-        Button cancelBtn, receiveBtn;
+        Button cancelBtn, receiveBtn, itemRate;
         LinearLayout expand;
         ImageView orderImage;
+        float rateValue = 0;
+        float getRateValue = 0;
+        int rateCount = 0;
 
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            itemRate = itemView.findViewById(R.id.itemRate);
             receiveBtn = itemView.findViewById(R.id.receivedOrderBTN);
             shopNameTV = itemView.findViewById(R.id.auto_partsShopName);
             shopAddressTV = itemView.findViewById(R.id.customerLocationTextView);

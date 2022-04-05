@@ -1,13 +1,13 @@
 package com.example.idetect.Models;
 
 public class OrderModel {
-    String key, Qty, status, ID, ItemKey, ShopUID, seen;
+    String key, Qty, status, ID, ItemKey, ShopUID, seen, rate;
 
     OrderModel(){
 
     }
 
-    public OrderModel(String key, String qty, String status, String ID, String itemKey, String shopUID, String seen) {
+    public OrderModel(String key, String qty, String status, String ID, String itemKey, String shopUID, String seen, String rate) {
         this.key = key;
         Qty = qty;
         this.status = status;
@@ -15,6 +15,15 @@ public class OrderModel {
         ItemKey = itemKey;
         ShopUID = shopUID;
         this.seen = seen;
+        this.rate = rate;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
     }
 
     public String getSeen() {

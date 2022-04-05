@@ -74,8 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -153,7 +152,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:background="#857E7E"
-                    android:scaleType="center" />
+                    android:scaleType="fitCenter" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -200,6 +199,16 @@
                         android:layout_weight="1"
                         android:backgroundTint="#B6B6B6"
                         android:text="Received Order"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/itemRate"
+                        android:layout_width="200dp"
+                        android:layout_height="70dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#4CAF50"
+                        android:text="Rate"
                         android:visibility="gone" />
 
                 </LinearLayout>

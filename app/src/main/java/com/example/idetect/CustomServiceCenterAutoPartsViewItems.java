@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +30,10 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
 
     Button backBTN;
     LinearLayout addToCart, BuyNow;
-    TextView ItemName, ItemPrice, itemCount, itemTotalPrice;
+    TextView ItemName, ItemPrice, itemCount, itemTotalPrice, itemDisplayRate;
     CardView minusBTN, plusBTN;
 
+    RatingBar itemDisplayRateBar;
     String itemKey, imagePrice, imagePic, ShopUID;
     int Counter = 1, stocks = 0;
     float price = 0.2f;
@@ -43,6 +45,8 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
 
         addToCart = findViewById(R.id.itemAddCartBTN);
         BuyNow = findViewById(R.id.itemBuyNowBTN);
+        itemDisplayRateBar = findViewById(R.id.itemDisplayRateBar);
+        itemDisplayRate = findViewById(R.id.itemDisplayRate);
 
         minusBTN = findViewById(R.id.CardMinusBtn);
         plusBTN = findViewById(R.id.CardPlusBtn);
@@ -139,6 +143,7 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
                 hashMap.put("ItemKey", itemKey);
                 hashMap.put("Qty", ""+Counter);
                 hashMap.put("status", "pending");
+                hashMap.put("rate", "0");
                 hashMap.put("seen", "new");
 
                 String key = FirebaseDatabase.getInstance().getReference().child("AUTO_PARTS_NOTIFY").push().getKey();
@@ -186,6 +191,8 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
                     DispQty.setText("Stock: " + stocks);
                     itemTotalPrice.setText(""+(price * Counter));
                     ShopUID = itemsModel.getShopUID();
+                    itemDisplayRateBar.setRating(Float.parseFloat(itemsModel.getRate()));
+                    itemDisplayRate.setText(itemsModel.getRate());
                 }
             }
 

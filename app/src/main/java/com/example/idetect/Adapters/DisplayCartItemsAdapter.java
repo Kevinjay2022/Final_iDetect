@@ -94,6 +94,7 @@ public class DisplayCartItemsAdapter extends RecyclerView.Adapter<DisplayCartIte
                 hashMap.put("ItemKey", model.getItemKey());
                 hashMap.put("Qty", ""+holder.Counter);
                 hashMap.put("status", "pending");
+                hashMap.put("rate", "0");
                 hashMap.put("seen", "new");
 
                 String key = FirebaseDatabase.getInstance().getReference().child("AUTO_PARTS_NOTIFY").push().getKey();

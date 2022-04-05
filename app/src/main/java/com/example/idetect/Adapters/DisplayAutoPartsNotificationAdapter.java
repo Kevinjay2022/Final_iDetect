@@ -42,7 +42,7 @@ public class DisplayAutoPartsNotificationAdapter extends RecyclerView.Adapter<Di
     public void onBindViewHolder(@NonNull DisplayAutoPartsNotificationAdapter.ViewHolder holder, int position) {
         ServCentCustomerService model = modelList.get(position);
 
-        FirebaseDatabase.getInstance().getReference().child("USERS").child(model.getShopID())
+        FirebaseDatabase.getInstance().getReference().child("USERS").child(model.getID())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

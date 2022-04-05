@@ -472,6 +472,7 @@ public class FragmentServiceCenterHome extends Fragment {
                                     AshMap.put("ID", MainID);
                                     AshMap.put("Item_Surl", Struri);
                                     AshMap.put("ItemKey", key);
+                                    AshMap.put("rate", "0");
                                     AshMap.put("ShopUID", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                                     FirebaseDatabase.getInstance().getReference().child("ITEMS").child(key).setValue(AshMap).addOnSuccessListener(new OnSuccessListener<Void>() {
