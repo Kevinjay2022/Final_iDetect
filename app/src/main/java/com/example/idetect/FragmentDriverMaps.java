@@ -89,6 +89,9 @@ public class FragmentDriverMaps extends Fragment{
         searchTxt = fragMap.findViewById(R.id.mapSearch);
         srcButton = fragMap.findViewById(R.id.srcButton);
 
+        if (!gps_enabled)
+            buildAlertDialogMessage();
+
         srcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

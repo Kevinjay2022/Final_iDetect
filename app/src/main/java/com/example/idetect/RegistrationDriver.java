@@ -44,7 +44,7 @@ public class RegistrationDriver extends AppCompatActivity {
 
     RadioGroup drvrGnder;
     RadioButton addRadioBtn;
-    EditText drvrFName, drvrLName, drvrEmlAdd, drvrPhneNum, drvrPass, drvrAddrss, drvrBrthDte;
+    EditText drvrFName, drvrLName, drvrEmlAdd, drvrPhneNum, drvrPass, drvrAddrss;
     Button regDrvrDtls;
     CardView logGmailBtn;
 
@@ -123,7 +123,6 @@ public class RegistrationDriver extends AppCompatActivity {
                     hashMap.put("phonenum", drvrPhneNum.getText().toString().trim());
                     hashMap.put("password", drvrPass.getText().toString().trim());
                     hashMap.put("address", drvrAddrss.getText().toString().trim());
-                    hashMap.put("birthdate", drvrBrthDte.getText().toString().trim());
                     hashMap.put("gender", addRadioBtn.getText().toString().trim());
                     hashMap.put("uid", uid);
                     hashMap.put("uniqeid", uniqueID);
@@ -205,7 +204,6 @@ public class RegistrationDriver extends AppCompatActivity {
         drvrPhneNum = findViewById(R.id.regMechPhoneEdtTxt);
         drvrPass = findViewById(R.id.regMechPassEdtTxttTxt);
         drvrAddrss = findViewById(R.id.regMechAddressEdtTxt);
-        drvrBrthDte = findViewById(R.id.regMechBirthEdtTxt);
         drvrGnder = findViewById(R.id.regDrvrGenderRadioGroup);
         logGmailBtn = findViewById(R.id.regMechGoogleLoginCV);
         regDrvrDtls = findViewById(R.id.regMechBTN);

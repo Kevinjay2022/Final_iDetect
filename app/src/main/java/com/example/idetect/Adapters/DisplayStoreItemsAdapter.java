@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.idetect.CustomServiceCenterAutoPartsViewItems;
 import com.example.idetect.Models.ItemsModel;
+import com.example.idetect.Models.OrderModel;
 import com.example.idetect.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,10 +59,23 @@ public class DisplayStoreItemsAdapter extends RecyclerView.Adapter<DisplayStoreI
         holder.ItemName.setText(model.getItem_Name());
         holder.ItemPrice.setText("₱ " + model.getPrice() + ".00");
         holder.ItemQTY.setText(model.getQty() + " left");
-        if (model.getSold() == null){
-            holder.ItemSold.setText("0 sold");
-        }else
-            holder.ItemSold.setText(model.getSold() + " sold");
+
+        FirebaseDatabase.getInstance().getReference().child("ORDERS").orderByChild("ItemKey").equalTo(model.getItemKey())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            OrderModel orderModel = ds.getValue(OrderModel.class);
+                            holder.itemSold = holder.itemSold + Integer.parseInt(orderModel.getQty());
+                        }
+                        holder.ItemSold.setText(holder.itemSold+ " sold");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         Glide.with(holder.ItemImg.getContext())
                 .load(model.getItem_Surl())
@@ -92,6 +106,7 @@ public class DisplayStoreItemsAdapter extends RecyclerView.Adapter<DisplayStoreI
         TextView ItemName, ItemPrice, ItemSold, ItemQTY;
         ImageView ItemImg;
         CardView CardItemBTN;
+        int itemSold = 0;
 
 
         public ViewHolder(@NonNull View itemView) {

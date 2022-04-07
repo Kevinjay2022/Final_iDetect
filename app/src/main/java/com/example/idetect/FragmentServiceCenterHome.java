@@ -95,6 +95,7 @@ public class FragmentServiceCenterHome extends Fragment {
 
     int totalQty = 0;
     float totalMoney = 0, price = 0;
+    long due_date;
 
     //Firebase
     FirebaseAuth firebaseAuth;
@@ -290,42 +291,67 @@ public class FragmentServiceCenterHome extends Fragment {
         customerCardBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (customerServiceCardExpand.getVisibility() == View.GONE){
-                    customerServiceCardExpand.setVisibility(View.VISIBLE);
-                    storeExpandable.setVisibility(View.GONE);
-                    orderLayoutExpandable.setVisibility(View.GONE);
-                    myOrderLayoutExpandable.setVisibility(View.GONE);
-                    newIssueCardView.setVisibility(View.GONE);
 
-                    FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("shopID").equalTo(MainID)
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    servModel.clear();
-                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                        ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
-                                        servModel.add(model);
+
+                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+                                    String timeStamp = snapshot.child("subscribe").getValue().toString();
+                                    due_date = Long.parseLong(timeStamp);
+
+                                    if (System.currentTimeMillis() > due_date){
+                                        Toast.makeText(getActivity(), "Your free trial subscription had expired.\nPlease avail subscription to open this features.", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        if (customerServiceCardExpand.getVisibility() == View.GONE){
+                                            customerServiceCardExpand.setVisibility(View.VISIBLE);
+                                            storeExpandable.setVisibility(View.GONE);
+                                            orderLayoutExpandable.setVisibility(View.GONE);
+                                            myOrderLayoutExpandable.setVisibility(View.GONE);
+                                            newIssueCardView.setVisibility(View.GONE);
+
+                                            FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("shopID").equalTo(MainID)
+                                                    .addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            servModel.clear();
+                                                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                                                ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
+                                                                servModel.add(model);
+                                                            }
+                                                            custServDispAdapter = new ServCentCustServAdapter(getActivity(), servModel);
+                                                            custServView.setAdapter(custServDispAdapter);
+                                                            custServDispAdapter.notifyDataSetChanged();
+                                                        }
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+
+                                        } else {
+                                            newIssueCardView.setVisibility(View.GONE);
+                                            customerServiceCardExpand.setVisibility(View.GONE);
+                                            for (ServCentCustomerService re: servModel){
+                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                hashMap.put("seen", "old");
+                                                FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").child(re.getKey()).updateChildren(hashMap);
+
+                                            }
+                                        }
                                     }
-                                    custServDispAdapter = new ServCentCustServAdapter(getActivity(), servModel);
-                                    custServView.setAdapter(custServDispAdapter);
-                                    custServDispAdapter.notifyDataSetChanged();
-                                }
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
-                            });
+                            }
 
-                } else {
-                    newIssueCardView.setVisibility(View.GONE);
-                    customerServiceCardExpand.setVisibility(View.GONE);
-                    for (ServCentCustomerService re: servModel){
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("seen", "old");
-                        FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").child(re.getKey()).updateChildren(hashMap);
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                }
+                            }
+                        });
+
             }
         });
         storeCardBTN.setOnClickListener(new View.OnClickListener() {
@@ -345,44 +371,67 @@ public class FragmentServiceCenterHome extends Fragment {
         orderCardBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (orderLayoutExpandable.getVisibility() == View.GONE) {
-                    orderLayoutExpandable.setVisibility(View.VISIBLE);
-                    customerServiceCardExpand.setVisibility(View.GONE);
-                    storeExpandable.setVisibility(View.GONE);
-                    myOrderLayoutExpandable.setVisibility(View.GONE);
-                    newOrderCardView.setVisibility(View.GONE);
+                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+                                    String timeStamp = snapshot.child("subscribe").getValue().toString();
+                                    due_date = Long.parseLong(timeStamp);
 
-                    FirebaseDatabase.getInstance().getReference().child("ORDERS")
-                            .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    models.clear();
-                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                        OrderModel model = ds.getValue(OrderModel.class);
-                                        models.add(model);
+                                    if (System.currentTimeMillis() > due_date){
+                                        Toast.makeText(getActivity(), "Your free trial subscription had expired.\nPlease avail subscription to open this features.", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        if (orderLayoutExpandable.getVisibility() == View.GONE) {
+                                            orderLayoutExpandable.setVisibility(View.VISIBLE);
+                                            customerServiceCardExpand.setVisibility(View.GONE);
+                                            storeExpandable.setVisibility(View.GONE);
+                                            myOrderLayoutExpandable.setVisibility(View.GONE);
+                                            newOrderCardView.setVisibility(View.GONE);
+
+                                            FirebaseDatabase.getInstance().getReference().child("ORDERS")
+                                                    .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                    .addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            models.clear();
+                                                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                                                OrderModel model = ds.getValue(OrderModel.class);
+                                                                models.add(model);
+                                                            }
+                                                            itemsAdapter = new ItemOrderAdapter(getActivity(), models);
+                                                            orderView.setAdapter(itemsAdapter);
+                                                            itemsAdapter.notifyDataSetChanged();
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+
+                                        }else{
+                                            newOrderCardView.setVisibility(View.GONE);
+                                            orderLayoutExpandable.setVisibility(View.GONE);
+                                            for (OrderModel re: models){
+                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                hashMap.put("seen", "old");
+                                                FirebaseDatabase.getInstance().getReference().child("ORDERS").child(re.getKey()).updateChildren(hashMap);
+
+                                            }
+                                        }
                                     }
-                                    itemsAdapter = new ItemOrderAdapter(getActivity(), models);
-                                    orderView.setAdapter(itemsAdapter);
-                                    itemsAdapter.notifyDataSetChanged();
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
-                            });
+                            }
 
-                }else{
-                    newOrderCardView.setVisibility(View.GONE);
-                    orderLayoutExpandable.setVisibility(View.GONE);
-                    for (OrderModel re: models){
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("seen", "old");
-                        FirebaseDatabase.getInstance().getReference().child("ORDERS").child(re.getKey()).updateChildren(hashMap);
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                }
+                            }
+                        });
+
             }
         });
         homeStoreAddItemBTN.setOnClickListener(new View.OnClickListener() {
@@ -546,8 +595,7 @@ public class FragmentServiceCenterHome extends Fragment {
                     }
                 });
 
-        fourwheels.setOnClickListener(new View.OnClickListener()
-        {
+        fourwheels.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {

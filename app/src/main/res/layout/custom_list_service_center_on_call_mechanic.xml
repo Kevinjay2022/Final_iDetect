@@ -43,8 +43,7 @@
                 android:id="@+id/expandableOnCallMechanic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView14"
@@ -82,34 +81,6 @@
                         android:layout_height="match_parent"
                         android:scaleType="fitCenter" />
                 </androidx.cardview.widget.CardView>
-
-                <LinearLayout
-                    android:id="@+id/ratingLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView21"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="Ratings" />
-
-                    <RatingBar
-                        android:id="@+id/ratingOnCallMecBar"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:numStars="5"
-                        android:rating="4"
-                        android:stepSize="0.5" />
-
-                </LinearLayout>
 
                 <Button
                     android:id="@+id/hire_mechBTN"

@@ -1,13 +1,16 @@
 package com.example.idetect;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +46,7 @@ public class Login extends AppCompatActivity {
 
     Button loginBtn, googleLogBtn;
     EditText edtTextUserName, edtTextPass;
-    TextView signUpTxtVw;
+    TextView signUpTxtVw, forgotPassword;
 
     private FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
@@ -77,7 +80,6 @@ public class Login extends AppCompatActivity {
             }
         });
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Login....");
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
@@ -85,6 +87,7 @@ public class Login extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.setMessage("Login....");
                 usrName = edtTextUserName.getText().toString().trim();
                 usrPass = edtTextPass.getText().toString().trim();
 
@@ -98,6 +101,13 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showRecoverPasswordDialog();
+            }
+        });
+
         //SIGN UP
         signUpTxtVw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +118,41 @@ public class Login extends AppCompatActivity {
         });
 
     }
+    private void showRecoverPasswordDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Recover Password");
 
+        LinearLayout linearLayout = new LinearLayout(this);
+        EditText emailEt = new EditText(this);
+        emailEt.setHint("Email");
+        emailEt.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        emailEt.setMinEms(16);
+        linearLayout.addView(emailEt);
+        linearLayout.setPadding(10, 10, 10, 10);
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Recover", (dialogInterface, i) -> {
+            String email = emailEt.getText().toString().trim();
+            beginRecovery(email);
+        });
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
+        builder.create().show();
+
+    }
+    private void beginRecovery(String email) {
+        progressDialog.setMessage("Sending email...");
+        progressDialog.show();
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            progressDialog.dismiss();
+            if (task.isSuccessful()){
+                Toast.makeText(Login.this, "Email sent", Toast.LENGTH_LONG).show();
+            }else
+                Toast.makeText(Login.this, "Failed...", Toast.LENGTH_LONG).show();
+        }).addOnFailureListener(e -> {
+            progressDialog.dismiss();
+            Toast.makeText(Login.this, ""+e.getMessage(), Toast.LENGTH_LONG).show();
+        });
+    }
 
 
     private void loginUser(){
@@ -225,6 +269,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void ref(){
+        forgotPassword = findViewById(R.id.forgotPassword);
         loginBtn = findViewById(R.id.login_button);
         googleLogBtn = findViewById(R.id.googlelogin_button);
         edtTextUserName = findViewById(R.id.editTextTextUserName);

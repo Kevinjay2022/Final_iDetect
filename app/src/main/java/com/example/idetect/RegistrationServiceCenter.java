@@ -60,7 +60,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -224,16 +227,22 @@ public class RegistrationServiceCenter extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
                     firebaseUser = mAuth.getCurrentUser();
+                    Calendar c1 = Calendar.getInstance();
+                    // now add 30 day in Calendar instance
+                    c1.add(Calendar.DAY_OF_YEAR, 30);
+                    Date resultDate = c1.getTime();
+                    long output = resultDate.getTime();
+
                     //String reference fore data
-                    String email = firebaseUser.getEmail();
                     String uid = firebaseUser.getUid();
                     HashMap<Object, String> hashMap = new HashMap<>();
-                    hashMap.put("name", srvceCntr.getText().toString().trim());
-                    hashMap.put("email", email);
-                    hashMap.put("phonenum", phneNum.getText().toString().trim());
+                    hashMap.put("name", serviceCenter);
+                    hashMap.put("email", emailAddrss);
+                    hashMap.put("phonenum", phoneNum);
                     hashMap.put("password", passWord);
-                    hashMap.put("address", addRss.getText().toString().trim());
+                    hashMap.put("address", addRess);
                     hashMap.put("uid", uid);
+                    hashMap.put("subscribe", ""+output);
                     hashMap.put("acctype", "serve_center");
 
                     HashMap<String, Object> hashMap2 = new HashMap<>();

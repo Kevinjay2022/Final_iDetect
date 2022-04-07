@@ -74,7 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -152,7 +153,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:background="#857E7E"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="center" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
