@@ -50,7 +50,8 @@
             android:inputType="textPersonName"
             android:paddingStart="50dp"
             android:textColor="#8F8B8B"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
         <EditText
             android:id="@+id/editTextTextPassword"
@@ -62,27 +63,20 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            android:paddingLeft="50dp"/>
+            android:paddingLeft="50dp"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <Button
             android:id="@+id/login_button"
             android:layout_width="245dp"
             android:layout_height="40dp"
+            android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:background="@drawable/bind"
             android:backgroundTint="#BFBFBF"
             android:text="Login"
-            android:layout_gravity="center"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/googlelogin_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/google_logo"
-            android:layout_gravity="center"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/forgotPassword"
@@ -95,7 +89,7 @@
             android:layout_gravity="center"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">

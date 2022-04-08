@@ -49,13 +49,14 @@
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_service_center_home.xml" value="0.2" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_service_center_mechanics.xml" value="0.25" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/fragment_service_center_navigation.xml" value="0.22" />
-        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/login.xml" value="0.5" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/login.xml" value="0.2" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/main_activity.xml" value="0.16304347826086957" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/profile.xml" value="0.25" />
-        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_auto_parts.xml" value="0.18" />
-        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_driver.xml" value="0.22" />
-        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_mechanic.xml" value="0.2" />
-        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_service_center.xml" value="0.10182370820668693" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_auto_parts.xml" value="0.33" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_driver.xml" value="0.33" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_mechanic.xml" value="0.33" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_of_four_users.xml" value="0.14583333333333334" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/registration_service_center.xml" value="0.25" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/visit_sheet.xml" value="0.25" />
         <entry key="..\:/Users/Charlene/Downloads/EICKER_ONLINE CLASS SY  2021 - 2022/Capstone42/Android App/Capstone_Project V2.1/app/src/main/res/layout/custom_driver_selected_shop.xml" value="0.22" />
         <entry key="..\:/Users/Charlene/Downloads/EICKER_ONLINE CLASS SY  2021 - 2022/Capstone42/Android App/Capstone_Project V2.1/app/src/main/res/layout/fragment_auto_parts_navigation.xml" value="0.20416666666666666" />

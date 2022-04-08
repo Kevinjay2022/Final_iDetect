@@ -68,7 +68,8 @@
             android:inputType="textPersonName"
             android:paddingStart="5dp"
             android:textColor="#8F8B8B"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -95,12 +96,13 @@
                     android:layout_gravity="center"
                     android:ems="10"
                     android:hint="Email address"
-                    android:inputType="textPersonName"
+                    android:inputType="textEmailAddress"
                     android:paddingStart="2dp"
                     android:textColor="#8F8B8B"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TouchTargetSizeCheck" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -130,9 +132,11 @@
                     android:ems="10"
                     android:hint="Phone number"
                     android:inputType="phone"
+                    android:maxLength="11"
                     android:paddingStart="2dp"
                     android:textColor="#8F8B8B"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="TouchTargetSizeCheck" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -164,7 +168,8 @@
                     android:inputType="textPassword"
                     android:paddingStart="2dp"
                     android:textColor="#8F8B8B"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="TouchTargetSizeCheck" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -206,7 +211,8 @@
                     android:text="Open Map"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="10dp" />
+                    android:textSize="10dp"
+                    tools:ignore="TouchTargetSizeCheck" />
 
             </LinearLayout>
 
@@ -223,48 +229,8 @@
             android:text="Register  "
             android:textAllCaps="false"
             android:textColor="#6C6767"
-            android:textSize="15dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="3dp"
-            android:text="or" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/regMechGoogleLoginCV"
-            android:layout_width="245dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:backgroundTint="#DFD8D8"
-            android:text="Login with google"
-            app:cardCornerRadius="20dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/google_logo" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="7dp"
-                    android:text="Login with Google"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
+            android:textSize="15dp"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <LinearLayout
             android:layout_width="wrap_content"

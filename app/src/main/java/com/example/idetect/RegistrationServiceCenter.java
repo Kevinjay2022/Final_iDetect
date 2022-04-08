@@ -69,7 +69,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class RegistrationServiceCenter extends AppCompatActivity {
-    private static final int RC_SIGN_IN = 100;
 
 
     LocationManager lm;
@@ -86,14 +85,11 @@ public class RegistrationServiceCenter extends AppCompatActivity {
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     LatLng currentLatLng;
-    //CheckConnection connection;
-    //GoogleSignInClient mGoogleSignInClient;
 
     private FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
 
     Button regstrBtn, addressMap;
-    CardView logGmailBtn;
     TextView addRss;
     EditText srvceCntr, emailAdd, phneNum, passWrd;
     ProgressDialog progressDialog;
@@ -109,13 +105,6 @@ public class RegistrationServiceCenter extends AppCompatActivity {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         checkMyLocationEnabled(lm);
-        /*GoogleSignInOptions gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);*/
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering...");
@@ -172,32 +161,6 @@ public class RegistrationServiceCenter extends AppCompatActivity {
                 }
             }
         });
-
-        /*logGmailBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
-        });
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);*/
-
-
-        /**
-         //-------------------------------------------------------
-         addressMap.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-        if(!connection.isConnected(RegistrationServiceCenter.this))
-        registerNetworkBroadcast();
-        else {
-        //--------------
-        }
-        }
-
-
-        });
-         */
     }
 
     private void buildAlertDialogMessage() {
@@ -270,56 +233,7 @@ public class RegistrationServiceCenter extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        /**if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Toast.makeText(this,"" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                finish();
-            }
-        }*/
-    }
-
-    /**private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            progressDialog.dismiss();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(RegistrationServiceCenter.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                            finish();
-                        }
-                    }
-                });
-    }
-
-    private void updateUI(FirebaseUser user) {
-        Intent intent = new Intent(RegistrationServiceCenter.this, FragmentServiceCenterNavigation.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }*/
-
     private void ref() {
-        logGmailBtn = findViewById(R.id.regMechGoogleLoginCV);
         regstrBtn = findViewById(R.id.regMechBTN);
         srvceCntr = findViewById(R.id.regNameAutPrtsEdtTxt);
         emailAdd = findViewById(R.id.regMechEmailEdtTxt);

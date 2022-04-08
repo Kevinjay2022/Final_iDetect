@@ -42,9 +42,7 @@ public class Login extends AppCompatActivity {
 
     String usrName, usrPass;
 
-    GoogleSignInClient mGoogleSignInClient;
-
-    Button loginBtn, googleLogBtn;
+    Button loginBtn;
     EditText edtTextUserName, edtTextPass;
     TextView signUpTxtVw, forgotPassword;
 
@@ -64,24 +62,7 @@ public class Login extends AppCompatActivity {
         firebaseUser = mAuth.getCurrentUser();
         dbRef = FirebaseDatabase.getInstance().getReference("USERS");
 
-        GoogleSignInOptions gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        //GOOGLE SIGN IN
-        googleLogBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
-        });
         progressDialog = new ProgressDialog(this);
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         //NORMAL LOGIN
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -220,58 +201,10 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Toast.makeText(this,"" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                finish();
-            }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            progressDialog.dismiss();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(Login.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                            finish();
-                        }
-                    }
-                });
-    }
-
-    private void updateUI(FirebaseUser user) {
-        Intent intent = new Intent(Login.this, FragmentServiceCenterNavigation.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
 
     public void ref(){
         forgotPassword = findViewById(R.id.forgotPassword);
         loginBtn = findViewById(R.id.login_button);
-        googleLogBtn = findViewById(R.id.googlelogin_button);
         edtTextUserName = findViewById(R.id.editTextTextUserName);
         edtTextPass = findViewById(R.id.editTextTextPassword);
         signUpTxtVw = findViewById(R.id.signupTextView);
