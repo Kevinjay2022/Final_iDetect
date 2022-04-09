@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -80,22 +81,26 @@ public class FragmentDriverMaps extends Fragment{
     private FusedLocationProviderClient fusedLocationProviderClient;
     String shopID;
 
+    RelativeLayout mapLayout;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragMap = inflater.inflate(R.layout.fragment_driver_maps, container, false);
-
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
-        searchTxt = fragMap.findViewById(R.id.mapSearch);
-        srcButton = fragMap.findViewById(R.id.srcButton);
-        if (!gps_enabled && !network_enabled)
-            buildAlertDialogMessage();
-
         lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         checkMyLocationEnabled(lm);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        //request location permission.
+        requestPermission();
+
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        searchTxt = fragMap.findViewById(R.id.mapSearch);
+        mapLayout = fragMap.findViewById(R.id.mapLayout);
+        srcButton = fragMap.findViewById(R.id.srcButton);
+
+        if (!gps_enabled && !network_enabled)
+            buildAlertMessageNoGps();
+
 
         srcButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +112,7 @@ public class FragmentDriverMaps extends Fragment{
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull GoogleMap googleMap) {
+
                 mMap = googleMap;
                 getMyLocation();
 
@@ -162,6 +168,7 @@ public class FragmentDriverMaps extends Fragment{
                         return false;
                     }
                 });
+
             }
         });
 
@@ -174,71 +181,48 @@ public class FragmentDriverMaps extends Fragment{
 
         return fragMap;
     }
+    private void requestPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    1);
+        } else {
+            locationPermission = true;
+        }
+    }
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case 100: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //if permission granted.
                     locationPermission = true;
                     getMyLocation();
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
                 }
                 return;
             }
         }
     }
 
-    private void requestPermission() {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-        }else
-            locationPermission = true;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-    private void buildAlertDialogMessage() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("GPS seems to be disabled, do you want to enable it?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1);
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-    private void checkMyLocationEnabled(LocationManager lm) {
-        try {
-            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch (Exception exception) {
-        }
-        try {
-            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch (Exception exception) {
-        }
-    }
-
-    @Override
-    public void onResume() {
-        checkMyLocationEnabled(lm);
-        super.onResume();
-    }
-
 
     private void getMyLocation() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         mMap.setMyLocationEnabled(true);
@@ -268,11 +252,11 @@ public class FragmentDriverMaps extends Fragment{
 
                 myLocation = location;
                 start = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                /**MarkerOptions markerOptions = new MarkerOptions();
+                MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(start);
                 markerOptions.rotation(myLocation.getBearing());
                 markerOptions.anchor((float) 0.5, (float) 0.5);
-                startMarker = mMap.addMarker(markerOptions);*/
+                startMarker = mMap.addMarker(markerOptions);
 
                 CircleOptions circleOptions = new CircleOptions();
                 circleOptions.center(start);
@@ -354,8 +338,6 @@ public class FragmentDriverMaps extends Fragment{
                 });
             }
         });
-
-
     }
     private void geolocate(){
         String strSearch = searchTxt.getQuery().toString();
@@ -372,5 +354,43 @@ public class FragmentDriverMaps extends Fragment{
             Address address = list.get(0);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 15f));
         }
+    }
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+    private void checkMyLocationEnabled(LocationManager lm) {
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) { }
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) { }
+
+    }
+    @Override
+    public void onResume() {
+        checkMyLocationEnabled(lm);
+        if (gps_enabled && network_enabled) {
+            mapLayout.setVisibility(View.VISIBLE);
+        }else
+            mapLayout.setVisibility(View.GONE);
+        super.onResume();
     }
 }
