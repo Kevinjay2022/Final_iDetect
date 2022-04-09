@@ -232,9 +232,6 @@ public class FragmentDriverMaps extends Fragment{
     @Override
     public void onResume() {
         checkMyLocationEnabled(lm);
-        if (gps_enabled && network_enabled) {
-            getMyLocation();
-        }
         super.onResume();
     }
 
