@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +74,15 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
             holder.DisBtn.setVisibility(View.GONE);
         }
 
+        if (!model.getRate().equals("0")){
+            holder.rateBtn.setText("Rated");
+        }
+
         holder.Mech_Type.setText(model.getMech_type());
+        if (model.getMech_type().equals("on-call"))
+            holder.rateBtn.setVisibility(View.VISIBLE);
+        else
+            holder.rateBtn.setVisibility(View.GONE);
 
 
         // Sa item button
@@ -170,7 +180,6 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
                 });
             }
         });
-
         holder.delBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,11 +190,14 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        HashMap<String, Object> hashMap1 = new HashMap<>();
+                        hashMap1.put("delete", true);
                         FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS").child(model.getKey())
-                                .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                .updateChildren(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(context, "Item removed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Mechanic removed", Toast.LENGTH_SHORT).show();
                                 if (model.getMech_type().equals("on-call")) {
                                     HashMap<String, Object> hashMap = new HashMap<>();
                                     hashMap.put("status", "not hired");
@@ -220,7 +232,6 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
 
             }
         });
-
         holder.DisBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -246,6 +257,113 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
                 holder.DisBtn.setVisibility(View.VISIBLE);
             }
         });
+        holder.rateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (model.getRate().equals("0")) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+                    LinearLayout layout = new LinearLayout(context);
+                    LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+                    layout.setLayoutParams(parms);
+
+                    layout.setGravity(Gravity.CENTER);
+                    layout.setPadding(2, 2, 2, 2);
+
+                    TextView tv = new TextView(context);
+                    tv.setText("Rate");
+                    tv.setPadding(40, 40, 40, 40);
+                    tv.setGravity(Gravity.START);
+                    tv.setTextSize(20);
+                    RatingBar r = new RatingBar(context);
+                    //how many starts you want to show,parent layout width must be wrap_content
+                    r.setNumStars(5);
+                    r.setRating(Float.parseFloat("1.0"));
+
+                    LinearLayout.LayoutParams parms1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layout.addView(r, parms1);
+                    r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                            holder.rateValue = ratingBar.getRating();
+                        }
+                    });
+                    alertDialogBuilder.setView(layout);
+                    alertDialogBuilder.setTitle("Rate me");
+                    alertDialogBuilder.setCustomTitle(tv);
+
+                    alertDialogBuilder.setCancelable(false);
+
+                    // Setting Negative "Cancel" Button
+                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    // Setting Positive "OK" Button
+                    alertDialogBuilder.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("rate", "" + holder.rateValue);
+                            FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS").child(model.getKey()).updateChildren(hashMap);
+
+                            FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS").orderByChild("mechID").equalTo(model.getMechID())
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot ds1 : snapshot.getChildren()) {
+                                                ServCentMechListModel model1 = ds1.getValue(ServCentMechListModel.class);
+                                                holder.getRateValue = holder.getRateValue + Float.parseFloat(model1.getRate());
+                                                holder.rateCount++;
+                                            }
+                                            String totalRate = String.valueOf(holder.getRateValue / holder.rateCount);
+                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                            hashMap.put("rate", totalRate);
+                                            FirebaseDatabase.getInstance().getReference().child("USERS").child(model.getMechID()).updateChildren(hashMap);
+                                            FirebaseDatabase.getInstance().getReference().child("MECHANIC_POST")
+                                                    .orderByChild("mechID").equalTo(model.getMechID())
+                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            for (DataSnapshot ds: snapshot.getChildren()){
+                                                                FirebaseDatabase.getInstance().getReference().child("MECHANIC_POST")
+                                                                        .child(ds.child("key").getValue().toString()).updateChildren(hashMap);
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                            holder.rateBtn.setText("Rated");
+                            dialog.cancel();
+                        }
+                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    try {
+                        alertDialog.show();
+                    } catch (Exception e) {
+                        // WindowManager$BadTokenException will be caught and the app would
+                        // not display the 'Force Close' message
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -258,8 +376,11 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
         TextView Name, Address, Birth, Skills, Gender, Status, Mech_Type;
         CardView CardItemBTN; // sa button nga item
         LinearLayout DetailsLayout;
-        Button EditBtn, DisBtn, delBtn, actBtn;
+        Button EditBtn, DisBtn, delBtn, actBtn, rateBtn;
         private int mYear, mMonth, mDay;
+        float rateValue = 0;
+        float getRateValue = 0;
+        int rateCount = 0;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -272,6 +393,7 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
             Status = itemView.findViewById(R.id.statusMechTV);
             Mech_Type = itemView.findViewById(R.id.typeMechTV);
 
+            rateBtn = itemView.findViewById(R.id.rateMechBTN);
             delBtn = itemView.findViewById(R.id.DeleteMechBTN);
             EditBtn = itemView.findViewById(R.id.EditMechBTN);
             DisBtn = itemView.findViewById(R.id.DisableMechBTN);

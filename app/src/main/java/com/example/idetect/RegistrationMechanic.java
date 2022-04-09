@@ -105,6 +105,7 @@ public class RegistrationMechanic extends AppCompatActivity {
                     hashMap.put("address", regMchAddrss.getText().toString().trim());
                     hashMap.put("gender", addRadioBtn.getText().toString().trim());
                     hashMap.put("uid", uid);
+                    hashMap.put("rate", "0");
                     hashMap.put("acctype", "mechanic");
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();

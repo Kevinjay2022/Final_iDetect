@@ -311,6 +311,7 @@ public class  FragmentMechanicPosts extends Fragment {
                         AshMap.put("birth", createBdate.getText().toString());
                         AshMap.put("certificate", Struri);
                         AshMap.put("key", key);
+                        AshMap.put("rate", "0");
                         AshMap.put("status", "not hired");
                         AshMap.put("mechID", FirebaseAuth.getInstance().getCurrentUser().getUid());
 

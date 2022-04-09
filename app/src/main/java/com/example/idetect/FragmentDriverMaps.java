@@ -2,6 +2,7 @@ package com.example.idetect;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -84,13 +85,17 @@ public class FragmentDriverMaps extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragMap = inflater.inflate(R.layout.fragment_driver_maps, container, false);
+
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         searchTxt = fragMap.findViewById(R.id.mapSearch);
         srcButton = fragMap.findViewById(R.id.srcButton);
-
-        if (!gps_enabled)
+        if (!gps_enabled && !network_enabled)
             buildAlertDialogMessage();
+
+        lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        checkMyLocationEnabled(lm);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         srcButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +165,6 @@ public class FragmentDriverMaps extends Fragment{
             }
         });
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         requestPermission();
 
 
@@ -170,7 +174,6 @@ public class FragmentDriverMaps extends Fragment{
 
         return fragMap;
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -229,6 +232,9 @@ public class FragmentDriverMaps extends Fragment{
     @Override
     public void onResume() {
         checkMyLocationEnabled(lm);
+        if (gps_enabled && network_enabled) {
+            getMyLocation();
+        }
         super.onResume();
     }
 

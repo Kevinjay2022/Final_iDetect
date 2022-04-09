@@ -74,8 +74,11 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
                                 if (snapshot.child("rate").getValue().toString().equals("0"))
                                     holder.itemRate.setVisibility(View.VISIBLE);
                                 holder.cancelBtn.setVisibility(View.GONE);
-                            }else if (orderModel.getStatus().equals("cancel"))
+                            }else if (orderModel.getStatus().equals("cancel")) {
                                 holder.customerStatus.setText("Not process");
+                                holder.receiveBtn.setVisibility(View.GONE);
+                                holder.cancelBtn.setVisibility(View.GONE);
+                            }
 
                             FirebaseDatabase.getInstance().getReference().child("ITEMS").child(orderModel.getItemKey())
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -218,14 +221,12 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (model.getStatus().equals("cancel")){}
-                else {
-                    if (holder.expand.getVisibility() == View.GONE) {
-                        holder.expand.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.expand.setVisibility(View.GONE);
-                    }
+                if (holder.expand.getVisibility() == View.GONE) {
+                    holder.expand.setVisibility(View.VISIBLE);
+                } else {
+                    holder.expand.setVisibility(View.GONE);
                 }
+
             }
         });
         holder.cancelBtn.setOnClickListener(new View.OnClickListener() {

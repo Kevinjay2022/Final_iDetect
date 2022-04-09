@@ -81,8 +81,12 @@ public class FragmentServiceCenterHome extends Fragment {
     private ArrayList<ItemsModel> sixItemsModels;
     private ArrayList<ItemsModel> toolsItemsModels;
     private ArrayList<ServCentCustomerService> servModel;
-    private ArrayList<OrderModel> models;
+    private ArrayList<OrderModel> orderModels;
+    private ArrayList<OrderModel> completeOrderModels;
+    private ArrayList<OrderModel> cancelOrderModels;
     private ArrayList<OrderModel> myOrderModels;
+    private ArrayList<OrderModel> myComplete;
+    private ArrayList<OrderModel> myCancel;
 
     String MainID;
 
@@ -91,7 +95,7 @@ public class FragmentServiceCenterHome extends Fragment {
     Button homeStoreAddItemBTN, updateServiceBTN, AddItemBTNSave, homeAddPicBTN, saveBTN;
     EditText AddItemNameTB, AddItemPriceTB, AddItemQtyTB, UpdateServiceEditText;
     Spinner ItemCatSpin;
-    TextView StoreCounter, CustomerCounter, OrderCounter, MyOrderCounter, totalItem, totalSalary, newOrder, newIssue;
+    TextView StoreCounter, CustomerCounter, OrderCounter, MyOrderCounter, totalItem, totalSalary, newOrder, newIssue, myOrdersBtn, myCompleteBtn, ordersBtn, completeBtn, cancelBtn, myCancelBtn;
 
     int totalQty = 0;
     float totalMoney = 0, price = 0;
@@ -123,10 +127,21 @@ public class FragmentServiceCenterHome extends Fragment {
         sixItemsModels = new ArrayList<>();
         toolsItemsModels = new ArrayList<>();
         myOrderModels = new ArrayList<>();
+        myComplete = new ArrayList<>();
         servModel = new ArrayList<>();
-        models = new ArrayList<>();
+        orderModels = new ArrayList<>();
+        completeOrderModels = new ArrayList<>();
+        cancelOrderModels = new ArrayList<>();
+        myCancel = new ArrayList<>();
+
         //Buttons and expandable
         newIssue = homeViewF.findViewById(R.id.newIssueCounter);
+        ordersBtn = homeViewF.findViewById(R.id.OrdersBTN);
+        completeBtn = homeViewF.findViewById(R.id.CompleteBTN);
+        cancelBtn = homeViewF.findViewById(R.id.cancelBTN);
+        myOrdersBtn = homeViewF.findViewById(R.id.myOrdersBTN);
+        myCompleteBtn = homeViewF.findViewById(R.id.myCompleteBTN);
+        myCancelBtn = homeViewF.findViewById(R.id.myCancelBTN);
         newIssueCardView = homeViewF.findViewById(R.id.newIssueCard);
         newOrderCardView = homeViewF.findViewById(R.id.newOrderCard);
         newOrder = homeViewF.findViewById(R.id.newOrdersCounter);
@@ -234,23 +249,38 @@ public class FragmentServiceCenterHome extends Fragment {
                     }
                 });
 
-        // For add Items
-        FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_DESC_SERVICES").child(MainID)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            String desc = snapshot.child("description").getValue().toString();
-                            UpdateServiceEditText.setText(desc);
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+        updateServiceBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(updateServicesLayout.getVisibility() == View.GONE) {
+                    updateServicesLayout.setVisibility(View.VISIBLE);
+                    customerServiceCardExpand.setVisibility(View.GONE);
+                    storeExpandable.setVisibility(View.GONE);
+                    orderLayoutExpandable.setVisibility(View.GONE);
+                    myOrderLayoutExpandable.setVisibility(View.GONE);
+                    FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_DESC_SERVICES").child(MainID)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                        String desc = snapshot.child("description").getValue().toString();
+                                        UpdateServiceEditText.setText(desc);
+                                    }
+                                }
 
-                    }
-                });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
+                                }
+                            });
+                }else{
+                    updateServicesLayout.setVisibility(View.GONE);
+                    UpdateServiceEditText.setError(null);
+
+                }
+            }
+        });
 
         saveBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -303,43 +333,47 @@ public class FragmentServiceCenterHome extends Fragment {
                                     due_date = Long.parseLong(timeStamp);
 
                                     if (System.currentTimeMillis() > due_date){
-                                        Toast.makeText(getActivity(), "Your free trial subscription had expired.\nPlease avail subscription to open this features.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "Your subscription had expired.\nPlease avail subscription to open this features.", Toast.LENGTH_SHORT).show();
                                     }else {
-                                        if (customerServiceCardExpand.getVisibility() == View.GONE){
-                                            customerServiceCardExpand.setVisibility(View.VISIBLE);
-                                            storeExpandable.setVisibility(View.GONE);
-                                            orderLayoutExpandable.setVisibility(View.GONE);
-                                            myOrderLayoutExpandable.setVisibility(View.GONE);
-                                            newIssueCardView.setVisibility(View.GONE);
+                                        if (customerServCounter == 0){
+                                            Toast.makeText(getActivity(), "No customer yet.", Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            if (customerServiceCardExpand.getVisibility() == View.GONE){
+                                                customerServiceCardExpand.setVisibility(View.VISIBLE);
+                                                storeExpandable.setVisibility(View.GONE);
+                                                orderLayoutExpandable.setVisibility(View.GONE);
+                                                myOrderLayoutExpandable.setVisibility(View.GONE);
+                                                newIssueCardView.setVisibility(View.GONE);
 
-                                            FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("shopID").equalTo(MainID)
-                                                    .addValueEventListener(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                            servModel.clear();
-                                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                                ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
-                                                                servModel.add(model);
+                                                FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("shopID").equalTo(MainID)
+                                                        .addValueEventListener(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                servModel.clear();
+                                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                                    ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
+                                                                    servModel.add(model);
+                                                                }
+                                                                custServDispAdapter = new ServCentCustServAdapter(getActivity(), servModel);
+                                                                custServView.setAdapter(custServDispAdapter);
+                                                                custServDispAdapter.notifyDataSetChanged();
                                                             }
-                                                            custServDispAdapter = new ServCentCustServAdapter(getActivity(), servModel);
-                                                            custServView.setAdapter(custServDispAdapter);
-                                                            custServDispAdapter.notifyDataSetChanged();
-                                                        }
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError error) {
+                                                            @Override
+                                                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                                        }
-                                                    });
+                                                            }
+                                                        });
 
-                                        } else {
-                                            newIssueCardView.setVisibility(View.GONE);
-                                            customerServiceCardExpand.setVisibility(View.GONE);
-                                            for (ServCentCustomerService re: servModel){
-                                                HashMap<String, Object> hashMap = new HashMap<>();
-                                                hashMap.put("seen", "old");
-                                                FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").child(re.getKey()).updateChildren(hashMap);
+                                            } else {
+                                                newIssueCardView.setVisibility(View.GONE);
+                                                customerServiceCardExpand.setVisibility(View.GONE);
+                                                for (ServCentCustomerService re: servModel){
+                                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                                    hashMap.put("seen", "old");
+                                                    FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").child(re.getKey()).updateChildren(hashMap);
 
-                                            }
+                                                }
+                                        }
                                         }
                                     }
 
@@ -354,20 +388,7 @@ public class FragmentServiceCenterHome extends Fragment {
 
             }
         });
-        storeCardBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(storeExpandable.getVisibility() == View.GONE){
-                    storeExpandable.setVisibility(View.VISIBLE);
-                    addItemsLayout.setVisibility(View.GONE);
-                    customerServiceCardExpand.setVisibility(View.GONE);
-                    orderLayoutExpandable.setVisibility(View.GONE);
-                    myOrderLayoutExpandable.setVisibility(View.GONE);
-                }else{
-                    storeExpandable.setVisibility(View.GONE);
-                }
-            }
-        });
+
         orderCardBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -381,26 +402,35 @@ public class FragmentServiceCenterHome extends Fragment {
                                     due_date = Long.parseLong(timeStamp);
 
                                     if (System.currentTimeMillis() > due_date){
-                                        Toast.makeText(getActivity(), "Your free trial subscription had expired.\nPlease avail subscription to open this features.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "Your subscription had expired.\nPlease avail subscription to open this features.", Toast.LENGTH_SHORT).show();
                                     }else {
-                                        if (orderLayoutExpandable.getVisibility() == View.GONE) {
-                                            orderLayoutExpandable.setVisibility(View.VISIBLE);
-                                            customerServiceCardExpand.setVisibility(View.GONE);
-                                            storeExpandable.setVisibility(View.GONE);
-                                            myOrderLayoutExpandable.setVisibility(View.GONE);
-                                            newOrderCardView.setVisibility(View.GONE);
-
+                                        if(order_Counter == 0){
+                                            Toast.makeText(getActivity(), "No orders yet.", Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            if (orderLayoutExpandable.getVisibility() == View.GONE) {
+                                            //Orders Display
                                             FirebaseDatabase.getInstance().getReference().child("ORDERS")
                                                     .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                     .addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                            models.clear();
-                                                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                                            orderModels.clear();
+                                                            completeOrderModels.clear();
+                                                            cancelOrderModels.clear();
+                                                            for (DataSnapshot ds : snapshot.getChildren()){
                                                                 OrderModel model = ds.getValue(OrderModel.class);
-                                                                models.add(model);
+                                                                assert model != null;
+                                                                if (model.getStatus().equals("pending") || model.getStatus().equals("accept")){
+                                                                    orderModels.add(model);
+                                                                }
+                                                                if (model.getStatus().equals("complete")){
+                                                                    completeOrderModels.add(model);
+                                                                }
+                                                                if (model.getStatus().equals("cancel")){
+                                                                    cancelOrderModels.add(model);
+                                                                }
                                                             }
-                                                            itemsAdapter = new ItemOrderAdapter(getActivity(), models);
+                                                            itemsAdapter = new ItemOrderAdapter(getActivity(), orderModels);
                                                             orderView.setAdapter(itemsAdapter);
                                                             itemsAdapter.notifyDataSetChanged();
                                                         }
@@ -410,17 +440,28 @@ public class FragmentServiceCenterHome extends Fragment {
 
                                                         }
                                                     });
+                                                ordersBtn.setBackgroundResource(R.color.teal_200);
+                                                completeBtn.setBackgroundResource(R.color.purple_700);
+                                                cancelBtn.setBackgroundResource(R.color.purple_700);
+                                                orderLayoutExpandable.setVisibility(View.VISIBLE);
+                                                customerServiceCardExpand.setVisibility(View.GONE);
+                                                storeExpandable.setVisibility(View.GONE);
+                                                myOrderLayoutExpandable.setVisibility(View.GONE);
+                                                newOrderCardView.setVisibility(View.GONE);
 
-                                        }else{
-                                            newOrderCardView.setVisibility(View.GONE);
-                                            orderLayoutExpandable.setVisibility(View.GONE);
-                                            for (OrderModel re: models){
-                                                HashMap<String, Object> hashMap = new HashMap<>();
-                                                hashMap.put("seen", "old");
-                                                FirebaseDatabase.getInstance().getReference().child("ORDERS").child(re.getKey()).updateChildren(hashMap);
 
+                                            }else{
+                                                newOrderCardView.setVisibility(View.GONE);
+                                                orderLayoutExpandable.setVisibility(View.GONE);
+                                                for (OrderModel re: orderModels){
+                                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                                    hashMap.put("seen", "old");
+                                                    FirebaseDatabase.getInstance().getReference().child("ORDERS").child(re.getKey()).updateChildren(hashMap);
+
+                                                }
                                             }
                                         }
+
                                     }
 
                                 }
@@ -434,6 +475,43 @@ public class FragmentServiceCenterHome extends Fragment {
 
             }
         });
+        ordersBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                ordersBtn.setBackgroundResource(R.color.teal_200);
+                completeBtn.setBackgroundResource(R.color.purple_700);
+                cancelBtn.setBackgroundResource(R.color.purple_700);
+                itemsAdapter = new ItemOrderAdapter(getActivity(), orderModels);
+                orderView.setAdapter(itemsAdapter);
+                itemsAdapter.notifyDataSetChanged();
+            }
+        });
+        completeBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                ordersBtn.setBackgroundResource(R.color.purple_700);
+                completeBtn.setBackgroundResource(R.color.teal_200);
+                cancelBtn.setBackgroundResource(R.color.purple_700);
+                itemsAdapter = new ItemOrderAdapter(getActivity(), completeOrderModels);
+                orderView.setAdapter(itemsAdapter);
+                itemsAdapter.notifyDataSetChanged();
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                ordersBtn.setBackgroundResource(R.color.purple_700);
+                completeBtn.setBackgroundResource(R.color.purple_700);
+                cancelBtn.setBackgroundResource(R.color.teal_200);
+                itemsAdapter = new ItemOrderAdapter(getActivity(), cancelOrderModels);
+                orderView.setAdapter(itemsAdapter);
+                itemsAdapter.notifyDataSetChanged();
+            }
+        });
+
         homeStoreAddItemBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -441,55 +519,95 @@ public class FragmentServiceCenterHome extends Fragment {
                 addItemsLayout.setVisibility(View.VISIBLE);
             }
         });
-        updateServiceBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(updateServicesLayout.getVisibility() == View.GONE) {
-                    updateServicesLayout.setVisibility(View.VISIBLE);
-                    customerServiceCardExpand.setVisibility(View.GONE);
-                    storeExpandable.setVisibility(View.GONE);
-                    orderLayoutExpandable.setVisibility(View.GONE);
-                    myOrderLayoutExpandable.setVisibility(View.GONE);
-                }else{
-                    updateServicesLayout.setVisibility(View.GONE);
-                    UpdateServiceEditText.setError(null);
 
-                }
-            }
-        });
+
         myOrderCardBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (myOrderLayoutExpandable.getVisibility() == View.GONE) {
-                    myOrderLayoutExpandable.setVisibility(View.VISIBLE);
-                    customerServiceCardExpand.setVisibility(View.GONE);
-                    storeExpandable.setVisibility(View.GONE);
-                    orderLayoutExpandable.setVisibility(View.GONE);
-
-                    FirebaseDatabase.getInstance().getReference().child("ORDERS")
-                            .orderByChild("ID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    myOrderModels.clear();
-                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                        OrderModel model = ds.getValue(OrderModel.class);
-                                        myOrderModels.add(model);
-                                    }
-                                    myOrderAdapter = new DisplayMyOrderAdapter(getActivity(), myOrderModels);
-                                    myOrderView.setAdapter(myOrderAdapter);
-                                    myOrderAdapter.notifyDataSetChanged();
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
+                if (myOrder_Counter == 0){
+                    Toast.makeText(getActivity(), "You don't take some orders.", Toast.LENGTH_SHORT).show();
                 }else{
-                    myOrderLayoutExpandable.setVisibility(View.GONE);
+                    if (myOrderLayoutExpandable.getVisibility() == View.GONE) {
+                        //My orders display
+                        FirebaseDatabase.getInstance().getReference().child("ORDERS")
+                                .orderByChild("ID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        myOrderModels.clear();
+                                        myComplete.clear();
+                                        myCancel.clear();
+                                        for (DataSnapshot ds : snapshot.getChildren()){
+                                            OrderModel model = ds.getValue(OrderModel.class);
+                                            assert model != null;
+                                            if (model.getStatus().equals("pending") || model.getStatus().equals("accept")){
+                                                myOrderModels.add(model);
+                                            }
+                                            if (model.getStatus().equals("complete")){
+                                                myComplete.add(model);
+                                            }
+                                            if (model.getStatus().equals("cancel")){
+                                                myCancel.add(model);
+                                            }
+                                        }
+                                        myOrderAdapter = new DisplayMyOrderAdapter(getActivity(), myOrderModels);
+                                        myOrderView.setAdapter(myOrderAdapter);
+                                        myOrderAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                        myOrdersBtn.setBackgroundResource(R.color.teal_200);
+                        myCompleteBtn.setBackgroundResource(R.color.purple_700);
+                        myCancelBtn.setBackgroundResource(R.color.purple_700);
+                        myOrderLayoutExpandable.setVisibility(View.VISIBLE);
+                        customerServiceCardExpand.setVisibility(View.GONE);
+                        storeExpandable.setVisibility(View.GONE);
+                        orderLayoutExpandable.setVisibility(View.GONE);
+                    }else{
+                        myOrderLayoutExpandable.setVisibility(View.GONE);
+                    }
                 }
+
+            }
+        });
+        myOrdersBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                myOrdersBtn.setBackgroundResource(R.color.teal_200);
+                myCompleteBtn.setBackgroundResource(R.color.purple_700);
+                myCancelBtn.setBackgroundResource(R.color.purple_700);
+                myOrderAdapter = new DisplayMyOrderAdapter(getActivity(), myOrderModels);
+                myOrderView.setAdapter(myOrderAdapter);
+                myOrderAdapter.notifyDataSetChanged();
+            }
+        });
+        myCompleteBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                myOrdersBtn.setBackgroundResource(R.color.purple_700);
+                myCompleteBtn.setBackgroundResource(R.color.teal_200);
+                myCancelBtn.setBackgroundResource(R.color.purple_700);
+                myOrderAdapter = new DisplayMyOrderAdapter(getActivity(), myComplete);
+                myOrderView.setAdapter(myOrderAdapter);
+                myOrderAdapter.notifyDataSetChanged();
+            }
+        });
+        myCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                myOrdersBtn.setBackgroundResource(R.color.purple_700);
+                myCompleteBtn.setBackgroundResource(R.color.purple_700);
+                myCancelBtn.setBackgroundResource(R.color.teal_200);
+                myOrderAdapter = new DisplayMyOrderAdapter(getActivity(), myCancel);
+                myOrderView.setAdapter(myOrderAdapter);
+                myOrderAdapter.notifyDataSetChanged();
             }
         });
 
@@ -562,39 +680,52 @@ public class FragmentServiceCenterHome extends Fragment {
             }
         });
 
-        //For display Items sa store
-        FirebaseDatabase.getInstance().getReference().child("ITEMS").orderByChild("ShopUID").equalTo(MainID)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        fourItemsModels.clear();
-                        sixItemsModels.clear();
-                        toolsItemsModels.clear();
-                        for (DataSnapshot ds : snapshot.getChildren()){
-                            ItemsModel model = ds.getValue(ItemsModel.class);
-                            if (ds.child("Category").getValue().toString().equals("4 wheels")){
-                                fourItemsModels.add(model);
-                            }
-                            if (ds.child("Category").getValue().toString().equals("6 wheels")){
-                                sixItemsModels.add(model);
-                            }
-                            if (ds.child("Category").getValue().toString().equals("Tools")){
-                                toolsItemsModels.add(model);
-                            }
-                        }
-                        fourwheels.setBackgroundResource(R.color.teal_200);
-                        sixwheels.setBackgroundResource(R.color.purple_700);
-                        tools.setBackgroundResource(R.color.purple_700);
-                        itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
-                        itemView.setAdapter(itemDispAdapter);
-                        itemDispAdapter.notifyDataSetChanged();
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+        storeCardBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(storeExpandable.getVisibility() == View.GONE){
+                    storeExpandable.setVisibility(View.VISIBLE);
+                    addItemsLayout.setVisibility(View.GONE);
+                    customerServiceCardExpand.setVisibility(View.GONE);
+                    orderLayoutExpandable.setVisibility(View.GONE);
+                    myOrderLayoutExpandable.setVisibility(View.GONE);
+                    //For display Items sa store
+                    FirebaseDatabase.getInstance().getReference().child("ITEMS").orderByChild("ShopUID").equalTo(MainID)
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    fourItemsModels.clear();
+                                    sixItemsModels.clear();
+                                    toolsItemsModels.clear();
+                                    for (DataSnapshot ds : snapshot.getChildren()){
+                                        ItemsModel model = ds.getValue(ItemsModel.class);
+                                        if (ds.child("Category").getValue().toString().equals("4 wheels")){
+                                            fourItemsModels.add(model);
+                                        }
+                                        if (ds.child("Category").getValue().toString().equals("6 wheels")){
+                                            sixItemsModels.add(model);
+                                        }
+                                        if (ds.child("Category").getValue().toString().equals("Tools")){
+                                            toolsItemsModels.add(model);
+                                        }
+                                    }
+                                    fourwheels.setBackgroundResource(R.color.teal_200);
+                                    sixwheels.setBackgroundResource(R.color.purple_700);
+                                    tools.setBackgroundResource(R.color.purple_700);
+                                    itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
+                                    itemView.setAdapter(itemDispAdapter);
+                                    itemDispAdapter.notifyDataSetChanged();
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-
+                                }
+                            });
+                }else{
+                    storeExpandable.setVisibility(View.GONE);
+                }
+            }
+        });
         fourwheels.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override

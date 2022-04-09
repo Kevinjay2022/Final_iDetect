@@ -71,8 +71,12 @@ public class ItemOrderAdapter extends RecyclerView.Adapter<ItemOrderAdapter.View
                                 holder.receiveBtn.setVisibility(View.GONE);
                                 holder.acceptBtn.setVisibility(View.GONE);
                                 holder.cancelBtn.setVisibility(View.GONE);
-                            }else if (orderModel.getStatus().equals("cancel"))
+                            }else if (orderModel.getStatus().equals("cancel")) {
                                 holder.customerStatus.setText("Not process");
+                                holder.receiveBtn.setVisibility(View.GONE);
+                                holder.acceptBtn.setVisibility(View.GONE);
+                                holder.cancelBtn.setVisibility(View.GONE);
+                            }
 
                             if (orderModel.getSeen().equals("new")){
                                 holder.itemSeen.setText("New");
@@ -130,15 +134,13 @@ public class ItemOrderAdapter extends RecyclerView.Adapter<ItemOrderAdapter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (model.getStatus().equals("cancel")){}
-                else {
-                    if (holder.expand.getVisibility() == View.GONE) {
-                        holder.expand.setVisibility(View.VISIBLE);
-                        holder.itemSeen.setVisibility(View.GONE);
-                    } else {
-                        holder.expand.setVisibility(View.GONE);
-                    }
+                if (holder.expand.getVisibility() == View.GONE) {
+                    holder.expand.setVisibility(View.VISIBLE);
+                    holder.itemSeen.setVisibility(View.GONE);
+                } else {
+                    holder.expand.setVisibility(View.GONE);
                 }
+
             }
         });
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {

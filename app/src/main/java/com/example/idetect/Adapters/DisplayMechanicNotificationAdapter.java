@@ -118,6 +118,8 @@ public class DisplayMechanicNotificationAdapter extends RecyclerView.Adapter<Dis
                 hashMap2.put("mech_type", "on-call");
                 hashMap2.put("mechID", FirebaseAuth.getInstance().getCurrentUser().getUid());
                 hashMap2.put("key", key);
+                hashMap2.put("rate", "0");
+                hashMap2.put("delete", false);
                 hashMap2.put("employ", "hire");
                 hashMap2.put("ID", model.getShopID());
                 FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS").child(key).setValue(hashMap2);

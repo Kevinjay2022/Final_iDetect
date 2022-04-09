@@ -1,19 +1,28 @@
 package com.example.idetect.Models;
 
 public class ServCentMechOnCallModel {
-    String birth, certificate, key, mechID, skills, status;
+    String birth, certificate, key, mechID, skills, status, rate;
 
     ServCentMechOnCallModel(){
 
     }
 
-    public ServCentMechOnCallModel(String birth, String certificate, String key, String mechID, String skills, String status) {
+    public ServCentMechOnCallModel(String birth, String certificate, String key, String mechID, String skills, String status, String rate) {
         this.birth = birth;
         this.certificate = certificate;
         this.key = key;
         this.mechID = mechID;
         this.skills = skills;
         this.status = status;
+        this.rate = rate;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
     }
 
     public String getBirth() {

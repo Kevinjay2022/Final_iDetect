@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -53,5 +54,28 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/custom_autoparts_list_customers_items_history_names"
         android:layout_margin="5dp"/>
+
+    <LinearLayout
+        android:id="@+id/noNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/customers_logo_nav" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Customer\nyet."
+            android:textAlignment="center"
+            android:textSize="20sp" />
+    </LinearLayout>
 
 </LinearLayout>

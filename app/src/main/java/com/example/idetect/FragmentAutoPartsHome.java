@@ -1,5 +1,6 @@
 package com.example.idetect;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +36,13 @@ public class FragmentAutoPartsHome extends Fragment {
     private LinearLayout DashOut, CustOut;
     RecyclerView customerList;
     TextView totalItem, totalSalary;
+    TextView ordersBtn, completeBtn, cancelBtn;
 
+    private ArrayList<OrderModel> orderModels;
+    private ArrayList<OrderModel> completeOrderModels;
+    private ArrayList<OrderModel> cancelOrderModels;
     ItemOrderAdapter itemsAdapter;
-    ArrayList<OrderModel> models;
-    int totalQty = 0;
+    int totalQty = 0, order_Counter = 0;
     float totalMoney = 0, price = 0;
     public FragmentAutoPartsHome(){
 
@@ -48,64 +52,68 @@ public class FragmentAutoPartsHome extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragAutoPartsHome = inflater.inflate(R.layout.fragment_auto_parts_home, container, false);
-
+        ordersBtn = fragAutoPartsHome.findViewById(R.id.OrdersBTN);
+        completeBtn = fragAutoPartsHome.findViewById(R.id.CompleteBTN);
+        cancelBtn = fragAutoPartsHome.findViewById(R.id.cancelBTN);
         totalItem = fragAutoPartsHome.findViewById(R.id.totalItemSoldTextView);
         totalSalary = fragAutoPartsHome.findViewById(R.id.totalSaleTextViewMoney);
         customerList = fragAutoPartsHome.findViewById(R.id.customerListView);
-        DashBoardBTN = fragAutoPartsHome.findViewById(R.id.DashboardCardBTN);
+        //DashBoardBTN = fragAutoPartsHome.findViewById(R.id.DashboardCardBTN);
         CustomersBTN = fragAutoPartsHome.findViewById(R.id.customerCardBTN);
         DashOut = fragAutoPartsHome.findViewById(R.id.dashboardExpandable);
         CustOut = fragAutoPartsHome.findViewById(R.id.customerExpandableView);
 
-        models = new ArrayList<>();
+        orderModels = new ArrayList<>();
+        completeOrderModels = new ArrayList<>();
+        cancelOrderModels = new ArrayList<>();
         customerList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         customerList.setLayoutManager(linearLayoutManager);
+        FirebaseDatabase.getInstance().getReference().child("ORDERS")
+                .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        totalQty = 0;
+                        totalMoney = 0;
+                        price = 0;
+                        for (DataSnapshot ds : snapshot.getChildren()){
+                            OrderModel model = ds.getValue(OrderModel.class);
+                            if (model.getStatus().equals("complete")){
+                                totalQty += Integer.parseInt(model.getQty());
 
-        DashBoardBTN.setOnClickListener(new View.OnClickListener() {
+                                FirebaseDatabase.getInstance().getReference().child("ITEMS").child(model.getItemKey())
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()){
+                                                    price = Integer.parseInt(model.getQty()) * Float.parseFloat(snapshot.child("Price").getValue().toString());
+                                                    totalMoney = totalMoney + price;
+                                                    totalSalary.setText("₱ "+totalMoney);
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                            }
+                        }
+                        totalItem.setText(""+totalQty);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+       /* DashBoardBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(DashOut.getVisibility()==View.GONE){
                     DashOut.setVisibility(View.VISIBLE);
-                    FirebaseDatabase.getInstance().getReference().child("ORDERS")
-                            .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    totalQty = 0;
-                                    totalMoney = 0;
-                                    price = 0;
-                                    for (DataSnapshot ds : snapshot.getChildren()){
-                                        OrderModel model = ds.getValue(OrderModel.class);
-                                        if (model.getStatus().equals("complete")){
-                                            totalQty += Integer.parseInt(model.getQty());
 
-                                            FirebaseDatabase.getInstance().getReference().child("ITEMS").child(model.getItemKey())
-                                                    .addValueEventListener(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                            if (snapshot.exists()){
-                                                                price = Integer.parseInt(model.getQty()) * Float.parseFloat(snapshot.child("Price").getValue().toString());
-                                                                totalMoney = totalMoney + price;
-                                                                totalSalary.setText(""+totalMoney);
-                                                            }
-                                                        }
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                                        }
-                                                    });
-                                        }
-                                    }
-                                    totalItem.setText(""+totalQty);
-                                }
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
                 }else{
                     price = 0.00f;
                     totalQty = 0;
@@ -113,51 +121,117 @@ public class FragmentAutoPartsHome extends Fragment {
                     DashOut.setVisibility(View.GONE);
                 }
             }
-        });
+        });*/
         CustomersBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(CustOut.getVisibility()==View.GONE){
-                    CustOut.setVisibility(View.VISIBLE);
-
-                    FirebaseDatabase.getInstance().getReference().child("ORDERS")
-                            .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    models.clear();
-                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                        OrderModel model = ds.getValue(OrderModel.class);
-                                        models.add(model);
-                                    }
-                                    if (models.size() == 0)
-                                        Toast.makeText(getActivity(), "You don't have any orders.", Toast.LENGTH_SHORT).show();
-                                    else {
-                                        itemsAdapter = new ItemOrderAdapter(getActivity(), models);
+                if (order_Counter == 0)
+                    Toast.makeText(getActivity(), "No orders yet.", Toast.LENGTH_SHORT).show();
+                else {
+                    if (CustOut.getVisibility() == View.GONE) {
+                        CustOut.setVisibility(View.VISIBLE);
+                        FirebaseDatabase.getInstance().getReference().child("ORDERS")
+                                .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        orderModels.clear();
+                                        completeOrderModels.clear();
+                                        cancelOrderModels.clear();
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                            OrderModel model = ds.getValue(OrderModel.class);
+                                            assert model != null;
+                                            if (model.getStatus().equals("pending") || model.getStatus().equals("accept")) {
+                                                orderModels.add(model);
+                                            }
+                                            if (model.getStatus().equals("complete")) {
+                                                completeOrderModels.add(model);
+                                            }
+                                            if (model.getStatus().equals("cancel")) {
+                                                cancelOrderModels.add(model);
+                                            }
+                                        }
+                                        itemsAdapter = new ItemOrderAdapter(getActivity(), orderModels);
                                         customerList.setAdapter(itemsAdapter);
                                         itemsAdapter.notifyDataSetChanged();
+
                                     }
-                                }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
 
-                                }
-                            });
-                }else{
-                    CustOut.setVisibility(View.GONE);
-                    for (OrderModel re: models){
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("seen", "old");
-                        FirebaseDatabase.getInstance().getReference().child("ORDERS").child(re.getKey()).updateChildren(hashMap);
+                                    }
+                                });
+                        ordersBtn.setBackgroundResource(R.color.teal_200);
+                        completeBtn.setBackgroundResource(R.color.purple_700);
+                        cancelBtn.setBackgroundResource(R.color.purple_700);
 
+                    } else {
+                        CustOut.setVisibility(View.GONE);
+                        for (OrderModel re : orderModels) {
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("seen", "old");
+                            FirebaseDatabase.getInstance().getReference().child("ORDERS").child(re.getKey()).updateChildren(hashMap);
+                        }
                     }
-
                 }
             }
         });
 
+        ordersBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                ordersBtn.setBackgroundResource(R.color.teal_200);
+                completeBtn.setBackgroundResource(R.color.purple_700);
+                cancelBtn.setBackgroundResource(R.color.purple_700);
+                itemsAdapter = new ItemOrderAdapter(getActivity(), orderModels);
+                customerList.setAdapter(itemsAdapter);
+                itemsAdapter.notifyDataSetChanged();
+            }
+        });
+        completeBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                ordersBtn.setBackgroundResource(R.color.purple_700);
+                completeBtn.setBackgroundResource(R.color.teal_200);
+                cancelBtn.setBackgroundResource(R.color.purple_700);
+                itemsAdapter = new ItemOrderAdapter(getActivity(), completeOrderModels);
+                customerList.setAdapter(itemsAdapter);
+                itemsAdapter.notifyDataSetChanged();
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                ordersBtn.setBackgroundResource(R.color.purple_700);
+                completeBtn.setBackgroundResource(R.color.purple_700);
+                cancelBtn.setBackgroundResource(R.color.teal_200);
+                itemsAdapter = new ItemOrderAdapter(getActivity(), cancelOrderModels);
+                customerList.setAdapter(itemsAdapter);
+                itemsAdapter.notifyDataSetChanged();
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("ORDERS")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        order_Counter = 0;
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            OrderModel orderModel = ds.getValue(OrderModel.class);
+                            if(orderModel.getShopUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                order_Counter++;
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
 
         return fragAutoPartsHome;

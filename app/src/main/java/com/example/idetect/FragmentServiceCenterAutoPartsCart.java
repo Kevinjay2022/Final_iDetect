@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.idetect.Adapters.DisplayCartItemsAdapter;
 import com.example.idetect.Models.CartItemsModel;
@@ -27,6 +28,7 @@ public class FragmentServiceCenterAutoPartsCart extends AppCompatActivity {
     RecyclerView recyclerView;
     DisplayCartItemsAdapter itemsAdapter;
     ArrayList<CartItemsModel> models;
+    LinearLayout noNotif;
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -37,6 +39,7 @@ public class FragmentServiceCenterAutoPartsCart extends AppCompatActivity {
 
         backBtnCart = findViewById(R.id.backBtnCart);
         models = new ArrayList<>();
+        noNotif = findViewById(R.id.noNotifications);
 
         backBtnCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,10 +66,14 @@ public class FragmentServiceCenterAutoPartsCart extends AppCompatActivity {
                             if (model.getID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
                                 models.add(model);
                         }
-                        itemsAdapter = new DisplayCartItemsAdapter(FragmentServiceCenterAutoPartsCart.this, models);
-                        recyclerView.setAdapter(itemsAdapter);
-                        itemsAdapter.notifyDataSetChanged();
-
+                        if (models.size() == 0){
+                            recyclerView.setVisibility(View.GONE);
+                            noNotif.setVisibility(View.VISIBLE);
+                        }else {
+                            itemsAdapter = new DisplayCartItemsAdapter(FragmentServiceCenterAutoPartsCart.this, models);
+                            recyclerView.setAdapter(itemsAdapter);
+                            itemsAdapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override

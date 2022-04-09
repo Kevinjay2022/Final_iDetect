@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ public class FragmentMechanicNotification extends Fragment {
     RecyclerView recyclerView;
     ArrayList<ServCentCustomerService> list;
     DisplayMechanicNotificationAdapter adapter;
+    LinearLayout noNotif;
 
     public FragmentMechanicNotification(){
 
@@ -37,6 +39,7 @@ public class FragmentMechanicNotification extends Fragment {
         View fragMechNot = inflater.inflate(R.layout.fragment_mechanic_notification, container, false);
 
         list = new ArrayList<>();
+        noNotif = fragMechNot.findViewById(R.id.noNotifications);
         recyclerView = fragMechNot.findViewById(R.id.mechanicListViewNotification);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
@@ -53,9 +56,14 @@ public class FragmentMechanicNotification extends Fragment {
                             ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
                             list.add(model);
                         }
-                        adapter = new DisplayMechanicNotificationAdapter(getActivity(), list);
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                        if (list.size() == 0){
+                            noNotif.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        }else {
+                            adapter = new DisplayMechanicNotificationAdapter(getActivity(), list);
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

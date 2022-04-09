@@ -89,6 +89,8 @@ public class FragmentServiceCenterAutoParts extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
+                    case 0:
+                        sortByRatings();
                     case 1:
                         sortByLowToHigh();
                         break;
@@ -149,6 +151,7 @@ public class FragmentServiceCenterAutoParts extends Fragment {
                             }
 
                         }
+                        sortByRatings();
                         fourwheels.setBackgroundResource(R.color.teal_200);
                         displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), fourItemsModels);
                         recyclerView.setAdapter(displayStoreItemsAdapter);
@@ -168,10 +171,12 @@ public class FragmentServiceCenterAutoParts extends Fragment {
         fourwheels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sortSpinner.setSelection(0);
                 category = "fourwheels";
                 fourwheels.setBackgroundResource(R.color.teal_200);
                 sixwheels.setBackgroundResource(R.color.purple_700);
                 tools.setBackgroundResource(R.color.purple_700);
+                sortByRatings();
                 displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), fourItemsModels);
                 recyclerView.setAdapter(displayStoreItemsAdapter);
                 displayStoreItemsAdapter.notifyDataSetChanged();
@@ -181,10 +186,12 @@ public class FragmentServiceCenterAutoParts extends Fragment {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
+                sortSpinner.setSelection(0);
                 category = "sixwheels";
                 fourwheels.setBackgroundResource(R.color.purple_700);
                 sixwheels.setBackgroundResource(R.color.teal_200);
                 tools.setBackgroundResource(R.color.purple_700);
+                sortByRatings();
                 displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), sixItemsModels);
                 recyclerView.setAdapter(displayStoreItemsAdapter);
                 displayStoreItemsAdapter.notifyDataSetChanged();
@@ -194,10 +201,12 @@ public class FragmentServiceCenterAutoParts extends Fragment {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
+                sortSpinner.setSelection(0);
                 category = "tools";
                 fourwheels.setBackgroundResource(R.color.purple_700);
                 sixwheels.setBackgroundResource(R.color.purple_700);
                 tools.setBackgroundResource(R.color.teal_200);
+                sortByRatings();
                 displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), toolsItemsModels);
                 recyclerView.setAdapter(displayStoreItemsAdapter);
                 displayStoreItemsAdapter.notifyDataSetChanged();
@@ -290,6 +299,42 @@ public class FragmentServiceCenterAutoParts extends Fragment {
         }
 
     }
+    private void sortByRatings(){
+        if (category.equals("tools")) {
+        Collections.sort(toolsItemsModels, (l1, l2) -> {
+            float r1 = Float.parseFloat(l1.getRate());
+            float r2 = Float.parseFloat(l2.getRate());
+            if (r2 > r1) return 1;
+            else if(r2 < r1) return -1;
+            else return 0;
+        });
+        displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), toolsItemsModels);
+        recyclerView.setAdapter(displayStoreItemsAdapter);
+    }
+        if (category.equals("fourwheels")) {
+            Collections.sort(fourItemsModels, (l1, l2) -> {
+                float r1 = Float.parseFloat(l1.getRate());
+                float r2 = Float.parseFloat(l2.getRate());
+                if (r2 > r1) return 1;
+                else if (r2 < r1) return -1;
+                else return 0;
+            });
+            displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), fourItemsModels);
+            recyclerView.setAdapter(displayStoreItemsAdapter);
+        }
+        if (category.equals("sixwheels")) {
+            Collections.sort(sixItemsModels, (l1, l2) -> {
+                float r1 = Float.parseFloat(l1.getRate());
+                float r2 = Float.parseFloat(l2.getRate());
+                if (r2 > r1) return 1;
+                else if (r2 < r1) return -1;
+                else return 0;
+            });
+            displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), sixItemsModels);
+            recyclerView.setAdapter(displayStoreItemsAdapter);
+        }
+    }
+
     private void filter(String s) {
         List<ItemsModel> filtered = new ArrayList<>();
         filtered.clear();

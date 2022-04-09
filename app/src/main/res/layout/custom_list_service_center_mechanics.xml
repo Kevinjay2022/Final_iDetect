@@ -134,13 +134,23 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/rateMechBTN"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#4CAF50"
+                    android:text="Rate"
+                    android:textAllCaps="false"
+                    android:textColor="#000000" />
+
+                <Button
                     android:id="@+id/EditMechBTN"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:text="Edit"
                     android:textAllCaps="false"
-                    android:textColor="#4C4949" />
+                    android:textColor="#000000" />
 
                 <Button
                     android:id="@+id/DeleteMechBTN"
@@ -149,7 +159,7 @@
                     android:layout_weight="1"
                     android:text="Delete"
                     android:textAllCaps="false"
-                    android:textColor="#4C4949" />
+                    android:textColor="#000000" />
 
                 <Button
                     android:id="@+id/DisableMechBTN"
@@ -158,7 +168,7 @@
                     android:layout_weight="1"
                     android:text="In-Active"
                     android:textAllCaps="false"
-                    android:textColor="#4C4949" />
+                    android:textColor="#000000" />
 
                 <Button
                     android:id="@+id/activeMechBTN"
@@ -167,7 +177,7 @@
                     android:layout_weight="1"
                     android:text="Active"
                     android:textAllCaps="false"
-                    android:textColor="#4C4949" />
+                    android:textColor="#000000" />
             </LinearLayout>
 
         </LinearLayout>

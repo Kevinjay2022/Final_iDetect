@@ -41,6 +41,7 @@ public class FragmentServiceCenterCustomers extends Fragment {
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    LinearLayout noNotif;
 
     public FragmentServiceCenterCustomers(){
 
@@ -60,6 +61,7 @@ public class FragmentServiceCenterCustomers extends Fragment {
         MainID = firebaseUser.getUid();
 
         //For displaying the Customers in grid
+        noNotif = fragServCst.findViewById(R.id.noNotifications);
         recyclerView = (RecyclerView)fragServCst.findViewById(R.id.CustomerRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
@@ -75,10 +77,14 @@ public class FragmentServiceCenterCustomers extends Fragment {
                             ServCentCustHistModel model = ds.getValue(ServCentCustHistModel.class);
                             models.add(model);
                         }
-
-                        servCentCustHistAdapter = new DisplayServCentCustHistAdapter(getActivity(), models);
-                        recyclerView.setAdapter(servCentCustHistAdapter);
-                        servCentCustHistAdapter.notifyDataSetChanged();
+                        if (models.size() == 0){
+                            noNotif.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        }else {
+                            servCentCustHistAdapter = new DisplayServCentCustHistAdapter(getActivity(), models);
+                            recyclerView.setAdapter(servCentCustHistAdapter);
+                            servCentCustHistAdapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override

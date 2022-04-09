@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.idetect.Adapters.DisplayDriverNotificationAdapter;
@@ -31,6 +32,7 @@ public class FragmentDriverNotification extends Fragment {
     RecyclerView recyclerView;
     DisplayDriverNotificationAdapter notifyDisplayAdapter;
     private ArrayList<ServCentCustomerService> notifyList;
+    LinearLayout noNotif;
 
     @SuppressLint("NotifyDataSetChanged")
     @Nullable
@@ -40,6 +42,7 @@ public class FragmentDriverNotification extends Fragment {
 
         notifyList = new ArrayList<>();
 
+        noNotif = homeViewF.findViewById(R.id.noNotifications);
         recyclerView = (RecyclerView) homeViewF.findViewById(R.id.listViewNotification);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
@@ -79,9 +82,14 @@ public class FragmentDriverNotification extends Fragment {
                             ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
                             notifyList.add(model);
                         }
-                        notifyDisplayAdapter = new DisplayDriverNotificationAdapter(getActivity(), notifyList);
-                        recyclerView.setAdapter(notifyDisplayAdapter);
-                        notifyDisplayAdapter.notifyDataSetChanged();
+                        if (notifyList.size() == 0){
+                            recyclerView.setVisibility(View.GONE);
+                            noNotif.setVisibility(View.VISIBLE);
+                        }else {
+                            notifyDisplayAdapter = new DisplayDriverNotificationAdapter(getActivity(), notifyList);
+                            recyclerView.setAdapter(notifyDisplayAdapter);
+                            notifyDisplayAdapter.notifyDataSetChanged();
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

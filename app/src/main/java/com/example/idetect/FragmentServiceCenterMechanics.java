@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.idetect.Adapters.DisplayMechOnCallAdapter;
 import com.example.idetect.Adapters.DisplayServCentMechListAdapter;
+import com.example.idetect.Adapters.DisplayStoreItemsAdapter;
 import com.example.idetect.Models.ServCentMechListModel;
 import com.example.idetect.Models.ServCentMechOnCallModel;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class FragmentServiceCenterMechanics extends Fragment {
@@ -52,6 +55,7 @@ public class FragmentServiceCenterMechanics extends Fragment {
     Button saveMechBtn;
     RadioButton addRadioBtn;
     RadioGroup addGrpRdioBtn;
+    LinearLayout noNotif;
     TextView addMechBrthEdt;
     ImageView bdateBTN;
 
@@ -74,6 +78,7 @@ public class FragmentServiceCenterMechanics extends Fragment {
 
         MechList = new ArrayList<>();
         onMechList = new ArrayList<>();
+        noNotif = mechanicView.findViewById(R.id.noNotifications);
         bdateBTN = mechanicView.findViewById(R.id.dateCalendar);
         addMechBTN = mechanicView.findViewById(R.id.add_mechanic_btn);
         OnCallMechBTN = mechanicView.findViewById(R.id.on_call_mechanics);
@@ -108,7 +113,7 @@ public class FragmentServiceCenterMechanics extends Fragment {
                     int radioId = addGrpRdioBtn.getCheckedRadioButtonId();
                     addRadioBtn = mechanicView.findViewById(radioId);
                     String key = FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS").push().getKey();
-                    HashMap<Object, String> hashMap = new HashMap<>();
+                    HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("name", addMechNameEdt.getText().toString());
                     hashMap.put("address", addMechAddrssEdt.getText().toString());
                     hashMap.put("birth", addMechBrthEdt.getText().toString());
@@ -118,6 +123,8 @@ public class FragmentServiceCenterMechanics extends Fragment {
                     hashMap.put("mech_type", "in-house");
                     hashMap.put("mechID", "");
                     hashMap.put("key", key);
+                    hashMap.put("rate", "0");
+                    hashMap.put("delete", false);
                     hashMap.put("employ", "hire");
                     hashMap.put("ID", MainID);
 
@@ -149,18 +156,24 @@ public class FragmentServiceCenterMechanics extends Fragment {
         linearLayoutManager.setStackFromEnd(true);
         VListMech.setLayoutManager(linearLayoutManager);
         FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS")
+                .orderByChild("ID").equalTo(MainID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         MechList.clear();
                         for (DataSnapshot ds: snapshot.getChildren()){
                             ServCentMechListModel model = ds.getValue(ServCentMechListModel.class);
-                            if (model.getID().equals(MainID))
+                            if (ds.child("delete").getValue().toString().equals("false"))
                                 MechList.add(model);
                         }
-                        servCentMechListAdapter = new DisplayServCentMechListAdapter(getActivity(), MechList);
-                        VListMech.setAdapter(servCentMechListAdapter);
-                        servCentMechListAdapter.notifyDataSetChanged();
+                        if (MechList.size() == 0){
+                            noNotif.setVisibility(View.VISIBLE);
+                            VListMech.setVisibility(View.GONE);
+                        }else {
+                            servCentMechListAdapter = new DisplayServCentMechListAdapter(getActivity(), MechList);
+                            VListMech.setAdapter(servCentMechListAdapter);
+                            servCentMechListAdapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override
@@ -187,6 +200,7 @@ public class FragmentServiceCenterMechanics extends Fragment {
                             if (model.getStatus().equals("not hired"))
                                 onMechList.add(model);
                         }
+                        sortByRatings();
                         oncallAdapter = new DisplayMechOnCallAdapter(getActivity(), onMechList);
                         OnCallView.setAdapter(oncallAdapter);
                         oncallAdapter.notifyDataSetChanged();
@@ -321,5 +335,15 @@ public class FragmentServiceCenterMechanics extends Fragment {
             return false;
         }
         return true;
+    }
+
+    private void sortByRatings(){
+        Collections.sort(onMechList, (l1, l2) -> {
+            float r1 = Float.parseFloat(l1.getRate());
+            float r2 = Float.parseFloat(l2.getRate());
+            if (r2 > r1) return 1;
+            else if(r2 < r1) return -1;
+            else return 0;
+        });
     }
 }

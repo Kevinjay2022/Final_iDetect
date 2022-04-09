@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -82,6 +83,8 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
                         if (snapshot.exists()) {
                             holder.Name.setText(snapshot.child("firstname").getValue().toString() + " " + snapshot.child("lastname").getValue().toString());
                             holder.Address.setText(snapshot.child("address").getValue().toString());
+                            holder.mechRatings.setText(snapshot.child("rate").getValue().toString());
+                            holder.mechRatingBar.setRating(Float.parseFloat(snapshot.child("rate").getValue().toString()));
                         }
                     }
 
@@ -157,8 +160,9 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView Name, Address, Details;
+        TextView Name, Address, Details, mechRatings;
         CardView CardBtn;
+        RatingBar mechRatingBar;
         Button HireBtn, cancelBtn;
         LinearLayout ExpandView;
         ImageView certImg;
@@ -166,6 +170,8 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            mechRatingBar = itemView.findViewById(R.id.itemDisplayRateBar);
+            mechRatings = itemView.findViewById(R.id.itemDisplayRate);
             certImg = itemView.findViewById(R.id.onCallImage);
             Name = itemView.findViewById(R.id.mechanicOnCall_name);
             Address = itemView.findViewById(R.id.mechanicOnCall_adress);

@@ -1,12 +1,14 @@
 package com.example.idetect.Models;
 
 public class ServCentMechListModel {
-    String name, address, birth, skills, gender, status, mech_type, ID, mechID, key;
+    String name, address, birth, skills, gender, status, mech_type, ID, mechID, key, rate;
+    boolean delete;
 
     ServCentMechListModel(){
 
     }
-    public ServCentMechListModel(String name, String address, String birth, String skills, String gender, String status, String mech_type, String ID, String mechID, String key) {
+
+    public ServCentMechListModel(String name, String address, String birth, String skills, String gender, String status, String mech_type, String ID, String mechID, String key, String rate, boolean delete) {
         this.name = name;
         this.address = address;
         this.birth = birth;
@@ -17,7 +19,26 @@ public class ServCentMechListModel {
         this.ID = ID;
         this.mechID = mechID;
         this.key = key;
+        this.rate = rate;
+        this.delete = delete;
     }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public boolean isDelete() {
+        return delete;
+    }
+
+    public void setDelete(boolean delete) {
+        this.delete = delete;
+    }
+
     public String getKey() {
         return key;
     }

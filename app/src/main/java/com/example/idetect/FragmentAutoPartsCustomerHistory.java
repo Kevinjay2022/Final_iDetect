@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,10 +29,12 @@ import java.util.List;
 
 public class FragmentAutoPartsCustomerHistory extends Fragment {
 
+    LinearLayout noNotif;
     RecyclerView recyclerView;
     DisplayCustomerHistoryAdapter adapter;
     ArrayList<OrderModel> orderModels;
     boolean flag = false;
+    int order_Counter = 0;
 
     public FragmentAutoPartsCustomerHistory(){
 
@@ -43,6 +46,7 @@ public class FragmentAutoPartsCustomerHistory extends Fragment {
 
         orderModels = new ArrayList<>();
         recyclerView = fragCustHst.findViewById(R.id.recycleView);
+        noNotif = fragCustHst.findViewById(R.id.noNotifications);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
@@ -72,9 +76,14 @@ public class FragmentAutoPartsCustomerHistory extends Fragment {
                                 }
                             }
                         }
-                        adapter = new DisplayCustomerHistoryAdapter(getActivity(), orderModels);
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                        if (orderModels.size() == 0){
+                            noNotif.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        }else{
+                            adapter = new DisplayCustomerHistoryAdapter(getActivity(), orderModels);
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override
@@ -82,6 +91,7 @@ public class FragmentAutoPartsCustomerHistory extends Fragment {
 
                     }
                 });
+
 
 
 

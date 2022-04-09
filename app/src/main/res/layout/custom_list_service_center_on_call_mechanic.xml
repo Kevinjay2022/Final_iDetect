@@ -43,7 +43,8 @@
                 android:id="@+id/expandableOnCallMechanic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView14"
@@ -82,18 +83,41 @@
                         android:scaleType="fitCenter" />
                 </androidx.cardview.widget.CardView>
 
-                <Button
-                    android:id="@+id/hire_mechBTN"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bind1"
-                    android:backgroundTint="#918A8A"
-                    android:text="Hire Mechanic"
-                    android:textAlignment="center"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ratings" />
+
+                    <RatingBar
+                        android:id="@+id/itemDisplayRateBar"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:clickable="false"
+                        android:numStars="5"
+                        android:rating="0"
+                        android:stepSize="0.5" />
+
+                    <TextView
+                        android:id="@+id/itemDisplayRate"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="0.0"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/cancel_mechBTN"
@@ -108,6 +132,19 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/hire_mechBTN"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bind1"
+                    android:backgroundTint="#918A8A"
+                    android:text="Hire Mechanic"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
         </LinearLayout>
