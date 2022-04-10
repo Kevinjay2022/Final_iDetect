@@ -39,83 +39,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         sendNotification(remoteMessage);
-        /*if (firebaseUser != null && sented.equals(firebaseUser.getUid())) {
-            if (!currentUser.equals(user)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                    sendOreoNotification(remoteMessage);
-                else
-            }
-        }*/
 
     }
 
-    private void sendOreoNotification(RemoteMessage remoteMessage) {
-        String user = remoteMessage.getData().get("user");
-        String icon = remoteMessage.getData().get("icon");
-        String title = remoteMessage.getData().get("Title");
-        String body = remoteMessage.getData().get("Message");
-        String on = remoteMessage.getData().get("on");
-
-        int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
-        Intent intent = new Intent();
-        switch (on){
-            case "serve_center":
-                intent = new Intent(this, FragmentServiceCenterNavigation.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                break;
-            case "driver":
-                intent = new Intent(this, FragmentDriverNavigationHome.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                break;
-            case "auto_parts":
-                intent = new Intent(this, FragmentAutoPartsNavigation.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                break;
-            case "mechanic":
-                intent = new Intent(this, FragmentMechanicHome.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                break;
-        }
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        OreoNotifications oreoNotifications = new OreoNotifications(this);
-
-        Notification.Builder builder = oreoNotifications.getOreoNotification(title, body, pendingIntent, defaultSound, icon);
-
-        int i = 0;
-        if (j > 0)
-            i = j;
-
-        oreoNotifications.getManager().notify(i, builder.build());
-    }
     private void sendNotification(RemoteMessage remoteMessage) {
 
-        String user = remoteMessage.getData().get("user");
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("Title");
         String body = remoteMessage.getData().get("Message");
-        String on = remoteMessage.getData().get("on");
-        Intent intent = new Intent();
-        switch (on){
-            case "serve_center":
-                intent = new Intent(this, FragmentServiceCenterNavigation.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                break;
-            case "driver":
-                intent = new Intent(this, FragmentDriverNavigationHome.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                break;
-            case "auto_parts":
-                intent = new Intent(this, FragmentAutoPartsNavigation.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                break;
-            case "mechanic":
-                intent = new Intent(this, FragmentMechanicHome.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                break;
-        }
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
@@ -123,7 +57,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.logo)
+                        .setSmallIcon(Integer.parseInt(icon))
                         .setContentTitle(title)
                         .setContentText(body)
                         .setAutoCancel(true)

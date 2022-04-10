@@ -167,6 +167,7 @@ public class ItemOrderAdapter extends RecyclerView.Adapter<ItemOrderAdapter.View
                     holder.notify = true;
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("status", "accept");
+                    hashMap.put("seen", "old");
 
                     FirebaseDatabase.getInstance().getReference().child("ORDERS").child(model.getKey()).updateChildren(hashMap)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -224,6 +225,7 @@ public class ItemOrderAdapter extends RecyclerView.Adapter<ItemOrderAdapter.View
                 holder.notify = true;
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("status", "cancel");
+                hashMap.put("seen", "old");
 
                 FirebaseDatabase.getInstance().getReference().child("ORDERS").child(model.getKey()).updateChildren(hashMap)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -272,6 +274,7 @@ public class ItemOrderAdapter extends RecyclerView.Adapter<ItemOrderAdapter.View
             public void onClick(View view) {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("status", "complete");
+                hashMap.put("seen", "old");
 
                 FirebaseDatabase.getInstance().getReference().child("ORDERS").child(model.getKey()).updateChildren(hashMap)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -328,7 +331,7 @@ public class ItemOrderAdapter extends RecyclerView.Adapter<ItemOrderAdapter.View
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds : snapshot.getChildren()){
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.logo, msg, senderName, receiver, on);
 
                     assert token != null;
                     Sender sender = new Sender(data, token.getToken());

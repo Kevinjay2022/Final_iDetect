@@ -359,7 +359,7 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds : snapshot.getChildren()){
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.logo, msg, senderName, receiver, on);
 
                     assert token != null;
                     Sender sender = new Sender(data, token.getToken());

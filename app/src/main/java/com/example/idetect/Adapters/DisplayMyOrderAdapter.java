@@ -255,6 +255,7 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
                 Toast.makeText(context, "Order cancelled", Toast.LENGTH_SHORT).show();
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("status", "cancel");
+                hashMap.put("seen", "old");
 
                 FirebaseDatabase.getInstance().getReference().child("ORDERS").child(model.getKey()).updateChildren(hashMap);
 
@@ -298,6 +299,7 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
             public void onClick(View view) {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("status", "complete");
+                hashMap.put("seen", "old");
 
                 FirebaseDatabase.getInstance().getReference().child("ORDERS").child(model.getKey()).updateChildren(hashMap)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -357,7 +359,7 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds : snapshot.getChildren()){
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.logo, msg, senderName, receiver, on);
 
                     assert token != null;
                     Sender sender = new Sender(data, token.getToken());
