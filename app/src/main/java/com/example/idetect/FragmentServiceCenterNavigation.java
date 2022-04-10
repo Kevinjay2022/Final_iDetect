@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import java.util.HashMap;
+
 public class FragmentServiceCenterNavigation extends AppCompatActivity {
 
     @Override
@@ -25,6 +27,7 @@ public class FragmentServiceCenterNavigation extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+        checkStatus();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, new FragmentServiceCenterHome()).commit();
     }
@@ -55,5 +58,11 @@ public class FragmentServiceCenterNavigation extends AppCompatActivity {
             return true;
         }
     };
-
+    private void checkStatus(){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", "online");
+        FirebaseDatabase.getInstance().getReference()
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .updateChildren(hashMap);
+    }
 }

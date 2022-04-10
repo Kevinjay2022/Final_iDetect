@@ -369,6 +369,7 @@ public class Profile extends Fragment {
         logoutProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkStatus();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getActivity(), Login.class));
                 getActivity().finish();
@@ -482,6 +483,13 @@ public class Profile extends Fragment {
 
             }
         });
+    }
+    private void checkStatus(){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", "offline");
+        FirebaseDatabase.getInstance().getReference()
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .updateChildren(hashMap);
     }
 
     private void openFileChooser() {

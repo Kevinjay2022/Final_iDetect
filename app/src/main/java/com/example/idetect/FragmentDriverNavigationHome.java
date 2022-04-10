@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.HashMap;
+
 public class FragmentDriverNavigationHome extends AppCompatActivity {
 
     TextView textView;
@@ -35,6 +37,7 @@ public class FragmentDriverNavigationHome extends AppCompatActivity {
         textView = findViewById(R.id.notif_counter);
         notifCard = findViewById(R.id.notif_counterCard);
         updateToken(FirebaseInstanceId.getInstance().getToken());
+        checkStatus();
         FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY")
                 .orderByChild("ID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
@@ -87,5 +90,12 @@ public class FragmentDriverNavigationHome extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token token1 = new Token(token);
         reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token1);
+    }
+    private void checkStatus(){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", "online");
+        FirebaseDatabase.getInstance().getReference()
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .updateChildren(hashMap);
     }
 }

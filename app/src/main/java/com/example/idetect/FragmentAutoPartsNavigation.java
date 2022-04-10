@@ -35,6 +35,7 @@ public class FragmentAutoPartsNavigation extends AppCompatActivity {
         setContentView(R.layout.fragment_auto_parts_navigation);
 
         updateToken(FirebaseInstanceId.getInstance().getToken());
+        checkStatus();
         textView = findViewById(R.id.notif_counter);
         notifCard = findViewById(R.id.notif_counterCard);
 
@@ -97,5 +98,12 @@ public class FragmentAutoPartsNavigation extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token token1 = new Token(token);
         reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token1);
+    }
+    private void checkStatus(){
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", "online");
+        FirebaseDatabase.getInstance().getReference()
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .updateChildren(hashMap);
     }
 }
