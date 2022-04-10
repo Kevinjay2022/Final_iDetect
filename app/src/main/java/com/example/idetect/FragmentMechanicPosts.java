@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.idetect.Notify.Token;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +41,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -73,6 +75,7 @@ public class  FragmentMechanicPosts extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragMechPost = inflater.inflate(R.layout.fragment_mechanic_posts, container, false);
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         AddBTN = fragMechPost.findViewById(R.id.Add_postBTN);
         EditBTN = fragMechPost.findViewById(R.id.Edit_postBTN);
         CancelBTN = fragMechPost.findViewById(R.id.cancel_postBTN);
@@ -399,5 +402,10 @@ public class  FragmentMechanicPosts extends Fragment {
                 pd.setMessage("Uploading " + (int) progresPerce + " %");
             }
         });
+    }
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token1);
     }
 }

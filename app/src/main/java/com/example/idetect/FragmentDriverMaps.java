@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.idetect.Notify.Token;
 import com.example.idetect.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -50,8 +51,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -93,6 +96,7 @@ public class FragmentDriverMaps extends Fragment{
         //request location permission.
         requestPermission();
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         searchTxt = fragMap.findViewById(R.id.mapSearch);
         mapLayout = fragMap.findViewById(R.id.mapLayout);
@@ -392,5 +396,10 @@ public class FragmentDriverMaps extends Fragment{
         }else
             mapLayout.setVisibility(View.GONE);
         super.onResume();
+    }
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token1);
     }
 }

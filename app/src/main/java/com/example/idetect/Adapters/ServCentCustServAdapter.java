@@ -17,6 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.idetect.Models.ItemsModel;
 import com.example.idetect.Models.ServCentCustomerService;
+import com.example.idetect.Notify.Constant;
+import com.example.idetect.Notify.Data;
+import com.example.idetect.Notify.MyResponse;
+import com.example.idetect.Notify.Sender;
+import com.example.idetect.Notify.Token;
 import com.example.idetect.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,13 +29,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 import com.orhanobut.dialogplus.DialogPlus;
 
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustServAdapter.ViewHolder> {
 
@@ -135,7 +146,7 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
         holder.cancelBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                holder.notify = true;
                 String key = FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY").push().getKey();
                 HashMap<String, Object> hashMap1 = new HashMap<>();
                 hashMap1.put("feedback", "cancel");
@@ -145,7 +156,24 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
                 hashMap1.put("seen", "new");
 
                 FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY").child(key).setValue(hashMap1);
+                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    if (holder.notify) {
+                                        String name = snapshot.child("name").getValue().toString();
+                                        sendNotification(model.getID(), name, "Cancelled your request.", "driver");
+                                    }
+                                    holder.notify = false;
+                                }
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                 FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").child(model.getKey()).removeValue();
 
                 Toast.makeText(context, "Issue Cancelled", Toast.LENGTH_SHORT).show();
@@ -156,7 +184,7 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
         holder.acceptBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                holder.notify = true;
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("feedback", "accept");
 
@@ -174,6 +202,24 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
+                                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    if (holder.notify) {
+                                                        String name = snapshot.child("name").getValue().toString();
+                                                        sendNotification(model.getID(), name, "Approve your request.", "driver");
+                                                    }
+                                                    holder.notify = false;
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
                                 Toast.makeText(context, "Issue Accepted", Toast.LENGTH_SHORT).show();
                                 holder.custViewAccept.setVisibility(View.VISIBLE);
                                 holder.acceptBTN.setVisibility(View.GONE);
@@ -284,6 +330,7 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
         LinearLayout custServExpand;
         Button acceptBTN, cancelBTN, finishBTN, addCustomerBTN;
         ImageView sign;
+        boolean notify = false;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -302,5 +349,42 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
             finishBTN = itemView.findViewById(R.id.CustomerServiceFinishBTN);
             addCustomerBTN = itemView.findViewById(R.id.addToCustomerBTN);
         }
+    }
+
+    private void sendNotification(String receiver, String senderName, String msg, String on) {
+
+        Query query = Constant.tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+
+                    assert token != null;
+                    Sender sender = new Sender(data, token.getToken());
+
+                    Constant.apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<MyResponse> call, @NotNull Response<MyResponse> response) {
+                                    if (response.code() == 200) {
+                                        assert response.body() != null;
+                                        if(response.body().success != 1){}
+                                        //Toast.makeText(context, "Failed", Toast.).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(@NotNull Call<MyResponse> call, @NotNull Throwable t) {
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

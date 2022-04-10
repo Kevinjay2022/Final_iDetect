@@ -44,6 +44,7 @@ import com.example.idetect.Adapters.ServCentCustServAdapter;
 import com.example.idetect.Models.ItemsModel;
 import com.example.idetect.Models.OrderModel;
 import com.example.idetect.Models.ServCentCustomerService;
+import com.example.idetect.Notify.Token;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,6 +54,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -117,6 +119,7 @@ public class FragmentServiceCenterHome extends Fragment {
         View homeViewF = inflater.inflate(R.layout.fragment_service_center_home, container, false);
 
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
         firebaseDatabase=FirebaseDatabase.getInstance();
@@ -915,5 +918,10 @@ public class FragmentServiceCenterHome extends Fragment {
             imageUri = data.getData();
             Picasso.get().load(imageUri).into(ItemImageView);
         }
+    }
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token1);
     }
 }

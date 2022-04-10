@@ -12,12 +12,15 @@ import androidx.fragment.app.Fragment;
 
 import com.example.idetect.Adapters.DisplayAutoPartsNotificationAdapter;
 import com.example.idetect.Models.ServCentCustomerService;
+import com.example.idetect.Notify.Token;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 
@@ -31,6 +34,7 @@ public class FragmentAutoPartsNavigation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_auto_parts_navigation);
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         textView = findViewById(R.id.notif_counter);
         notifCard = findViewById(R.id.notif_counterCard);
 
@@ -89,4 +93,9 @@ public class FragmentAutoPartsNavigation extends AppCompatActivity {
             return true;
         }
     };
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token1);
+    }
 }

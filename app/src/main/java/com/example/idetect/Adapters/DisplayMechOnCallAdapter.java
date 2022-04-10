@@ -21,16 +21,27 @@ import com.example.idetect.CustomServiceCenterAutoPartsViewItems;
 import com.example.idetect.Models.ItemsModel;
 import com.example.idetect.Models.ServCentCustomerService;
 import com.example.idetect.Models.ServCentMechOnCallModel;
+import com.example.idetect.Notify.Constant;
+import com.example.idetect.Notify.Data;
+import com.example.idetect.Notify.MyResponse;
+import com.example.idetect.Notify.Sender;
+import com.example.idetect.Notify.Token;
 import com.example.idetect.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOnCallAdapter.ViewHolder> {
 
@@ -110,7 +121,7 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
         holder.HireBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                holder.notify = true;
                 String key = FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").push().getKey();
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("ID", model.getMechID());
@@ -122,6 +133,24 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
 
                 FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").child(key).setValue(hashMap);
 
+                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    if (holder.notify) {
+                                        String name = snapshot.child("name").getValue().toString();
+                                        sendNotification(model.getMechID(), name, "Want to hire you.", "mechanic");
+                                    }
+                                    holder.notify = false;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                 holder.cancelBtn.setVisibility(View.VISIBLE);
                 holder.HireBtn.setVisibility(View.GONE);
             }
@@ -129,6 +158,7 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
         holder.cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                holder.notify = true;
                 FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").orderByChild("shopID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .addValueEventListener(new ValueEventListener() {
                             @Override
@@ -139,6 +169,24 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
                                         FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").child(model1.getKey()).removeValue();
                                     }
                                 }
+                                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    if (holder.notify) {
+                                                        String name = snapshot.child("name").getValue().toString();
+                                                        sendNotification(model.getMechID(), name, "Cancelled request.", "mechanic");
+                                                    }
+                                                    holder.notify = false;
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
                             }
 
                             @Override
@@ -166,6 +214,7 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
         Button HireBtn, cancelBtn;
         LinearLayout ExpandView;
         ImageView certImg;
+        boolean notify = false;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -183,5 +232,41 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
             HireBtn = itemView.findViewById(R.id.hire_mechBTN);
             cancelBtn = itemView.findViewById(R.id.cancel_mechBTN);
         }
+    }
+    private void sendNotification(String receiver, String senderName, String msg, String on) {
+
+        Query query = Constant.tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+
+                    assert token != null;
+                    Sender sender = new Sender(data, token.getToken());
+
+                    Constant.apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<MyResponse> call, @NotNull Response<MyResponse> response) {
+                                    if (response.code() == 200) {
+                                        assert response.body() != null;
+                                        if(response.body().success != 1){}
+                                        //Toast.makeText(context, "Failed", Toast.).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(@NotNull Call<MyResponse> call, @NotNull Throwable t) {
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

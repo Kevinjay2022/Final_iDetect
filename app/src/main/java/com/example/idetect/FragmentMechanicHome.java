@@ -11,12 +11,15 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.idetect.Models.ServCentCustomerService;
+import com.example.idetect.Notify.Token;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class FragmentMechanicHome extends AppCompatActivity {
     TextView textView;
@@ -28,6 +31,7 @@ public class FragmentMechanicHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_mechanic_home);
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         textView = findViewById(R.id.notif_counter);
         notifCard = findViewById(R.id.notif_counterCard);
 
@@ -79,4 +83,9 @@ public class FragmentMechanicHome extends AppCompatActivity {
             return true;
         }
     };
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token1);
+    }
 }

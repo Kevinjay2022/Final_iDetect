@@ -16,15 +16,26 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.idetect.Models.ItemsModel;
+import com.example.idetect.Notify.Constant;
+import com.example.idetect.Notify.Data;
+import com.example.idetect.Notify.MyResponse;
+import com.example.idetect.Notify.Sender;
+import com.example.idetect.Notify.Token;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
 
@@ -37,6 +48,7 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
     String itemKey, imagePrice, imagePic, ShopUID;
     int Counter = 1, stocks = 0;
     float price = 0.2f;
+    boolean notify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +147,7 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
         BuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                notify = true;
                 String orderKey = FirebaseDatabase.getInstance().getReference().child("ORDERS").push().getKey();
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -161,6 +174,37 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(CustomServiceCenterAutoPartsViewItems.this, "Wait for approval", Toast.LENGTH_SHORT).show();
+                                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    if (notify) {
+                                                        String name = snapshot.child("name").getValue().toString();
+                                                        FirebaseDatabase.getInstance().getReference().child("USERS").child(ShopUID)
+                                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                        if (snapshot.exists()){
+                                                                            sendNotification(ShopUID, name, "Want to buy your items.", snapshot.child("acctype").getValue().toString());
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                    }
+                                                                });
+                                                    }
+                                                    notify = false;
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
                                 onBackPressed();
                             }
                         });
@@ -208,5 +252,41 @@ public class CustomServiceCenterAutoPartsViewItems extends AppCompatActivity {
     public void onBackPressed() {
         this.finish();
         super.onBackPressed();
+    }
+    private void sendNotification(String receiver, String senderName, String msg, String on) {
+
+        Query query = Constant.tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+
+                    assert token != null;
+                    Sender sender = new Sender(data, token.getToken());
+
+                    Constant.apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<MyResponse> call, @NotNull Response<MyResponse> response) {
+                                    if (response.code() == 200) {
+                                        assert response.body() != null;
+                                        if(response.body().success != 1){}
+                                        //Toast.makeText(context, "Failed", Toast.).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(@NotNull Call<MyResponse> call, @NotNull Throwable t) {
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

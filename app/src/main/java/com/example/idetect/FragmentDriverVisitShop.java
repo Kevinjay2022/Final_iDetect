@@ -14,6 +14,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.idetect.Notify.APIService;
+import com.example.idetect.Notify.Client;
+import com.example.idetect.Notify.Constant;
+import com.example.idetect.Notify.Data;
+import com.example.idetect.Notify.MyResponse;
+import com.example.idetect.Notify.Sender;
+import com.example.idetect.Notify.Token;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,16 +30,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentDriverVisitShop extends AppCompatActivity {
     TextView shopName, shopAddress, shopContact, visitDesc, visitIssue, visitMsg;
     ImageView shopImage;
     Button shopBackBTN, proceedBTN, waitingBTN, cancelBTN, completeBTN;
-
     String shopUID;
+    boolean notify = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,6 +169,8 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                     visitIssue.setError("Field should not be empty!");
                     return;
                 }else{
+
+                    notify = true;
                     ProgressDialog pd = new ProgressDialog(FragmentDriverVisitShop.this);
                     pd.setMessage("Sending request...");
                     pd.show();
@@ -175,6 +189,25 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(FragmentDriverVisitShop.this, "Request sent...\nPlease wait for shop confirmation.", Toast.LENGTH_SHORT).show();
+                                    FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    if (snapshot.exists()) {
+                                                        if (notify) {
+                                                            String name = snapshot.child("firstname").getValue().toString()+ " " +snapshot.child("lastname").getValue().toString();
+                                                            sendNotification(shopUID, name, "Sent a request.", "serve_center");
+                                                        }
+                                                        notify = false;
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+
                                     visitIssue.setText(null);
                                     proceedBTN.setVisibility(View.GONE);
                                     waitingBTN.setVisibility(View.VISIBLE);
@@ -195,6 +228,7 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
         cancelBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                notify = true;
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                 Query applesQuery = ref.child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("ID")
                         .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -207,6 +241,24 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                             if (shopid.equals(shopUID))
                                 appleSnapshot.getRef().removeValue();
                         }
+                        FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            if (notify) {
+                                                String name = snapshot.child("firstname").getValue().toString()+ " " +snapshot.child("lastname").getValue().toString();
+                                                sendNotification(shopUID, name, "Cancelled request.", "serve_center");
+                                            }
+                                            notify = false;
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                         Toast.makeText(FragmentDriverVisitShop.this, "Request cancelled...", Toast.LENGTH_SHORT).show();
                         proceedBTN.setVisibility(View.VISIBLE);
                         waitingBTN.setVisibility(View.GONE);
@@ -268,5 +320,41 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+    private void sendNotification(String receiver, String senderName, String msg, String on) {
+
+        Query query = Constant.tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+
+                    assert token != null;
+                    Sender sender = new Sender(data, token.getToken());
+
+                    Constant.apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<MyResponse> call, @NotNull Response<MyResponse> response) {
+                                    if (response.code() == 200) {
+                                        assert response.body() != null;
+                                        if(response.body().success != 1){}
+                                        //Toast.makeText(context, "Failed", Toast.).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(@NotNull Call<MyResponse> call, @NotNull Throwable t) {
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

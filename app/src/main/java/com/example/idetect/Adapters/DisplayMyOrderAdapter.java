@@ -21,16 +21,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.idetect.Models.ItemsModel;
 import com.example.idetect.Models.OrderModel;
+import com.example.idetect.Notify.Constant;
+import com.example.idetect.Notify.Data;
+import com.example.idetect.Notify.MyResponse;
+import com.example.idetect.Notify.Sender;
+import com.example.idetect.Notify.Token;
 import com.example.idetect.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAdapter.ViewHolder> {
 
@@ -127,8 +138,6 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
 
                     }
                 });
-
-
 
         holder.itemRate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,7 +241,7 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
         holder.cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                holder.notify = true;
                 String key = FirebaseDatabase.getInstance().getReference().child("AUTO_PARTS_NOTIFY").push().getKey();
                 HashMap<String, Object> hashMap1 = new HashMap<>();
                 hashMap1.put("shopID", model.getShopUID());
@@ -243,14 +252,45 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
 
                 FirebaseDatabase.getInstance().getReference().child("AUTO_PARTS_NOTIFY").child(key).setValue(hashMap1);
 
+                Toast.makeText(context, "Order cancelled", Toast.LENGTH_SHORT).show();
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("status", "cancel");
 
-                FirebaseDatabase.getInstance().getReference().child("ORDERS").child(model.getKey()).removeValue()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                FirebaseDatabase.getInstance().getReference().child("ORDERS").child(model.getKey()).updateChildren(hashMap);
+
+
+                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addValueEventListener(new ValueEventListener() {
                             @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(context, "Order cancelled", Toast.LENGTH_SHORT).show();
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    if (holder.notify) {
+                                        String name = snapshot.child("name").getValue().toString();
+                                        FirebaseDatabase.getInstance().getReference().child("USERS").child(model.getShopUID())
+                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        if (snapshot.exists()){
+                                                            sendNotification(model.getShopUID(), name, "Cancelled the order.", snapshot.child("acctype").getValue().toString());
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+                                    }
+                                    holder.notify = false;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
                             }
                         });
+
             }
         });
         holder.receiveBtn.setOnClickListener(new View.OnClickListener() {
@@ -288,6 +328,7 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
         float rateValue = 0;
         float getRateValue = 0;
         int rateCount = 0;
+        boolean notify = false;
 
 
 
@@ -307,5 +348,41 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
             expand = itemView.findViewById(R.id.customerItemExpandable);
             orderImage = itemView.findViewById(R.id.orderImg);
         }
+    }
+    private void sendNotification(String receiver, String senderName, String msg, String on) {
+
+        Query query = Constant.tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+
+                    assert token != null;
+                    Sender sender = new Sender(data, token.getToken());
+
+                    Constant.apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<MyResponse> call, @NotNull Response<MyResponse> response) {
+                                    if (response.code() == 200) {
+                                        assert response.body() != null;
+                                        if(response.body().success != 1){}
+                                        //Toast.makeText(context, "Failed", Toast.).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(@NotNull Call<MyResponse> call, @NotNull Throwable t) {
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

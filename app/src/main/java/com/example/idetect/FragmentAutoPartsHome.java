@@ -20,11 +20,14 @@ import com.example.idetect.Adapters.ItemOrderAdapter;
 import com.example.idetect.Models.CartItemsModel;
 import com.example.idetect.Models.OrderModel;
 import com.example.idetect.Models.ServCentCustomerService;
+import com.example.idetect.Notify.Token;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +55,8 @@ public class FragmentAutoPartsHome extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragAutoPartsHome = inflater.inflate(R.layout.fragment_auto_parts_home, container, false);
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         ordersBtn = fragAutoPartsHome.findViewById(R.id.OrdersBTN);
         completeBtn = fragAutoPartsHome.findViewById(R.id.CompleteBTN);
         cancelBtn = fragAutoPartsHome.findViewById(R.id.cancelBTN);
@@ -237,4 +242,9 @@ public class FragmentAutoPartsHome extends Fragment {
         return fragAutoPartsHome;
     }
 
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token1);
+    }
 }

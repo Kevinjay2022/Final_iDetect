@@ -13,15 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.idetect.FragmentDriverVisitShop;
 import com.example.idetect.Models.ServCentCustomerService;
 import com.example.idetect.Models.ServCentMechOnCallModel;
+import com.example.idetect.Notify.Constant;
+import com.example.idetect.Notify.Data;
+import com.example.idetect.Notify.MyResponse;
+import com.example.idetect.Notify.Sender;
+import com.example.idetect.Notify.Token;
 import com.example.idetect.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DisplayMechanicNotificationAdapter extends RecyclerView.Adapter<DisplayMechanicNotificationAdapter.ViewHolder> {
 
@@ -105,8 +116,7 @@ public class DisplayMechanicNotificationAdapter extends RecyclerView.Adapter<Dis
         holder.shopApprove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                holder.notify = true;
                 String key = FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS").push().getKey();
                 HashMap<String, Object> hashMap2 = new HashMap<>();
                 hashMap2.put("name", mechName);
@@ -123,6 +133,25 @@ public class DisplayMechanicNotificationAdapter extends RecyclerView.Adapter<Dis
                 hashMap2.put("employ", "hire");
                 hashMap2.put("ID", model.getShopID());
                 FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS").child(key).setValue(hashMap2);
+
+                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    if (holder.notify) {
+                                        String name = snapshot.child("firstname").getValue().toString()+" "+snapshot.child("lastname").getValue().toString();
+                                        sendNotification(model.getShopID(), name, "Approve your request.", "serve_center");
+                                    }
+                                    holder.notify = false;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("feedback", "accept");
@@ -158,7 +187,24 @@ public class DisplayMechanicNotificationAdapter extends RecyclerView.Adapter<Dis
             public void onClick(View view) {
 
                 FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").child(model.getKey()).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    if (holder.notify) {
+                                        String name = snapshot.child("firstname").getValue().toString()+" "+snapshot.child("lastname").getValue().toString();
+                                        sendNotification(model.getShopID(), name, "Cancelled request.", "serve_center");
+                                    }
+                                    holder.notify = false;
+                                }
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
             }
         });
     }
@@ -169,7 +215,7 @@ public class DisplayMechanicNotificationAdapter extends RecyclerView.Adapter<Dis
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView shopName, shopApprove, shopCancel, notif_approve;
-
+        boolean notify = false;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -179,5 +225,40 @@ public class DisplayMechanicNotificationAdapter extends RecyclerView.Adapter<Dis
             shopCancel = itemView.findViewById(R.id.shopCancelBTN);
         }
     }
+    private void sendNotification(String receiver, String senderName, String msg, String on) {
 
+        Query query = Constant.tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(FirebaseAuth.getInstance().getCurrentUser().getUid(), R.drawable.home_logo, msg, senderName, receiver, on);
+
+                    assert token != null;
+                    Sender sender = new Sender(data, token.getToken());
+
+                    Constant.apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<MyResponse> call, @NotNull Response<MyResponse> response) {
+                                    if (response.code() == 200) {
+                                        assert response.body() != null;
+                                        if(response.body().success != 1){}
+                                        //Toast.makeText(context, "Failed", Toast.).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(@NotNull Call<MyResponse> call, @NotNull Throwable t) {
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }
