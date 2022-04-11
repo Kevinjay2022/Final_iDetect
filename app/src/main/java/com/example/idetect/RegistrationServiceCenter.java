@@ -196,6 +196,12 @@ public class RegistrationServiceCenter extends AppCompatActivity {
                     Date resultDate = c1.getTime();
                     long output = resultDate.getTime();
 
+                    Date d = new Date(System.currentTimeMillis());
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(d);
+                    String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                    String monthReg = month.substring(0, 3);
+
                     //String reference fore data
                     String uid = firebaseUser.getUid();
                     HashMap<Object, String> hashMap = new HashMap<>();
@@ -206,6 +212,7 @@ public class RegistrationServiceCenter extends AppCompatActivity {
                     hashMap.put("address", addRess);
                     hashMap.put("uid", uid);
                     hashMap.put("status", "offline");
+                    hashMap.put("monthReg", monthReg);
                     hashMap.put("subscribe", ""+output);
                     hashMap.put("acctype", "serve_center");
 

@@ -36,7 +36,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.UUID;
 
 public class RegistrationMechanic extends AppCompatActivity {
@@ -96,6 +98,12 @@ public class RegistrationMechanic extends AppCompatActivity {
                     int radioId = regMchGndr.getCheckedRadioButtonId();
                     addRadioBtn = findViewById(radioId);
 
+                    Date d = new Date(System.currentTimeMillis());
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(d);
+                    String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                    String monthReg = month.substring(0, 3);
+
                     HashMap<Object, String> hashMap = new HashMap<>();
                     hashMap.put("firstname", regMchFNme.getText().toString().trim());
                     hashMap.put("lastname", regMchLNme.getText().toString().trim());
@@ -107,6 +115,7 @@ public class RegistrationMechanic extends AppCompatActivity {
                     hashMap.put("uid", uid);
                     hashMap.put("rate", "0");
                     hashMap.put("status", "offline");
+                    hashMap.put("monthReg", monthReg);
                     hashMap.put("acctype", "mechanic");
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();

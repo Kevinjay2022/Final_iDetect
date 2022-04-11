@@ -33,7 +33,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -174,12 +177,20 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                     ProgressDialog pd = new ProgressDialog(FragmentDriverVisitShop.this);
                     pd.setMessage("Sending request...");
                     pd.show();
+
+                    Date d = new Date(System.currentTimeMillis());
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(d);
+                    String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                    String monthReg = month.substring(0, 3);
+
                     String key = FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").push().getKey();
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("issue", ed_issue);
                     hashMap.put("key", key);
                     hashMap.put("ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
                     hashMap.put("feedback", "pending");
+                    hashMap.put("monthReg", monthReg);
                     hashMap.put("shopID", shopUID);
                     hashMap.put("seen", "new");
 

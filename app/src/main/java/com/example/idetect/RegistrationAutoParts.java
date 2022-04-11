@@ -29,7 +29,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.UUID;
 
 public class RegistrationAutoParts extends AppCompatActivity {
@@ -86,6 +89,12 @@ public class RegistrationAutoParts extends AppCompatActivity {
                     String uid = firebaseUser.getUid();
                     String uniqueID = UUID.randomUUID().toString();
 
+                    Date d = new Date(System.currentTimeMillis());
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(d);
+                    String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                    String monthReg = month.substring(0, 3);
+
                     HashMap<Object, String> hashMap = new HashMap<>();
                     hashMap.put("name", regNmeShp.getText().toString().trim());
                     hashMap.put("email", email);
@@ -95,6 +104,7 @@ public class RegistrationAutoParts extends AppCompatActivity {
                     hashMap.put("uid", uid);
                     hashMap.put("uniqeid", uniqueID);
                     hashMap.put("status", "offline");
+                    hashMap.put("monthReg", monthReg);
                     hashMap.put("acctype", "auto_parts");
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
