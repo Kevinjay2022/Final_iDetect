@@ -94,7 +94,7 @@ public class FragmentMechanicHome extends AppCompatActivity {
     private void checkStatus(){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", "online");
-        FirebaseDatabase.getInstance().getReference()
+        FirebaseDatabase.getInstance().getReference().child("USERS")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .updateChildren(hashMap);
     }

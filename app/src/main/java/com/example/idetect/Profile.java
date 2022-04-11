@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -370,9 +371,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 checkStatus();
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(), Login.class));
-                getActivity().finish();
+
             }
         });
         return profileView;
@@ -487,9 +486,22 @@ public class Profile extends Fragment {
     private void checkStatus(){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", "offline");
-        FirebaseDatabase.getInstance().getReference()
+        FirebaseDatabase.getInstance().getReference().child("USERS")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .updateChildren(hashMap);
+
+        progressDialog.setMessage("Logging out...");
+        progressDialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do your work
+                progressDialog.dismiss();
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getActivity(), Login.class));
+                getActivity().finish();
+            }
+        },1000);
     }
 
     private void openFileChooser() {
