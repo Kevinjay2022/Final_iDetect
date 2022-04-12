@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,7 @@ public class RegistrationMechanic extends AppCompatActivity {
     Button regMchDtls;
     RadioGroup regMchGndr;
     RadioButton addRadioBtn;
+    TextView loginBtn;
 
     private FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
@@ -73,13 +75,19 @@ public class RegistrationMechanic extends AppCompatActivity {
             public void onClick(View v) {
                 String email = regMchEml.getText().toString().trim();
                 String password = regMchPass.getText().toString().trim();
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    regMchEml.setError("Invalid email");
-                    regMchEml.setFocusable(true);
-                }
-                else {
+                int radioID = regMchGndr.getCheckedRadioButtonId();
+                if(!validateEmail() | !validateFname() | !validateLname() | !validatePass() | !validatePhone() | !validateAddress() | !validateGender(radioID)) {
+                    return;
+                } else {
                     registerUser(email, password);
                 }
+            }
+        });
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegistrationMechanic.this, Login.class));
+                finish();
             }
         });
     }
@@ -140,7 +148,7 @@ public class RegistrationMechanic extends AppCompatActivity {
     }
 
     private void ref() {
-
+        loginBtn = findViewById(R.id.loginDrvrTxtView);
         regMchFNme = findViewById(R.id.regMechNameEdtTxt);
         regMchLNme = findViewById(R.id.regMechLastNameEdtTxt);
         regMchEml = findViewById(R.id.regMechEmailEdtTxt);
@@ -150,5 +158,94 @@ public class RegistrationMechanic extends AppCompatActivity {
         regMchGndr = findViewById(R.id.regMechGenderRBGrp);
         regMchDtls = findViewById(R.id.regMechBTN);
 
+    }
+    private Boolean validateGender(int radioID){
+        if(radioID == -1){
+            Toast.makeText(this, "Please select your gender", Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
+    private Boolean validateEmail() {
+        String cPass = regMchEml.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regMchEml.setError("Field cannot be empty");
+            return false;
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(cPass).matches()){
+            regMchEml.setError("Invalid email");
+            regMchEml.setFocusable(true);
+            return true;
+        } else {
+            regMchEml.setError(null);
+            regMchEml.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateFname() {
+        String cPass = regMchFNme.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regMchFNme.setError("Field cannot be empty");
+            return false;
+        } else {
+            regMchFNme.setError(null);
+            regMchFNme.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateLname() {
+        String cPass = regMchLNme.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regMchLNme.setError("Field cannot be empty");
+            return false;
+        } else {
+            regMchLNme.setError(null);
+            regMchLNme.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validatePhone() {
+        String cPass = regMchPhne.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regMchPhne.setError("Field cannot be empty");
+            return false;
+        } else {
+            regMchPhne.setError(null);
+            regMchPhne.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validatePass() {
+        String cPass = regMchPass.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regMchPass.setError("Field cannot be empty");
+            return false;
+        } else {
+            regMchPass.setError(null);
+            regMchPass.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateAddress() {
+        String cPass = regMchAddrss.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regMchAddrss.setError("Field cannot be empty");
+            return false;
+        } else {
+            regMchAddrss.setError(null);
+            regMchAddrss.setFocusable(true);
+            return true;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

@@ -7,6 +7,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ import java.util.UUID;
 
 public class RegistrationAutoParts extends AppCompatActivity {
     Button regAtPrtsBtn;
+    TextView loginBtn;
 
 
     private FirebaseAuth mAuth;
@@ -66,13 +68,18 @@ public class RegistrationAutoParts extends AppCompatActivity {
             public void onClick(View v) {
                 String email = regEmlShp.getText().toString().trim();
                 String password = regPassShp.getText().toString().trim();
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    regEmlShp.setError("Invalid email");
-                    regEmlShp.setFocusable(true);
-                }
-                else {
+                if(!validateEmail() | !validateName() | !validatePass() | !validatePhone() | !validateAddress()) {
+                    return;
+                }else {
                     registerUser(email, password);
                 }
+            }
+        });
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegistrationAutoParts.this, Login.class));
+                finish();
             }
         });
     }
@@ -126,8 +133,79 @@ public class RegistrationAutoParts extends AppCompatActivity {
             }
         });
     }
+    private Boolean validateEmail() {
+        String cPass = regEmlShp.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regEmlShp.setError("Field cannot be empty");
+            return false;
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(cPass).matches()){
+            regEmlShp.setError("Invalid email");
+            regEmlShp.setFocusable(true);
+            return true;
+        } else {
+            regEmlShp.setError(null);
+            regEmlShp.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateName() {
+        String cPass = regNmeShp.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regNmeShp.setError("Field cannot be empty");
+            return false;
+        } else {
+            regNmeShp.setError(null);
+            regEmlShp.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validatePhone() {
+        String cPass = regPhneShp.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regPhneShp.setError("Field cannot be empty");
+            return false;
+        } else {
+            regPhneShp.setError(null);
+            regEmlShp.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validatePass() {
+        String cPass = regPassShp.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regPassShp.setError("Field cannot be empty");
+            return false;
+        } else {
+            regPassShp.setError(null);
+            regEmlShp.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateAddress() {
+        String cPass = regAddrssShp.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            regAddrssShp.setError("Field cannot be empty");
+            return false;
+        } else {
+            regAddrssShp.setError(null);
+            regEmlShp.setFocusable(true);
+            return true;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     private void ref() {
+
+        loginBtn = findViewById(R.id.loginDrvrTxtView);
         regNmeShp = findViewById(R.id.regNameAutPrtsEdtTxt);
         regEmlShp = findViewById(R.id.regMechEmailEdtTxt);
         regPhneShp = findViewById(R.id.regMechPhoneEdtTxt);

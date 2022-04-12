@@ -94,6 +94,68 @@ public class RegistrationServiceCenter extends AppCompatActivity {
     EditText srvceCntr, emailAdd, phneNum, passWrd;
     ProgressDialog progressDialog;
 
+    private Boolean validateEmail() {
+        String cPass = emailAdd.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            emailAdd.setError("Field cannot be empty");
+            return false;
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(cPass).matches()){
+            emailAdd.setError("Invalid email");
+            emailAdd.setFocusable(true);
+            return true;
+        } else {
+            emailAdd.setError(null);
+            emailAdd.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateFname() {
+        String cPass = srvceCntr.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            srvceCntr.setError("Field cannot be empty");
+            return false;
+        } else {
+            srvceCntr.setError(null);
+            srvceCntr.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validatePhone() {
+        String cPass = phneNum.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            phneNum.setError("Field cannot be empty");
+            return false;
+        } else {
+            phneNum.setError(null);
+            phneNum.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validatePass() {
+        String cPass = passWrd.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            passWrd.setError("Field cannot be empty");
+            return false;
+        } else {
+            passWrd.setError(null);
+            passWrd.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateAddress() {
+        String cPass = addRss.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            Toast.makeText(this, "Please pick your address", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,10 +215,9 @@ public class RegistrationServiceCenter extends AppCompatActivity {
                 String phoneNum = phneNum.getText().toString().trim();
                 String passWord = passWrd.getText().toString().trim();
                 String addRess = addRss.getText().toString().trim();
-                if (!Patterns.EMAIL_ADDRESS.matcher(emailAddrss).matches()) {
-                    emailAdd.setError("Invalid Email");
-                    emailAdd.setFocusable(true);
-                } else {
+                if(!validateEmail() | !validateFname() | !validatePass() | !validatePhone() | !validateAddress()) {
+                    return;
+                }else {
                     registerDriver(serviceCenter, emailAddrss, phoneNum, passWord, addRess);
                 }
             }
@@ -257,7 +318,6 @@ public class RegistrationServiceCenter extends AppCompatActivity {
 
 
     }
-
     private void checkMyLocationEnabled(LocationManager lm) {
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -269,7 +329,6 @@ public class RegistrationServiceCenter extends AppCompatActivity {
         }
 
     }
-
     @Override
     protected void onResume() {
         checkMyLocationEnabled(lm);
@@ -277,7 +336,6 @@ public class RegistrationServiceCenter extends AppCompatActivity {
             fetchLocation();
         super.onResume();
     }
-
     private void fetchLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

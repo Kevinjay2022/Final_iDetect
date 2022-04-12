@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,7 @@ public class RegistrationDriver extends AppCompatActivity {
     RadioButton addRadioBtn;
     EditText drvrFName, drvrLName, drvrEmlAdd, drvrPhneNum, drvrPass, drvrAddrss;
     Button regDrvrDtls;
+    TextView loginBtn;
 
     ProgressDialog progressDialog, progressDialog2;
 
@@ -64,24 +66,27 @@ public class RegistrationDriver extends AppCompatActivity {
         progressDialog2 = new ProgressDialog(this);
         progressDialog2.setMessage("Logging in...");
 
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-
         regDrvrDtls.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = drvrEmlAdd.getText().toString().trim();
                 String password = drvrPass.getText().toString().trim();
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    drvrEmlAdd.setError("Invalid email");
-                    drvrEmlAdd.setFocusable(true);
-                }
-                else {
+                int radioID = drvrGnder.getCheckedRadioButtonId();
+                if(!validateEmail() | !validateFname() | !validateLname() | !validatePass() | !validatePhone() | !validateAddress() | !validateGender(radioID)) {
+                    return;
+                } else {
                     registerUser(email, password);
                 }
             }
         });
 
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegistrationDriver.this, Login.class));
+                finish();
+            }
+        });
 
     }
 
@@ -139,9 +144,93 @@ public class RegistrationDriver extends AppCompatActivity {
             }
         });
     }
+    private Boolean validateGender(int radioID){
+        if(radioID == -1){
+            Toast.makeText(this, "Please select your gender", Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
+    private Boolean validateEmail() {
+        String cPass = drvrEmlAdd.getText().toString().trim();
 
+        if (cPass.isEmpty()) {
+            drvrEmlAdd.setError("Field cannot be empty");
+            return false;
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(cPass).matches()){
+            drvrEmlAdd.setError("Invalid email");
+            drvrEmlAdd.setFocusable(true);
+            return true;
+        } else {
+            drvrEmlAdd.setError(null);
+            drvrEmlAdd.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateFname() {
+        String cPass = drvrFName.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            drvrFName.setError("Field cannot be empty");
+            return false;
+        } else {
+            drvrFName.setError(null);
+            drvrFName.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateLname() {
+        String cPass = drvrLName.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            drvrLName.setError("Field cannot be empty");
+            return false;
+        } else {
+            drvrLName.setError(null);
+            drvrLName.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validatePhone() {
+        String cPass = drvrPhneNum.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            drvrPhneNum.setError("Field cannot be empty");
+            return false;
+        } else {
+            drvrPhneNum.setError(null);
+            drvrPhneNum.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validatePass() {
+        String cPass = drvrPass.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            drvrPass.setError("Field cannot be empty");
+            return false;
+        } else {
+            drvrPass.setError(null);
+            drvrPass.setFocusable(true);
+            return true;
+        }
+    }
+    private Boolean validateAddress() {
+        String cPass = drvrAddrss.getText().toString().trim();
+
+        if (cPass.isEmpty()) {
+            drvrAddrss.setError("Field cannot be empty");
+            return false;
+        } else {
+            drvrAddrss.setError(null);
+            drvrAddrss.setFocusable(true);
+            return true;
+        }
+    }
     private void ref() {
 
+        loginBtn = findViewById(R.id.loginDrvrTxtView);
         drvrFName = findViewById(R.id.regMechNameEdtTxt);
         drvrLName = findViewById(R.id.regMechLastNameEdtTxt);
         drvrEmlAdd = findViewById(R.id.regMechEmailEdtTxt);
@@ -150,5 +239,10 @@ public class RegistrationDriver extends AppCompatActivity {
         drvrAddrss = findViewById(R.id.regMechAddressEdtTxt);
         drvrGnder = findViewById(R.id.regDrvrGenderRadioGroup);
         regDrvrDtls = findViewById(R.id.regMechBTN);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
