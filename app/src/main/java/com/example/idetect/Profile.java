@@ -485,7 +485,7 @@ public class Profile extends Fragment {
     }
     private void checkStatus(){
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("status", "offline");
+        hashMap.put("status", "1");
         FirebaseDatabase.getInstance().getReference().child("USERS")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .updateChildren(hashMap);

@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.idetect.Adapters.DisplayMechOnCallAdapter;
 import com.example.idetect.Adapters.DisplayServCentMechListAdapter;
 import com.example.idetect.Adapters.DisplayStoreItemsAdapter;
+import com.example.idetect.Models.ItemsModel;
 import com.example.idetect.Models.ServCentMechListModel;
 import com.example.idetect.Models.ServCentMechOnCallModel;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class FragmentServiceCenterMechanics extends Fragment {
 
@@ -59,6 +61,7 @@ public class FragmentServiceCenterMechanics extends Fragment {
     TextView addMechBrthEdt;
     ImageView bdateBTN;
 
+    androidx.appcompat.widget.SearchView searchView;
     RecyclerView VListMech, OnCallView;
     DisplayServCentMechListAdapter servCentMechListAdapter;
     DisplayMechOnCallAdapter oncallAdapter;
@@ -70,6 +73,32 @@ public class FragmentServiceCenterMechanics extends Fragment {
     DatabaseReference databaseReference;
 
     private int mYear, mMonth, mDay;
+
+
+    private void filter(String s) {
+        List<ServCentMechOnCallModel> filtered = new ArrayList<>();
+        filtered.clear();
+        for (ServCentMechOnCallModel re : onMechList) {
+            FirebaseDatabase.getInstance().getReference().child("USERS")
+                    .child(re.getMechID())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()){
+                                if (snapshot.child("address").getValue().toString().toLowerCase().contains(s.toLowerCase()))
+                                    filtered.add(re);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+
+        }
+        oncallAdapter = new DisplayMechOnCallAdapter(getActivity(), filtered);
+        OnCallView.setAdapter(oncallAdapter);
+
+    }
 
     @Nullable
     @Override
@@ -101,6 +130,24 @@ public class FragmentServiceCenterMechanics extends Fragment {
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference("USERS");
         MainID = firebaseUser.getUid();
+
+        searchView = mechanicView.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                if (s!=null)
+                    filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s!=null)
+                    filter(s);
+                return false;
+            }
+        });
+
 
         saveMechBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -110,7 +110,7 @@ public class RegistrationAutoParts extends AppCompatActivity {
                     hashMap.put("address", regAddrssShp.getText().toString().trim());
                     hashMap.put("uid", uid);
                     hashMap.put("uniqeid", uniqueID);
-                    hashMap.put("status", "offline");
+                    hashMap.put("status", "1");
                     hashMap.put("monthReg", monthReg);
                     hashMap.put("acctype", "auto_parts");
 

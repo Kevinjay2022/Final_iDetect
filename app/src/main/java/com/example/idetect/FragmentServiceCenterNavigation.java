@@ -60,7 +60,7 @@ public class FragmentServiceCenterNavigation extends AppCompatActivity {
     };
     private void checkStatus(){
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("status", "online");
+        hashMap.put("status", "0");
         FirebaseDatabase.getInstance().getReference().child("USERS")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .updateChildren(hashMap);

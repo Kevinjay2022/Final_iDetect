@@ -1,5 +1,7 @@
 package com.example.idetect.Adapters;
 
+import static android.graphics.Color.RED;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -56,8 +58,8 @@ public class DisplayDriverNotificationAdapter extends RecyclerView.Adapter<Displ
             holder.shopRespond.setText("APPROVED");
         }else{
             holder.shopRespond.setText("CANCELLED");
-            holder.shopRespond.setBackgroundResource(R.color.red);
         }
+        holder.shopRespond.setTextColor(RED);
 
         FirebaseDatabase.getInstance().getReference().child("USERS").child(model.getShopID())
                 .addListenerForSingleValueEvent(new ValueEventListener() {

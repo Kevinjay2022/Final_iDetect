@@ -120,7 +120,7 @@ public class RegistrationDriver extends AppCompatActivity {
                     hashMap.put("address", drvrAddrss.getText().toString().trim());
                     hashMap.put("gender", addRadioBtn.getText().toString().trim());
                     hashMap.put("uid", uid);
-                    hashMap.put("status", "offline");
+                    hashMap.put("status", "1");
                     hashMap.put("monthReg", monthReg);
                     hashMap.put("uniqeid", uniqueID);
                     hashMap.put("acctype", "driver");

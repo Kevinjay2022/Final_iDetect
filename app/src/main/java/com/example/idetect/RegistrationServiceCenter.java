@@ -272,7 +272,7 @@ public class RegistrationServiceCenter extends AppCompatActivity {
                     hashMap.put("password", passWord);
                     hashMap.put("address", addRess);
                     hashMap.put("uid", uid);
-                    hashMap.put("status", "offline");
+                    hashMap.put("status", "1");
                     hashMap.put("monthReg", monthReg);
                     hashMap.put("subscribe", ""+output);
                     hashMap.put("acctype", "serve_center");

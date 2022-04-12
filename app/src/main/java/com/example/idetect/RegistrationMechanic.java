@@ -122,7 +122,7 @@ public class RegistrationMechanic extends AppCompatActivity {
                     hashMap.put("gender", addRadioBtn.getText().toString().trim());
                     hashMap.put("uid", uid);
                     hashMap.put("rate", "0");
-                    hashMap.put("status", "offline");
+                    hashMap.put("status", "1");
                     hashMap.put("monthReg", monthReg);
                     hashMap.put("acctype", "mechanic");
 
