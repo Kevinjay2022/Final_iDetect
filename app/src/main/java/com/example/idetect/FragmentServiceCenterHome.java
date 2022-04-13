@@ -365,7 +365,7 @@ public class FragmentServiceCenterHome extends Fragment {
 
                                                             }
                                                         });
-
+//
                                             } else {
                                                 newIssueCardView.setVisibility(View.GONE);
                                                 customerServiceCardExpand.setVisibility(View.GONE);
