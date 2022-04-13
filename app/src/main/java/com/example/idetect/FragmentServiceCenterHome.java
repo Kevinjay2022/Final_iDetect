@@ -284,7 +284,6 @@ public class FragmentServiceCenterHome extends Fragment {
                 }
             }
         });
-
         saveBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -791,7 +790,7 @@ public class FragmentServiceCenterHome extends Fragment {
 
             }
         });
-        FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE")
+        FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("shopID").equalTo(MainID)
                 .addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -800,11 +799,9 @@ public class FragmentServiceCenterHome extends Fragment {
                 newIssueCounter = 0;
                 for(DataSnapshot ds: snapshot.getChildren()){
                     ServCentCustomerService servModel = ds.getValue(ServCentCustomerService.class);
-                    if(servModel.getShopID().equals(MainID)){
-                        if (servModel.getSeen().equals("new"))
-                            newIssueCounter++;
-                        customerServCounter++;
-                    }
+                    if (servModel.getSeen().equals("new"))
+                        newIssueCounter++;
+                    customerServCounter++;
                 }
                 CustomerCounter.setText(""+customerServCounter);
                 if (newIssueCounter == 0) {

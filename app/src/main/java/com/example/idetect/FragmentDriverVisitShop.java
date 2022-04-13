@@ -84,6 +84,8 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                                 if (feedback.equals("accept")){
                                     proceedBTN.setVisibility(View.GONE);
                                     visitMsg.setVisibility(View.VISIBLE);
+                                    waitingBTN.setVisibility(View.GONE);
+                                    cancelBTN.setVisibility(View.GONE);
                                     completeBTN.setVisibility(View.VISIBLE);
                                 }
                             }
@@ -134,34 +136,6 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
 
                     }
                 });
-
-        /*DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query applesQuery = ref.child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("ID")
-                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String feedback = "";
-                for (DataSnapshot appleSnapshot: snapshot.getChildren()) {
-                    if (shopUID.equals(appleSnapshot.child("shopID").getValue(String.class))){
-                        feedback = appleSnapshot.child("feedback").getValue(String.class);
-
-                        if (feedback.equals("accept")){
-                            proceedBTN.setVisibility(View.GONE);
-                            visitMsg.setVisibility(View.VISIBLE);
-                            completeBTN.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
 
         shopBackBTN.setOnClickListener(view -> onBackPressed());
         proceedBTN.setOnClickListener(new View.OnClickListener() {

@@ -124,6 +124,9 @@ public class FragmentDriverMaps extends Fragment{
                     @Override
                     public boolean onMarkerClick(@NonNull Marker marker) {
                         String uid = marker.getSnippet();
+                        if (uid == null) {
+                        }else{
+
                         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomDialogTheme);
                         View bottomView = LayoutInflater.from(getContext()).inflate(R.layout.visit_sheet, (LinearLayout) fragMap.findViewById(R.id.visitContainer));
                         TextView txtview = bottomView.findViewById(R.id.visitCenter);
@@ -139,8 +142,8 @@ public class FragmentDriverMaps extends Fragment{
                                         String name = snapshot.child("name").getValue(String.class);
                                         String add = snapshot.child("address").getValue(String.class);
                                         String phone = snapshot.child("phonenum").getValue(String.class);
-                                        String image = ""+ snapshot.child("image").getValue();
-                                        shopID = ""+ snapshot.child("uid").getValue();
+                                        String image = "" + snapshot.child("image").getValue();
+                                        shopID = "" + snapshot.child("uid").getValue();
                                         tvName.setText(name);
                                         tvAdd.setText(add);
                                         tvPhone.setText(phone);
@@ -168,7 +171,7 @@ public class FragmentDriverMaps extends Fragment{
 
                         bottomSheetDialog.setContentView(bottomView);
                         bottomSheetDialog.show();
-
+                        }
                         return false;
                     }
                 });
@@ -235,11 +238,6 @@ public class FragmentDriverMaps extends Fragment{
             public void onSuccess(Location location) {
                 if(location != null){
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(latLng);
-                    markerOptions.rotation(location.getBearing());
-                    markerOptions.anchor((float) 0.5, (float) 0.5);
-                    startMarker = mMap.addMarker(markerOptions);
                     cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f);
                     mMap.animateCamera(cameraUpdate);
                 }
@@ -256,11 +254,6 @@ public class FragmentDriverMaps extends Fragment{
 
                 myLocation = location;
                 start = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(start);
-                markerOptions.rotation(myLocation.getBearing());
-                markerOptions.anchor((float) 0.5, (float) 0.5);
-                startMarker = mMap.addMarker(markerOptions);
 
                 CircleOptions circleOptions = new CircleOptions();
                 circleOptions.center(start);

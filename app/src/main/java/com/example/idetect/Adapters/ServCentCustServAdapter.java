@@ -174,6 +174,7 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
 
                             }
                         });
+
                 FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").child(model.getKey()).removeValue();
 
                 Toast.makeText(context, "Issue Cancelled", Toast.LENGTH_SHORT).show();
@@ -187,6 +188,7 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
                 holder.notify = true;
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("feedback", "accept");
+                hashMap.put("seen", "old");
 
                 String key = FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY").push().getKey();
                 HashMap<String, Object> hashMap1 = new HashMap<>();
@@ -241,6 +243,7 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
             public void onClick(View view) {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("feedback", "finish");
+                hashMap.put("seen", "old");
 
                 FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").child(model.getKey()).updateChildren(hashMap)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
