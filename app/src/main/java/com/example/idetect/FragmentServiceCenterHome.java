@@ -324,7 +324,6 @@ public class FragmentServiceCenterHome extends Fragment {
             @Override
             public void onClick(View view) {
 
-
                 FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @SuppressLint("SetTextI18n")
@@ -365,7 +364,6 @@ public class FragmentServiceCenterHome extends Fragment {
 
                                                             }
                                                         });
-//
                                             } else {
                                                 newIssueCardView.setVisibility(View.GONE);
                                                 customerServiceCardExpand.setVisibility(View.GONE);

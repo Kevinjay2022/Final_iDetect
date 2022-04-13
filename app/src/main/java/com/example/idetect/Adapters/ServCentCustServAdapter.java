@@ -36,8 +36,11 @@ import com.orhanobut.dialogplus.DialogPlus;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -147,12 +150,18 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
             @Override
             public void onClick(View view) {
                 holder.notify = true;
+                Date d = new Date(System.currentTimeMillis());
+                Calendar c = Calendar.getInstance();
+                c.setTime(d);
+                String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                String monthReg = month.substring(0, 3);
                 String key = FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY").push().getKey();
                 HashMap<String, Object> hashMap1 = new HashMap<>();
                 hashMap1.put("feedback", "cancel");
                 hashMap1.put("shopID", FirebaseAuth.getInstance().getCurrentUser().getUid());
                 hashMap1.put("ID", model.getID());
                 hashMap1.put("key", model.getKey());
+                hashMap1.put("monthReg", monthReg);
                 hashMap1.put("seen", "new");
 
                 FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY").child(key).setValue(hashMap1);
@@ -190,12 +199,18 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
                 hashMap.put("feedback", "accept");
                 hashMap.put("seen", "old");
 
+                Date d = new Date(System.currentTimeMillis());
+                Calendar c = Calendar.getInstance();
+                c.setTime(d);
+                String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+                String monthReg = month.substring(0, 3);
                 String key = FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY").push().getKey();
                 HashMap<String, Object> hashMap1 = new HashMap<>();
                 hashMap1.put("feedback", "accept");
                 hashMap1.put("shopID", FirebaseAuth.getInstance().getCurrentUser().getUid());
                 hashMap1.put("ID", model.getID());
                 hashMap1.put("key", key);
+                hashMap1.put("monthReg", monthReg);
                 hashMap1.put("seen", "new");
 
                 FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY").child(key).setValue(hashMap1);
