@@ -47,7 +47,7 @@
             android:background="@drawable/usernamelogo"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:paddingStart="50dp"
             android:textColor="#8F8B8B"
             android:textSize="20sp"

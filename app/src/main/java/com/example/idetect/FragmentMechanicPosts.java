@@ -3,6 +3,7 @@ package com.example.idetect;
 import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -26,10 +27,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.idetect.Adapters.DisplayMechanicNotificationAdapter;
+import com.example.idetect.Adapters.DisplayMechanicRequestAdapter;
+import com.example.idetect.Adapters.ServCentCustServAdapter;
+import com.example.idetect.Models.ServCentCustomerService;
 import com.example.idetect.Notify.Token;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,6 +56,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -55,12 +64,15 @@ public class  FragmentMechanicPosts extends Fragment {
 
     Uri imageUri;
     private Button AddBTN, EditBTN, AddSaveBTN, CancelBTN, SelectIMG;
-    private LinearLayout createLayout, displayLayout;
+    private LinearLayout createLayout, displayLayout, requestLayout;
     private TextView createAddress, dispAddress, createNameCard, dispNameCard, dispSkill, upperTxt, createBdate, dispBdate;
     private EditText createSkill;
     ImageView calBTN, createCert, dispCert;
-
+    CardView requestCard;
     String MechID, mechName, mechAddress, key;
+    ArrayList<ServCentCustomerService> list;
+    DisplayMechanicRequestAdapter adapter;
+    RecyclerView recyclerView;
 
     //Firebase
     FirebaseAuth firebaseAuth;
@@ -68,7 +80,7 @@ public class  FragmentMechanicPosts extends Fragment {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
-    private int mYear, mMonth, mDay;
+    private int mYear, mMonth, mDay, requestCounter = 0;
     public FragmentMechanicPosts() { }
 
     @Override
@@ -76,12 +88,17 @@ public class  FragmentMechanicPosts extends Fragment {
         View fragMechPost = inflater.inflate(R.layout.fragment_mechanic_posts, container, false);
 
         updateToken(FirebaseInstanceId.getInstance().getToken());
+
+        list = new ArrayList<>();
         AddBTN = fragMechPost.findViewById(R.id.Add_postBTN);
         EditBTN = fragMechPost.findViewById(R.id.Edit_postBTN);
+        recyclerView = fragMechPost.findViewById(R.id.recyclerView);
         CancelBTN = fragMechPost.findViewById(R.id.cancel_postBTN);
         SelectIMG = fragMechPost.findViewById(R.id.createPostSelectImage);
         AddSaveBTN = fragMechPost.findViewById(R.id.createSaveDataBTN);
         createLayout = fragMechPost.findViewById(R.id.createPostLayout);
+        requestCard = fragMechPost.findViewById(R.id.requestCardViewBTN);
+        requestLayout = fragMechPost.findViewById(R.id.requestLayoutExpandable);
         displayLayout = fragMechPost.findViewById(R.id.displayPostLayout);
         upperTxt = fragMechPost.findViewById(R.id.mechanicNameUpper);
         createNameCard = fragMechPost.findViewById(R.id.create_mechanicNameCard);
@@ -148,7 +165,67 @@ public class  FragmentMechanicPosts extends Fragment {
                     }
                 });
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        FirebaseDatabase.getInstance().getReference().child("MECHANIC_REQUEST")
+                .orderByChild("ID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        requestCounter = 0;
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
+                            if (!(model.getFeedback().equals("cancel")))
+                                requestCounter++;
+                        }
+                        if (requestCounter == 0)
+                            requestLayout.setVisibility(View.GONE);
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+        requestCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (requestCounter == 0){
+                    Toast.makeText(getActivity(), "No request yet.", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (requestLayout.getVisibility() == View.GONE) {
+                        requestLayout.setVisibility(View.VISIBLE);
+                        FirebaseDatabase.getInstance().getReference().child("MECHANIC_REQUEST")
+                                .orderByChild("ID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        list.clear();
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                            ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
+                                            if (!(model.getFeedback().equals("cancel")))
+                                                list.add(model);
+                                        }
+                                        adapter = new DisplayMechanicRequestAdapter(getActivity(), list);
+                                        recyclerView.setAdapter(adapter);
+                                        adapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                    } else {
+                        requestLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
         calBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -269,7 +346,6 @@ public class  FragmentMechanicPosts extends Fragment {
             Picasso.get().load(imageUri).into(createCert);
         }
     }
-
     private boolean mechSkills() {
         String str = createSkill.getText().toString().trim();
 

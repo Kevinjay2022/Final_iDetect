@@ -280,6 +280,27 @@ public class FragmentServiceCenterMechanics extends Fragment {
 
             }
         });
+
+        FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        MechList.clear();
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            ServCentMechListModel model = ds.getValue(ServCentMechListModel.class);
+                            if (model.getID().equals(MainID) && !model.isDelete())
+                                MechList.add(model);
+                        }
+                        servCentMechListAdapter = new DisplayServCentMechListAdapter(getActivity(), MechList);
+                        VListMech.setAdapter(servCentMechListAdapter);
+                        servCentMechListAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
         ViewMechBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -287,26 +308,6 @@ public class FragmentServiceCenterMechanics extends Fragment {
                 mainMechLayout.setVisibility(View.VISIBLE);
                 addMechLayout.setVisibility(View.GONE);
                 onCallMechLayout.setVisibility(View.GONE);
-                FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_MECHANICS")
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                MechList.clear();
-                                for (DataSnapshot ds: snapshot.getChildren()){
-                                    ServCentMechListModel model = ds.getValue(ServCentMechListModel.class);
-                                    if (model.getID().equals(MainID))
-                                        MechList.add(model);
-                                }
-                                servCentMechListAdapter = new DisplayServCentMechListAdapter(getActivity(), MechList);
-                                VListMech.setAdapter(servCentMechListAdapter);
-                                servCentMechListAdapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
             }
         });
         bdateBTN.setOnClickListener(new View.OnClickListener() {

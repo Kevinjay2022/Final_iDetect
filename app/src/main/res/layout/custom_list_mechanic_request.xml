@@ -40,14 +40,50 @@
                         android:text="J R Repair shop"
                         android:textStyle="bold" />
 
+                    <TextView
+                        android:id="@+id/notif_approve"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Approved"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/checkRequest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="sent a request." />
+                    android:text="want to hire you." />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/shopApprovedBTN"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="#4CAF50"
+                        android:padding="5dp"
+                        android:text="Approve"
+                        android:textAllCaps="false"
+                        android:textColor="#4CAF50" />
+
+                    <TextView
+                        android:id="@+id/shopCancelBTN"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="#F44336"
+                        android:padding="5dp"
+                        android:text="cancel"
+                        android:textAllCaps="false"
+                        android:textColor="#F44336" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

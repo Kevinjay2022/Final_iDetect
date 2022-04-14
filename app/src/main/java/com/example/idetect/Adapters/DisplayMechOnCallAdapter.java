@@ -65,7 +65,7 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
         ServCentMechOnCallModel model = modelList.get(position);
 
 
-        FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY")
+        FirebaseDatabase.getInstance().getReference().child("MECHANIC_REQUEST")
                 .orderByChild("shopID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -130,8 +130,18 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
                 hashMap.put("seen", "new");
                 hashMap.put("issue", "");
                 hashMap.put("key", key);
-
                 FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").child(key).setValue(hashMap);
+
+                String key1 = FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").push().getKey();
+                HashMap<String, Object> hashMap1 = new HashMap<>();
+                hashMap1.put("ID", model.getMechID());
+                hashMap1.put("shopID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                hashMap1.put("feedback", "pending");
+                hashMap1.put("seen", "new");
+                hashMap1.put("issue", "");
+                hashMap1.put("key", key1);
+                FirebaseDatabase.getInstance().getReference().child("MECHANIC_REQUEST").child(key1).setValue(hashMap1);
+
 
                 FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .addValueEventListener(new ValueEventListener() {
@@ -159,14 +169,24 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
             @Override
             public void onClick(View view) {
                 holder.notify = true;
-                FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").orderByChild("shopID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .addValueEventListener(new ValueEventListener() {
+                String key = FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").push().getKey();
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("ID", model.getMechID());
+                hashMap.put("shopID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                hashMap.put("feedback", "cancel");
+                hashMap.put("seen", "new");
+                hashMap.put("issue", "");
+                hashMap.put("key", key);
+                FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").child(key).setValue(hashMap);
+
+                FirebaseDatabase.getInstance().getReference().child("MECHANIC_REQUEST").orderByChild("shopID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds: snapshot.getChildren()){
                                     ServCentCustomerService model1 = ds.getValue(ServCentCustomerService.class);
                                     if (model1.getID().equals(model.getMechID())){
-                                        FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").child(model1.getKey()).removeValue();
+                                        FirebaseDatabase.getInstance().getReference().child("MECHANIC_REQUEST").child(model1.getKey()).removeValue();
                                     }
                                 }
                                 FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -197,6 +217,7 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
 
                 holder.cancelBtn.setVisibility(View.GONE);
                 holder.HireBtn.setVisibility(View.VISIBLE);
+                holder.ExpandView.setVisibility(View.GONE);
 
             }
         });

@@ -8,6 +8,7 @@
     tools:context=".FragmentMechanicPosts">
 
     <!-- Header Name-->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewMain"
         android:layout_width="match_parent"
@@ -73,7 +74,7 @@
     <LinearLayout
         android:id="@+id/createPostLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -283,7 +284,7 @@
     <LinearLayout
         android:id="@+id/displayPostLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -452,5 +453,57 @@
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/requestCardViewBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#EFE9E9"
+        app:cardCornerRadius="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginBottom="21dp"
+                android:text="Request" />
+
+
+        </RelativeLayout>
+
+
+        <!-- Order Expandable Layout-->
+        <LinearLayout
+            android:id="@+id/requestLayoutExpandable"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="10dp"
+                android:background="#716E6E" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>
