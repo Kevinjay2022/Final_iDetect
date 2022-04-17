@@ -196,8 +196,10 @@ public class DisplayMyOrderAdapter extends RecyclerView.Adapter<DisplayMyOrderAd
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for (DataSnapshot ds1: snapshot.getChildren()){
                                             OrderModel orderModel = ds1.getValue(OrderModel.class);
-                                            holder.getRateValue = holder.getRateValue + Float.parseFloat(orderModel.getRate());
-                                            holder.rateCount++;
+                                            if(Float.parseFloat(orderModel.getRate()) != 0) {
+                                                holder.getRateValue = holder.getRateValue + Float.parseFloat(orderModel.getRate());
+                                                holder.rateCount++;
+                                            }
                                         }
                                         String totalRate = String.valueOf(holder.getRateValue / holder.rateCount);
                                         HashMap<String, Object> hashMap = new HashMap<>();

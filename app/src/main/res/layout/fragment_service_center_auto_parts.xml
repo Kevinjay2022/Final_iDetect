@@ -176,7 +176,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="3dp"
-            android:layout_marginEnd="3dp"/>
+            android:layout_marginEnd="3dp" />
+
+        <LinearLayout
+            android:id="@+id/noNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/cart_logo" />
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Item\nyet."
+                android:textAlignment="center"
+                android:textSize="20sp" />
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>

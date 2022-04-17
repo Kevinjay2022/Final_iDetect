@@ -70,6 +70,7 @@ public class FragmentServiceCenterHome extends Fragment {
     private FirebaseStorage storage;
     Uri imageUri;
     private ImageView ItemImageView;
+    LinearLayout noNotif;
 
     RecyclerView itemView;
     RecyclerView orderView;
@@ -138,6 +139,7 @@ public class FragmentServiceCenterHome extends Fragment {
         myCancel = new ArrayList<>();
 
         //Buttons and expandable
+        noNotif = homeViewF.findViewById(R.id.noNotifications);
         newIssue = homeViewF.findViewById(R.id.newIssueCounter);
         ordersBtn = homeViewF.findViewById(R.id.OrdersBTN);
         completeBtn = homeViewF.findViewById(R.id.CompleteBTN);
@@ -408,41 +410,42 @@ public class FragmentServiceCenterHome extends Fragment {
                                             Toast.makeText(getActivity(), "No orders yet.", Toast.LENGTH_SHORT).show();
                                         }else{
                                             if (orderLayoutExpandable.getVisibility() == View.GONE) {
-                                            //Orders Display
-                                            FirebaseDatabase.getInstance().getReference().child("ORDERS")
-                                                    .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                    .addValueEventListener(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                            orderModels.clear();
-                                                            completeOrderModels.clear();
-                                                            cancelOrderModels.clear();
-                                                            for (DataSnapshot ds : snapshot.getChildren()){
-                                                                OrderModel model = ds.getValue(OrderModel.class);
-                                                                assert model != null;
-                                                                if (model.getStatus().equals("pending") || model.getStatus().equals("accept")){
-                                                                    orderModels.add(model);
-                                                                }
-                                                                if (model.getStatus().equals("complete")){
-                                                                    completeOrderModels.add(model);
-                                                                }
-                                                                if (model.getStatus().equals("cancel")){
-                                                                    cancelOrderModels.add(model);
-                                                                }
-                                                            }
-                                                            itemsAdapter = new ItemOrderAdapter(getActivity(), orderModels);
-                                                            orderView.setAdapter(itemsAdapter);
-                                                            itemsAdapter.notifyDataSetChanged();
-                                                        }
+                                                FirebaseDatabase.getInstance().getReference().child("ORDERS")
+                                                                .orderByChild("ShopUID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                                .addValueEventListener(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                        orderModels.clear();
+                                                                        completeOrderModels.clear();
+                                                                        cancelOrderModels.clear();
+                                                                        for (DataSnapshot ds : snapshot.getChildren()){
+                                                                            OrderModel model = ds.getValue(OrderModel.class);
+                                                                            assert model != null;
+                                                                            if (model.getStatus().equals("pending") || model.getStatus().equals("accept")){
+                                                                                orderModels.add(model);
+                                                                            }
+                                                                            if (model.getStatus().equals("complete")){
+                                                                                completeOrderModels.add(model);
+                                                                            }
+                                                                            if (model.getStatus().equals("cancel")){
+                                                                                cancelOrderModels.add(model);
+                                                                            }
+                                                                        }
+                                                                            ordersBtn.setBackgroundResource(R.color.teal_200);
+                                                                            completeBtn.setBackgroundResource(R.color.purple_700);
+                                                                            cancelBtn.setBackgroundResource(R.color.purple_700);
+                                                                            itemsAdapter = new ItemOrderAdapter(getActivity(), orderModels);
+                                                                            orderView.setAdapter(itemsAdapter);
+                                                                            itemsAdapter.notifyDataSetChanged();
 
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError error) {
+                                                                    }
 
-                                                        }
-                                                    });
-                                                ordersBtn.setBackgroundResource(R.color.teal_200);
-                                                completeBtn.setBackgroundResource(R.color.purple_700);
-                                                cancelBtn.setBackgroundResource(R.color.purple_700);
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                    }
+                                                                });
+
                                                 orderLayoutExpandable.setVisibility(View.VISIBLE);
                                                 customerServiceCardExpand.setVisibility(View.GONE);
                                                 storeExpandable.setVisibility(View.GONE);
@@ -485,6 +488,9 @@ public class FragmentServiceCenterHome extends Fragment {
                 itemsAdapter = new ItemOrderAdapter(getActivity(), orderModels);
                 orderView.setAdapter(itemsAdapter);
                 itemsAdapter.notifyDataSetChanged();
+                if (orderModels.size() == 0){
+                    Toast.makeText(getActivity(), "No orders yet.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         completeBtn.setOnClickListener(new View.OnClickListener() {
@@ -497,6 +503,9 @@ public class FragmentServiceCenterHome extends Fragment {
                 itemsAdapter = new ItemOrderAdapter(getActivity(), completeOrderModels);
                 orderView.setAdapter(itemsAdapter);
                 itemsAdapter.notifyDataSetChanged();
+                if (completeOrderModels.size() == 0){
+                    Toast.makeText(getActivity(), "No completed orders yet.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -509,6 +518,9 @@ public class FragmentServiceCenterHome extends Fragment {
                 itemsAdapter = new ItemOrderAdapter(getActivity(), cancelOrderModels);
                 orderView.setAdapter(itemsAdapter);
                 itemsAdapter.notifyDataSetChanged();
+                if (cancelOrderModels.size() == 0){
+                    Toast.makeText(getActivity(), "No cancelled orders yet.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -584,6 +596,9 @@ public class FragmentServiceCenterHome extends Fragment {
                 myOrderAdapter = new DisplayMyOrderAdapter(getActivity(), myOrderModels);
                 myOrderView.setAdapter(myOrderAdapter);
                 myOrderAdapter.notifyDataSetChanged();
+                if (myOrderModels.size() == 0){
+                    Toast.makeText(getActivity(), "No orders yet.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         myCompleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -596,6 +611,9 @@ public class FragmentServiceCenterHome extends Fragment {
                 myOrderAdapter = new DisplayMyOrderAdapter(getActivity(), myComplete);
                 myOrderView.setAdapter(myOrderAdapter);
                 myOrderAdapter.notifyDataSetChanged();
+                if (myComplete.size() == 0){
+                    Toast.makeText(getActivity(), "No completed orders yet.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         myCancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -608,6 +626,9 @@ public class FragmentServiceCenterHome extends Fragment {
                 myOrderAdapter = new DisplayMyOrderAdapter(getActivity(), myCancel);
                 myOrderView.setAdapter(myOrderAdapter);
                 myOrderAdapter.notifyDataSetChanged();
+                if (myComplete.size() == 0){
+                    Toast.makeText(getActivity(), "No cancelled orders yet.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -680,15 +701,6 @@ public class FragmentServiceCenterHome extends Fragment {
             }
         });
 
-        storeCardBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(storeExpandable.getVisibility() == View.GONE){
-                    storeExpandable.setVisibility(View.VISIBLE);
-                    addItemsLayout.setVisibility(View.GONE);
-                    customerServiceCardExpand.setVisibility(View.GONE);
-                    orderLayoutExpandable.setVisibility(View.GONE);
-                    myOrderLayoutExpandable.setVisibility(View.GONE);
                     //For display Items sa store
                     FirebaseDatabase.getInstance().getReference().child("ITEMS").orderByChild("ShopUID").equalTo(MainID)
                             .addValueEventListener(new ValueEventListener() {
@@ -712,15 +724,31 @@ public class FragmentServiceCenterHome extends Fragment {
                                     fourwheels.setBackgroundResource(R.color.teal_200);
                                     sixwheels.setBackgroundResource(R.color.purple_700);
                                     tools.setBackgroundResource(R.color.purple_700);
-                                    itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
-                                    itemView.setAdapter(itemDispAdapter);
-                                    itemDispAdapter.notifyDataSetChanged();
+                                    if (fourItemsModels.size() == 0){
+                                        itemView.setVisibility(View.GONE);
+                                        noNotif.setVisibility(View.VISIBLE);
+                                    }else {
+                                        itemView.setVisibility(View.VISIBLE);
+                                        noNotif.setVisibility(View.GONE);
+                                        itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
+                                        itemView.setAdapter(itemDispAdapter);
+                                        itemDispAdapter.notifyDataSetChanged();
+                                    }
                                 }
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
                             });
+        storeCardBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(storeExpandable.getVisibility() == View.GONE){
+                    storeExpandable.setVisibility(View.VISIBLE);
+                    addItemsLayout.setVisibility(View.GONE);
+                    customerServiceCardExpand.setVisibility(View.GONE);
+                    orderLayoutExpandable.setVisibility(View.GONE);
+                    myOrderLayoutExpandable.setVisibility(View.GONE);
                 }else{
                     storeExpandable.setVisibility(View.GONE);
                 }
@@ -733,9 +761,16 @@ public class FragmentServiceCenterHome extends Fragment {
                 fourwheels.setBackgroundResource(R.color.teal_200);
                 sixwheels.setBackgroundResource(R.color.purple_700);
                 tools.setBackgroundResource(R.color.purple_700);
-                itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
-                itemView.setAdapter(itemDispAdapter);
-                itemDispAdapter.notifyDataSetChanged();
+                if (fourItemsModels.size() == 0){
+                    itemView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    itemView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
+                    itemDispAdapter.notifyItemRangeChanged(0, fourItemsModels.size());
+                    itemView.setAdapter(itemDispAdapter);
+                }
             }
         });
         sixwheels.setOnClickListener(new View.OnClickListener() {
@@ -745,9 +780,16 @@ public class FragmentServiceCenterHome extends Fragment {
                 fourwheels.setBackgroundResource(R.color.purple_700);
                 sixwheels.setBackgroundResource(R.color.teal_200);
                 tools.setBackgroundResource(R.color.purple_700);
-                itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), sixItemsModels);
-                itemView.setAdapter(itemDispAdapter);
-                itemDispAdapter.notifyDataSetChanged();
+                if (sixItemsModels.size() == 0){
+                    itemView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    itemView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), sixItemsModels);
+                    itemDispAdapter.notifyItemRangeChanged(0, sixItemsModels.size());
+                    itemView.setAdapter(itemDispAdapter);
+                }
             }
         });
         tools.setOnClickListener(new View.OnClickListener() {
@@ -757,9 +799,16 @@ public class FragmentServiceCenterHome extends Fragment {
                 fourwheels.setBackgroundResource(R.color.purple_700);
                 sixwheels.setBackgroundResource(R.color.purple_700);
                 tools.setBackgroundResource(R.color.teal_200);
-                itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), toolsItemsModels);
-                itemView.setAdapter(itemDispAdapter);
-                itemDispAdapter.notifyDataSetChanged();
+                if (toolsItemsModels.size() == 0){
+                    itemView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    itemView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), toolsItemsModels);
+                    itemDispAdapter.notifyItemRangeChanged(0, toolsItemsModels.size());
+                    itemView.setAdapter(itemDispAdapter);
+                }
             }
         });
         homeAddPicBTN.setOnClickListener(new View.OnClickListener() {

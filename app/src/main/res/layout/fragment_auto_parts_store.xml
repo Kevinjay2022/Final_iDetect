@@ -7,6 +7,7 @@
     tools:context=".FragmentAutoPartsStore">
 
     <!-- Layout of the store -->
+
     <LinearLayout
         android:id="@+id/storeLayout"
         android:layout_width="match_parent"
@@ -18,14 +19,14 @@
             android:id="@+id/AddItemBtn"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@drawable/bind1"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="12dp"
+            android:background="@drawable/bind1"
             android:backgroundTint="#A8A3A3"
             android:text="Add Item"
-            android:textColor="@color/white"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,6 +86,29 @@
             android:id="@+id/itemViewListStore"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/noNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/cart_logo" />
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Item\nyet."
+                android:textAlignment="center"
+                android:textSize="20sp" />
+        </LinearLayout>
 
     </LinearLayout>
 

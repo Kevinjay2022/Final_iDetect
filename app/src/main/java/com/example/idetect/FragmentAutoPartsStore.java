@@ -53,6 +53,7 @@ public class FragmentAutoPartsStore extends Fragment {
     private EditText ItemName, ItemQty, ItemPrice;
     private ImageView storeImg;
     DisplayOwnItemsAdapter itemDispAdapter;
+    LinearLayout noNotif;
 
 
     private ArrayList<ItemsModel> fourItemsModels;
@@ -70,6 +71,7 @@ public class FragmentAutoPartsStore extends Fragment {
         AddItemBtn = fragAutoPartsStore.findViewById(R.id.AddItemBtn);
         addItemLayout = fragAutoPartsStore.findViewById(R.id.addItemLayout);
         storeLayout = fragAutoPartsStore.findViewById(R.id.storeLayout);
+        noNotif = fragAutoPartsStore.findViewById(R.id.noNotifications);
 
         TextView fourwheels = fragAutoPartsStore.findViewById(R.id.homeOrderBTN);
         TextView sixwheels = fragAutoPartsStore.findViewById(R.id.homeOrderBTN2);
@@ -212,9 +214,16 @@ public class FragmentAutoPartsStore extends Fragment {
                         fourwheels.setBackgroundResource(R.color.teal_200);
                         sixwheels.setBackgroundResource(R.color.purple_700);
                         tools.setBackgroundResource(R.color.purple_700);
-                        itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
-                        itemView.setAdapter(itemDispAdapter);
-                        itemDispAdapter.notifyDataSetChanged();
+                        if (fourItemsModels.size() == 0){
+                            itemView.setVisibility(View.GONE);
+                            noNotif.setVisibility(View.VISIBLE);
+                        }else {
+                            itemView.setVisibility(View.VISIBLE);
+                            noNotif.setVisibility(View.GONE);
+                            itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
+                            itemView.setAdapter(itemDispAdapter);
+                            itemDispAdapter.notifyDataSetChanged();
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -229,9 +238,16 @@ public class FragmentAutoPartsStore extends Fragment {
                 fourwheels.setBackgroundResource(R.color.teal_200);
                 sixwheels.setBackgroundResource(R.color.purple_700);
                 tools.setBackgroundResource(R.color.purple_700);
-                itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
-                itemDispAdapter.notifyItemRangeChanged(0, fourItemsModels.size());
-                itemView.setAdapter(itemDispAdapter);
+                if (fourItemsModels.size() == 0){
+                    itemView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    itemView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), fourItemsModels);
+                    itemDispAdapter.notifyItemRangeChanged(0, fourItemsModels.size());
+                    itemView.setAdapter(itemDispAdapter);
+                }
             }
         });
         sixwheels.setOnClickListener(new View.OnClickListener() {
@@ -241,9 +257,16 @@ public class FragmentAutoPartsStore extends Fragment {
                 fourwheels.setBackgroundResource(R.color.purple_700);
                 sixwheels.setBackgroundResource(R.color.teal_200);
                 tools.setBackgroundResource(R.color.purple_700);
-                itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), sixItemsModels);
-                itemDispAdapter.notifyItemRangeChanged(0, sixItemsModels.size());
-                itemView.setAdapter(itemDispAdapter);
+                if (sixItemsModels.size() == 0){
+                    itemView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    itemView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), sixItemsModels);
+                    itemDispAdapter.notifyItemRangeChanged(0, sixItemsModels.size());
+                    itemView.setAdapter(itemDispAdapter);
+                }
             }
         });
         tools.setOnClickListener(new View.OnClickListener() {
@@ -253,9 +276,16 @@ public class FragmentAutoPartsStore extends Fragment {
                 fourwheels.setBackgroundResource(R.color.purple_700);
                 sixwheels.setBackgroundResource(R.color.purple_700);
                 tools.setBackgroundResource(R.color.teal_200);
-                itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), toolsItemsModels);
-                itemDispAdapter.notifyItemRangeChanged(0, toolsItemsModels.size());
-                itemView.setAdapter(itemDispAdapter);
+                if (toolsItemsModels.size() == 0){
+                    itemView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    itemView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    itemDispAdapter = new DisplayOwnItemsAdapter(getActivity(), toolsItemsModels);
+                    itemDispAdapter.notifyItemRangeChanged(0, toolsItemsModels.size());
+                    itemView.setAdapter(itemDispAdapter);
+                }
             }
         });
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ public class FragmentServiceCenterAutoParts extends Fragment {
     private ArrayList<ItemsModel> toolsItemsModels;
     String[] sort;
     ArrayAdapter sortAdapter;
+    LinearLayout noNotif;
 
     public FragmentServiceCenterAutoParts(){
 
@@ -59,6 +61,7 @@ public class FragmentServiceCenterAutoParts extends Fragment {
 
         cart_btn = fragServShop.findViewById(R.id.cart_btn);
         CartCounter = fragServShop.findViewById(R.id.CartCounter);
+        noNotif = fragServShop.findViewById(R.id.noNotifications);
 
         sortSpinner = fragServShop.findViewById(R.id.spinnerSort);
         sort = getResources().getStringArray(R.array.sort_item);
@@ -151,11 +154,18 @@ public class FragmentServiceCenterAutoParts extends Fragment {
                             }
 
                         }
-                        sortByRatings();
                         fourwheels.setBackgroundResource(R.color.teal_200);
-                        displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), fourItemsModels);
-                        recyclerView.setAdapter(displayStoreItemsAdapter);
-                        displayStoreItemsAdapter.notifyDataSetChanged();
+                        if (fourItemsModels.size() == 0){
+                            recyclerView.setVisibility(View.GONE);
+                            noNotif.setVisibility(View.VISIBLE);
+                        }else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            noNotif.setVisibility(View.GONE);
+                            sortByRatings();
+                            displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), fourItemsModels);
+                            recyclerView.setAdapter(displayStoreItemsAdapter);
+                            displayStoreItemsAdapter.notifyDataSetChanged();
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -176,10 +186,17 @@ public class FragmentServiceCenterAutoParts extends Fragment {
                 fourwheels.setBackgroundResource(R.color.teal_200);
                 sixwheels.setBackgroundResource(R.color.purple_700);
                 tools.setBackgroundResource(R.color.purple_700);
-                sortByRatings();
-                displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), fourItemsModels);
-                recyclerView.setAdapter(displayStoreItemsAdapter);
-                displayStoreItemsAdapter.notifyDataSetChanged();
+                if (fourItemsModels.size() == 0){
+                    recyclerView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    sortByRatings();
+                    displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), fourItemsModels);
+                    recyclerView.setAdapter(displayStoreItemsAdapter);
+                    displayStoreItemsAdapter.notifyDataSetChanged();
+                }
             }
         });
         sixwheels.setOnClickListener(new View.OnClickListener() {
@@ -191,10 +208,17 @@ public class FragmentServiceCenterAutoParts extends Fragment {
                 fourwheels.setBackgroundResource(R.color.purple_700);
                 sixwheels.setBackgroundResource(R.color.teal_200);
                 tools.setBackgroundResource(R.color.purple_700);
-                sortByRatings();
-                displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), sixItemsModels);
-                recyclerView.setAdapter(displayStoreItemsAdapter);
-                displayStoreItemsAdapter.notifyDataSetChanged();
+                if (sixItemsModels.size() == 0){
+                    recyclerView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    sortByRatings();
+                    displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), sixItemsModels);
+                    recyclerView.setAdapter(displayStoreItemsAdapter);
+                    displayStoreItemsAdapter.notifyDataSetChanged();
+                }
             }
         });
         tools.setOnClickListener(new View.OnClickListener() {
@@ -206,10 +230,17 @@ public class FragmentServiceCenterAutoParts extends Fragment {
                 fourwheels.setBackgroundResource(R.color.purple_700);
                 sixwheels.setBackgroundResource(R.color.purple_700);
                 tools.setBackgroundResource(R.color.teal_200);
-                sortByRatings();
-                displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), toolsItemsModels);
-                recyclerView.setAdapter(displayStoreItemsAdapter);
-                displayStoreItemsAdapter.notifyDataSetChanged();
+                if (toolsItemsModels.size() == 0){
+                    recyclerView.setVisibility(View.GONE);
+                    noNotif.setVisibility(View.VISIBLE);
+                }else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noNotif.setVisibility(View.GONE);
+                    sortByRatings();
+                    displayStoreItemsAdapter = new DisplayStoreItemsAdapter(getActivity(), toolsItemsModels);
+                    recyclerView.setAdapter(displayStoreItemsAdapter);
+                    displayStoreItemsAdapter.notifyDataSetChanged();
+                }
             }
         });
 
