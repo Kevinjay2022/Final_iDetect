@@ -93,8 +93,8 @@ public class FragmentServiceCenterHome extends Fragment {
 
     String MainID;
 
-    private CardView customerCardBTN, storeCardBTN, orderCardBTN, myOrderCardBTN, updateServicesLayout, newOrderCardView, newIssueCardView;
-    private LinearLayout customerServiceCardExpand, storeExpandable, addItemsLayout, orderLayoutExpandable, myOrderLayoutExpandable;
+    private CardView customerCardBTN, storeCardBTN, orderCardBTN, myOrderCardBTN, updateServicesLayout, newOrderCardView, newIssueCardView,cardSalesBTN;
+    private LinearLayout customerServiceCardExpand, storeExpandable, addItemsLayout, orderLayoutExpandable, myOrderLayoutExpandable, SalesReportlOut;
     Button homeStoreAddItemBTN, updateServiceBTN, AddItemBTNSave, homeAddPicBTN, saveBTN;
     EditText AddItemNameTB, AddItemPriceTB, AddItemQtyTB, UpdateServiceEditText;
     Spinner ItemCatSpin;
@@ -184,6 +184,8 @@ public class FragmentServiceCenterHome extends Fragment {
         orderView = homeViewF.findViewById(R.id.OrderRecycleView);
         custServView = homeViewF.findViewById(R.id.CustomerServiceListviewExpand);
         itemView = homeViewF.findViewById(R.id.homeOrderGridView);
+        SalesReportlOut = homeViewF.findViewById(R.id.SalesReportlOut);
+        cardSalesBTN = homeViewF.findViewById(R.id.cardSalesBTN);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
@@ -254,6 +256,17 @@ public class FragmentServiceCenterHome extends Fragment {
                     }
                 });
 
+
+        cardSalesBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(SalesReportlOut.getVisibility() == View.GONE){
+                    SalesReportlOut.setVisibility(View.VISIBLE);
+                }else{
+                    SalesReportlOut.setVisibility(View.GONE);
+                }
+            }
+        });
 
         updateServiceBTN.setOnClickListener(new View.OnClickListener() {
             @Override

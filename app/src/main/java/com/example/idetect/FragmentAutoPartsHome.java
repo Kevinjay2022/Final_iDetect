@@ -63,7 +63,7 @@ public class FragmentAutoPartsHome extends Fragment {
         totalItem = fragAutoPartsHome.findViewById(R.id.totalItemSoldTextView);
         totalSalary = fragAutoPartsHome.findViewById(R.id.totalSaleTextViewMoney);
         customerList = fragAutoPartsHome.findViewById(R.id.customerListView);
-        //DashBoardBTN = fragAutoPartsHome.findViewById(R.id.DashboardCardBTN);
+        DashBoardBTN = fragAutoPartsHome.findViewById(R.id.DashboardCardBTN);
         CustomersBTN = fragAutoPartsHome.findViewById(R.id.customerCardBTN);
         DashOut = fragAutoPartsHome.findViewById(R.id.dashboardExpandable);
         CustOut = fragAutoPartsHome.findViewById(R.id.customerExpandableView);
@@ -113,6 +113,16 @@ public class FragmentAutoPartsHome extends Fragment {
 
                     }
                 });
+        DashBoardBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(DashOut.getVisibility() == View.GONE)
+                DashOut.setVisibility(View.VISIBLE);
+                else{
+                    DashOut.setVisibility(View.GONE);
+                }
+            }
+        });
        /* DashBoardBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

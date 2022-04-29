@@ -41,6 +41,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -238,7 +239,7 @@ public class FragmentDriverMaps extends Fragment{
             public void onSuccess(Location location) {
                 if(location != null){
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f);
+                    cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12f);
                     mMap.animateCamera(cameraUpdate);
                 }
             }
@@ -281,6 +282,7 @@ public class FragmentDriverMaps extends Fragment{
                                                         end = new LatLng(lat, lng);
 
                                                         MarkerOptions markerOptions = new MarkerOptions();
+                                                        //MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_map));
                                                         markerOptions.position(end);
                                                         markerOptions.title(name +"\n"+ds.child("address").getValue(String.class));
                                                         markerOptions.snippet(uid);

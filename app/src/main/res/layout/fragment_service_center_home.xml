@@ -778,96 +778,133 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <TextView
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardSalesBTN"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Statistics"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EFE9E9"
+                    app:cardCornerRadius="15dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"/>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#757272"
-                    android:layout_margin="5dp"/>
-
-                <!-- Layout for Statistics-->
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_margin="4dp">
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <LinearLayout
-                        android:id="@+id/dashboardExpandable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            app:cardCornerRadius="20dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Sales report"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginStart="10dp"/>
 
-                            <LinearLayout
+                        <LinearLayout
+                            android:id="@+id/SalesReportlOut"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
+                                android:layout_height="1dp"
+                                android:background="#757272"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"/>
 
-                                <TextView
+                            <!-- Layout for Statistics-->
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp">
+
+                                <LinearLayout
+                                    android:id="@+id/dashboardExpandable"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:text="Total Items Sold"
-                                    android:textAlignment="center" />
+                                    android:orientation="horizontal">
 
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="1dp"
-                                    android:layout_marginStart="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginEnd="5dp"
-                                    android:layout_marginBottom="4dp"
-                                    android:background="#837B7B" />
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="200dp"
+                                        android:layout_height="200dp"
+                                        android:layout_margin="5dp"
+                                        android:layout_weight="1"
+                                        app:cardCornerRadius="20dp">
 
-                                <TextView
-                                    android:id="@+id/totalItemSoldTextView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:textSize="25dp"
-                                    android:textStyle="bold" />
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
 
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:text="Total Sale"
-                                    android:textAlignment="center" />
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="10dp"
+                                                android:text="Numbers of items"
+                                                android:textAlignment="center" />
 
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="1dp"
-                                    android:layout_marginStart="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginEnd="5dp"
-                                    android:layout_marginBottom="4dp"
-                                    android:background="#837B7B" />
+                                            <ImageView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="1dp"
+                                                android:layout_marginStart="5dp"
+                                                android:layout_marginTop="5dp"
+                                                android:layout_marginEnd="5dp"
+                                                android:layout_marginBottom="4dp"
+                                                android:background="#837B7B" />
 
-                                <TextView
-                                    android:id="@+id/totalSaleTextViewMoney"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:textStyle="bold" />
+                                            <TextView
+                                                android:id="@+id/totalItemSoldTextView"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:textAlignment="center"
+                                                android:textSize="25dp"
+                                                android:textStyle="bold" />
 
-                            </LinearLayout>
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="20dp"
+                                                android:text="Total Amount"
+                                                android:textAlignment="center" />
 
-                        </androidx.cardview.widget.CardView>
+                                            <ImageView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="1dp"
+                                                android:layout_marginStart="5dp"
+                                                android:layout_marginTop="5dp"
+                                                android:layout_marginEnd="5dp"
+                                                android:layout_marginBottom="4dp"
+                                                android:background="#837B7B" />
 
+                                            <TextView
+                                                android:id="@+id/totalSaleTextViewMoney"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:textAlignment="center"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </LinearLayout>
+                            </FrameLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
-                </FrameLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+
+
+
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
