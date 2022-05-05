@@ -57,10 +57,11 @@ public class FragmentDriverNotification extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("seen", "old");
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("seen", "old");
+                            assert model != null;
                             FirebaseDatabase.getInstance().getReference().child("DRIVER_NOTIFY")
                                     .child(model.getKey()).updateChildren(hashMap);
 

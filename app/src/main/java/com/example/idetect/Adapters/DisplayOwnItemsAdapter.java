@@ -166,6 +166,23 @@ public class DisplayOwnItemsAdapter extends RecyclerView.Adapter<DisplayOwnItems
                             }
                         });
 
+                        FirebaseDatabase.getInstance().getReference().child("ORDERS")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot ds: snapshot.getChildren()){
+                                            OrderModel orderModel = ds.getValue(OrderModel.class);
+                                            if (orderModel.getItemKey().equals(model.getItemKey())){
+                                                FirebaseDatabase.getInstance().getReference().child("ORDERS").child(orderModel.getKey()).removeValue();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                     }
                 });
                 AB.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

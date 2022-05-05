@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -23,47 +23,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Customer Name"
-        android:textAlignment="center"
-        android:layout_marginTop="5dp"/>
-
-    <TextView
-        android:id="@+id/customerName"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:gravity="center"
-        android:background="@drawable/box_input"
-        android:paddingStart="10dp"
-        android:textSize="18sp"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Customer Address"
-        android:textAlignment="center"
-        android:layout_marginTop="5dp"/>
-
-    <TextView
-        android:id="@+id/customerAddress"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:gravity="center"
-        android:background="@drawable/box_input"
-        android:paddingStart="10dp"
-        android:textSize="18sp"
-        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Vehicle Model"
-        android:textAlignment="center"
-        android:layout_marginTop="5dp"/>
+        android:textAlignment="center" />
 
     <EditText
         android:id="@+id/vehicleModelEdt"
@@ -80,9 +42,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Vehicle Type"
-        android:textAlignment="center"
-        android:layout_marginTop="5dp"/>
+        android:textAlignment="center" />
 
     <EditText
         android:id="@+id/vehicleTypeEdt"
@@ -100,14 +62,14 @@
         android:id="@+id/EditSaveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:textSize="20sp"
-        android:textAllCaps="false"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/bind"
         android:backgroundTint="#6C6969"
+        android:text="Save"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:textSize="20sp" />
 
 </LinearLayout>

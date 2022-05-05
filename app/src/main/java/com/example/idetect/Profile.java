@@ -5,6 +5,7 @@ import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -34,6 +35,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.idetect.Models.PaypalClientIDConfigClass;
+import com.example.idetect.Models.SubscriptionClass;
+import com.example.idetect.Notify.Constant;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -53,8 +57,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.WeakHashMap;
@@ -71,10 +80,10 @@ public class Profile extends Fragment {
     long due_date;
 
     private FrameLayout mainProfile, subscriptions, updateProfile;
-    private Button updateProfBTN, subscriptionBTN, subsBackBTN, updateBackBTN, editProfPic, profUpdteBtn, updateSubsBTN;
+    private Button updateProfBTN, subscriptionBTN, updateBackBTN, editProfPic, profUpdteBtn, updateSubsBTN;
     Button logoutProf;
     ImageView profPic, updteProfIV;
-    TextView servID, freeTrial;
+    TextView servID;
     private EditText updateName, updateAddress, updateContact, updateDteofBrth, upFirstN, upLastN;
     TextView profName, profAddrss, profEml, profCntct, profDOB;
     private LinearLayout FnameLName, WName;
@@ -112,8 +121,9 @@ public class Profile extends Fragment {
 
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
 
+
+
         editProfPic = profileView.findViewById(R.id.editProfBtn);
-        freeTrial = profileView.findViewById(R.id.freeTrial);
         profName = profileView.findViewById(R.id.profile_name_ID);
         profAddrss = profileView.findViewById(R.id.profile_address);
         profEml = profileView.findViewById(R.id.profile_email);
@@ -272,6 +282,7 @@ public class Profile extends Fragment {
         updateSubsBTN = profileView.findViewById(R.id.update_subscriptionBTN);
 
 
+
         profUpdteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -311,49 +322,9 @@ public class Profile extends Fragment {
         subscriptionBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateProfile.setVisibility(View.GONE);
-                subscriptions.setVisibility(View.VISIBLE);
-                mainProfile.setVisibility(View.GONE);
-
-                FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @SuppressLint("SetTextI18n")
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){
-                                    String timeStamp = snapshot.child("subscribe").getValue().toString();
-                                    due_date = Long.parseLong(timeStamp);
-
-                                    if (System.currentTimeMillis() > due_date){
-                                        freeTrial.setText("Free trial expired");
-                                    }else {
-                                        long remaining = due_date - System.currentTimeMillis();
-                                        long seconds = remaining / 1000;
-                                        long minutes = seconds / 60;
-                                        long hours = minutes / 60;
-                                        long days = hours / 24;
-                                        long remainder = hours % 24;
-                                        freeTrial.setText("" + days + "d " + remainder + "hr(s) remaining.");
-                                    }
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-            }
-        });
-
-        subsBackBTN = profileView.findViewById(R.id.back_BTNSubscription);
-        subsBackBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateProfile.setVisibility(View.GONE);
-                subscriptions.setVisibility(View.GONE);
-                mainProfile.setVisibility(View.VISIBLE);
+                Intent intent1 = new Intent(getActivity(), SubscriptionMethod.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getActivity().startActivity(intent1);
             }
         });
 
@@ -371,7 +342,6 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 checkStatus();
-
             }
         });
         return profileView;

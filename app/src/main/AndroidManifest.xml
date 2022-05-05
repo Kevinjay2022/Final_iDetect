@@ -26,15 +26,13 @@
     <uses-permission
         android:name="android.hardware.camera.front.autofocus"
         android:required="false" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
-    <uses-feature android:name="android.hardware.location.gps"/>
-
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -43,6 +41,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CapstoneProject">
+        <activity
+            android:name=".SubscriptionMethod"
+            android:exported="false" />
         <activity
             android:name=".CustomServiceCenterAutoPartsViewItems"
             android:exported="false" />
@@ -67,9 +68,9 @@
         </service>
         <service
             android:name=".Notify.MyFirebaseMessagingService"
+            android:exported="true"
             android:permission="TODO"
-            tools:ignore="ExportedService"
-            android:exported="true">
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -78,8 +79,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
@@ -87,10 +88,10 @@
             android:exported="true" />
         <activity
             android:name=".Login"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".FragmentDriverVisitShop"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

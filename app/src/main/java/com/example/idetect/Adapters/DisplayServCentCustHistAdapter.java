@@ -91,20 +91,16 @@ public class DisplayServCentCustHistAdapter extends RecyclerView.Adapter<Display
             public void onClick(View view) {
                 final DialogPlus dp = DialogPlus.newDialog(context)
                         .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.custom_add_to_customer_item_layout_dialog))
-                        .setExpanded(true, 700)
+                        .setExpanded(true, 500)
                         .create();
 
                 View v = dp.getHolderView();
                 TextView label = v.findViewById(R.id.customerLabel);
-                TextView Edtname = v.findViewById(R.id.customerName);
-                TextView EdtAddress = v.findViewById(R.id.customerAddress);
                 EditText EdtType = v.findViewById(R.id.vehicleTypeEdt);
                 EditText EdtModel = v.findViewById(R.id.vehicleModelEdt);
                 Button UpdateBtnE = v.findViewById(R.id.EditSaveBtn);
 
                 label.setText("Update customer details");
-                Edtname.setText(name);
-                EdtAddress.setText(address);
                 dp.show();
 
                 UpdateBtnE.setOnClickListener(new View.OnClickListener() {

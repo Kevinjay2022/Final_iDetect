@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FragmentDriverVisitShop extends AppCompatActivity {
-    TextView shopName, shopAddress, shopContact, visitDesc, visitIssue, visitMsg;
+    TextView shopName, shopAddress, shopContact, visitDesc, visitTextIssue, visitMsg;
+    EditText visitIssue;
     ImageView shopImage;
     Button shopBackBTN, proceedBTN, waitingBTN, cancelBTN, completeBTN;
     String shopUID;
@@ -56,6 +58,7 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
         visitMsg = findViewById(R.id.visitApproveMsg);
         completeBTN = findViewById(R.id.visitComplete);
         visitIssue = findViewById(R.id.visitIssue);
+        visitTextIssue = findViewById(R.id.visitTextIssue);
         proceedBTN = findViewById(R.id.visitProceed);
         waitingBTN = findViewById(R.id.visitWaiting);
         cancelBTN = findViewById(R.id.visitCancel);
@@ -75,11 +78,15 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                         for (DataSnapshot ds : snapshot.getChildren()){
                             String shopid = ds.child("shopID").getValue(String.class);
                             String feedback = ds.child("feedback").getValue(String.class);
+                            String issue = ds.child("issue").getValue(String.class);
                             if (shopid.equals(shopUID)) {
                                 if(feedback.equals("pending")) {
                                     proceedBTN.setVisibility(View.GONE);
                                     waitingBTN.setVisibility(View.VISIBLE);
                                     cancelBTN.setVisibility(View.VISIBLE);
+                                    visitTextIssue.setVisibility(View.VISIBLE);
+                                    visitIssue.setVisibility(View.GONE);
+                                    visitTextIssue.setText(issue);
                                 }
                                 if (feedback.equals("accept")){
                                     proceedBTN.setVisibility(View.GONE);
@@ -87,6 +94,9 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                                     waitingBTN.setVisibility(View.GONE);
                                     cancelBTN.setVisibility(View.GONE);
                                     completeBTN.setVisibility(View.VISIBLE);
+                                    visitTextIssue.setVisibility(View.VISIBLE);
+                                    visitIssue.setVisibility(View.GONE);
+                                    visitTextIssue.setText(issue);
                                 }
                             }
                         }
@@ -146,8 +156,10 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                     visitIssue.setError("Field should not be empty!");
                     return;
                 }else{
-
                     notify = true;
+                    visitTextIssue.setVisibility(View.VISIBLE);
+                    visitIssue.setVisibility(View.GONE);
+                    visitTextIssue.setText(ed_issue);
                     ProgressDialog pd = new ProgressDialog(FragmentDriverVisitShop.this);
                     pd.setMessage("Sending request...");
                     pd.show();
@@ -246,8 +258,11 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                                 });
                         Toast.makeText(FragmentDriverVisitShop.this, "Request cancelled...", Toast.LENGTH_SHORT).show();
                         proceedBTN.setVisibility(View.VISIBLE);
+                        visitTextIssue.setVisibility(View.GONE);
+                        visitIssue.setVisibility(View.VISIBLE);
                         waitingBTN.setVisibility(View.GONE);
                         cancelBTN.setVisibility(View.GONE);
+
                     }
 
                     @Override
@@ -282,6 +297,8 @@ public class FragmentDriverVisitShop extends AppCompatActivity {
                                                 proceedBTN.setVisibility(View.VISIBLE);
                                                 waitingBTN.setVisibility(View.GONE);
                                                 completeBTN.setVisibility(View.GONE);
+                                                visitTextIssue.setVisibility(View.GONE);
+                                                visitIssue.setVisibility(View.VISIBLE);
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override

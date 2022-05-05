@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -255,7 +257,11 @@ public class FragmentDriverMaps extends Fragment{
 
                 myLocation = location;
                 start = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-
+                int height = 60;
+                int width = 45;
+                BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.logo_map);
+                Bitmap b = bitmapdraw.getBitmap();
+                Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
                 CircleOptions circleOptions = new CircleOptions();
                 circleOptions.center(start);
                 circleOptions.radius(2000);
@@ -281,8 +287,9 @@ public class FragmentDriverMaps extends Fragment{
                                                         double lng = Double.parseDouble("" + snapshot.child("longitude").getValue());
                                                         end = new LatLng(lat, lng);
 
+                                                        //MarkerOptions markerOptions = new MarkerOptions();
                                                         MarkerOptions markerOptions = new MarkerOptions();
-                                                        //MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_map));
+                                                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
                                                         markerOptions.position(end);
                                                         markerOptions.title(name +"\n"+ds.child("address").getValue(String.class));
                                                         markerOptions.snippet(uid);

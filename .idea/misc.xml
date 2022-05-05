@@ -12,6 +12,7 @@
         <entry key="..\:/Capstone/app/src/main/res/menu/bottom_navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.121875" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/drawable/ic_baseline_notifications_none_24.xml" value="0.14629629629629629" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/activity_subscription_method.xml" value="0.25" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/cart_view.xml" value="0.5" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_add_to_customer_item_layout_dialog.xml" value="0.33" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_autoparts_list_customers.xml" value="0.5" />
@@ -25,7 +26,7 @@
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_item_layout_dialog.xml" value="0.22" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_mechanic_notification.xml" value="0.22" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_mechanic_request.xml" value="0.25" />
-        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_customer_orders.xml" value="0.15081521739130435" />
+        <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_customer_orders.xml" value="0.33" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_customer_orders_items.xml" value="0.33" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_customer_services.xml" value="0.5" />
         <entry key="..\:/Capstone_Project V2.1/app/src/main/res/layout/custom_list_service_center_driver_customer.xml" value="0.25" />

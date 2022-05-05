@@ -69,12 +69,15 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
         ServCentCustomerService model = modelList.get(position);
 
         holder.custIssue.setText(model.getIssue());
-        FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_CUSTOMERS").orderByChild("ID").equalTo(model.getID())
+        FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_CUSTOMERS")
+                .orderByChild("shopID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            holder.sign.setVisibility(View.VISIBLE);
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            ServCentCustomerService model1 = ds.getValue(ServCentCustomerService.class);
+                            if(model1.getID().equals(model.getID()))
+                                holder.sign.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -94,7 +97,8 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
             case "finish":
                 holder.custViewAccept.setVisibility(View.VISIBLE);
                 holder.custViewAccept.setText("Finished");
-                FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_CUSTOMERS").orderByChild("ID").equalTo(model.getID())
+                FirebaseDatabase.getInstance().getReference().child("SERVICE_CENT_CUSTOMERS")
+                        .orderByChild("shopID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -282,18 +286,14 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
             public void onClick(View view) {
                 final DialogPlus dp = DialogPlus.newDialog(context)
                         .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.custom_add_to_customer_item_layout_dialog))
-                        .setExpanded(true, 700)
+                        .setExpanded(true, 500)
                         .create();
 
                 View v = dp.getHolderView();
-                TextView Edtname = v.findViewById(R.id.customerName);
-                TextView EdtAddress = v.findViewById(R.id.customerAddress);
                 EditText EdtType = v.findViewById(R.id.vehicleTypeEdt);
                 EditText EdtModel = v.findViewById(R.id.vehicleModelEdt);
                 Button UpdateBtnE = v.findViewById(R.id.EditSaveBtn);
 
-                Edtname.setText(name);
-                EdtAddress.setText(address);
                 dp.show();
 
                 UpdateBtnE.setOnClickListener(new View.OnClickListener() {

@@ -73,6 +73,7 @@ public class  FragmentMechanicPosts extends Fragment {
     ArrayList<ServCentCustomerService> list;
     DisplayMechanicRequestAdapter adapter;
     RecyclerView recyclerView;
+    String url;
 
     //Firebase
     FirebaseAuth firebaseAuth;
@@ -252,7 +253,7 @@ public class  FragmentMechanicPosts extends Fragment {
         AddSaveBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!mechSkills() | !mechBdate() | !itemImg()) {
+                if (!mechSkills() | !mechBdate()  ) {
                     return;
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("MECHANIC_POST").orderByChild("mechID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -260,9 +261,15 @@ public class  FragmentMechanicPosts extends Fragment {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()){
+                                        if (imageUri==null)
+                                            updatePostkey();
+                                        else
                                         updatePost();
                                     }else{
-                                        createPost();
+                                        if (!itemImg())
+                                            return;
+                                        else
+                                            createPost();
                                     }
                                 }
 
@@ -289,6 +296,26 @@ public class  FragmentMechanicPosts extends Fragment {
             @Override
             public void onClick(View view) {
                 EditBTN.setVisibility(View.GONE);
+                FirebaseDatabase.getInstance().getReference().child("MECHANIC_POST").orderByChild("mechID").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()){
+                                    for (DataSnapshot ds: snapshot.getChildren()){
+                                        createSkill.setText(ds.child("skills").getValue().toString(), TextView.BufferType.EDITABLE);
+                                        createBdate.setText(ds.child("birth").getValue().toString());
+                                        Picasso.get().load(Uri.parse(ds.child("certificate").getValue().toString())).into(createCert);
+
+                                        url=(ds.child("certificate").getValue().toString());
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                 CancelBTN.setVisibility(View.VISIBLE);
                 displayLayout.setVisibility(View.GONE);
                 createLayout.setVisibility(View.VISIBLE);
@@ -478,6 +505,26 @@ public class  FragmentMechanicPosts extends Fragment {
                 pd.setMessage("Uploading " + (int) progresPerce + " %");
             }
         });
+    }
+    private void updatePostkey(){
+        HashMap<String, Object> AshMap = new HashMap<>();
+        AshMap.put("skills", createSkill.getText().toString());
+        AshMap.put("certificate", url);
+        AshMap.put("birth", createBdate.getText().toString());
+        FirebaseDatabase.getInstance().getReference().child("MECHANIC_POST").child(key).updateChildren(AshMap);
+
+        Toast.makeText(getActivity(), "Added Successfully...", Toast.LENGTH_SHORT).show();
+        EditBTN.setVisibility(View.VISIBLE);
+        createLayout.setVisibility(View.GONE);
+        displayLayout.setVisibility(View.VISIBLE);
+        dispBdate.setText(createBdate.getText().toString());
+        Picasso.get().load(imageUri).into(dispCert);
+        CancelBTN.setVisibility(View.GONE);
+        createBdate.setText("");
+        createSkill.setText("");
+        Picasso.get().load(R.color.fui_transparent).into(createCert);
+        imageUri = null;
+
     }
     private void updateToken(String token){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
