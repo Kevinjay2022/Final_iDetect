@@ -79,7 +79,7 @@ public class Profile extends Fragment {
 
     long due_date;
 
-    private FrameLayout mainProfile, subscriptions, updateProfile;
+    private FrameLayout mainProfile,updateProfile;
     private Button updateProfBTN, subscriptionBTN, updateBackBTN, editProfPic, profUpdteBtn, updateSubsBTN;
     Button logoutProf;
     ImageView profPic, updteProfIV;
@@ -275,7 +275,6 @@ public class Profile extends Fragment {
         updateDteofBrth = profileView.findViewById(R.id.UpdateProfDAOBTB);
 
         mainProfile = profileView.findViewById(R.id.fragmentProfileLayout);
-        subscriptions = profileView.findViewById(R.id.subscriptionLayout);
         updateProfile = profileView.findViewById(R.id.updateProfileLayout);
 
         updateProfBTN = profileView.findViewById(R.id.profileUpdateBTN);
@@ -313,7 +312,6 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View view) {
                 updateProfile.setVisibility(View.VISIBLE);
-                subscriptions.setVisibility(View.GONE);
                 mainProfile.setVisibility(View.GONE);
             }
         });
@@ -333,7 +331,6 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View view) {
                 updateProfile.setVisibility(View.GONE);
-                subscriptions.setVisibility(View.GONE);
                 mainProfile.setVisibility(View.VISIBLE);
             }
         });
@@ -376,7 +373,6 @@ public class Profile extends Fragment {
                 progressDialog.dismiss();
                 Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                 updateProfile.setVisibility(View.GONE);
-                subscriptions.setVisibility(View.GONE);
                 mainProfile.setVisibility(View.VISIBLE);
                 imageUri = null;
             }
@@ -430,7 +426,6 @@ public class Profile extends Fragment {
                                 progressDialog.dismiss();
                                 Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                                 updateProfile.setVisibility(View.GONE);
-                                subscriptions.setVisibility(View.GONE);
                                 mainProfile.setVisibility(View.VISIBLE);
                                 imageUri = null;
                             }

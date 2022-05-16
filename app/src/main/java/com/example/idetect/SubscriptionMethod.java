@@ -114,7 +114,7 @@ public class SubscriptionMethod extends AppCompatActivity {
     private void PayPalPaymentMethod(int value, String text) {
         PayPalPayment payment = new PayPalPayment(new BigDecimal(value), "Php", text, PayPalPayment.PAYMENT_INTENT_SALE);
 
-        Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+        Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypalConfig);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
 

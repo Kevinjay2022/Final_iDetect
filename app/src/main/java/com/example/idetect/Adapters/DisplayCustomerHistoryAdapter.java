@@ -19,6 +19,7 @@ import com.example.idetect.Models.ItemsModel;
 import com.example.idetect.Models.OrderModel;
 import com.example.idetect.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -72,7 +73,8 @@ public class DisplayCustomerHistoryAdapter extends RecyclerView.Adapter<DisplayC
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot ds: snapshot.getChildren()){
                             OrderModel model1 = ds.getValue(OrderModel.class);
-                            if (model1.getStatus().equals("complete"))
+                            if (model1.getStatus().equals("complete")&&
+                                    model1.getShopUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
                                 totalQty = totalQty + Integer.parseInt(model1.getQty());
                         }
                         holder.histItemQty.setText(""+totalQty);
@@ -106,7 +108,8 @@ public class DisplayCustomerHistoryAdapter extends RecyclerView.Adapter<DisplayC
                         holder.histOrder.clear();
                         for (DataSnapshot ds: snapshot.getChildren()){
                             OrderModel model1 = ds.getValue(OrderModel.class);
-                            if (model1.getStatus().equals("complete"))
+                            if (model1.getStatus().equals("complete")&&
+                                model1.getShopUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
                                 holder.histOrder.add(model1);
                         }
 
