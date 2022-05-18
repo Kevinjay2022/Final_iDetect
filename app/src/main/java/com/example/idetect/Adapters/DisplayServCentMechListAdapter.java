@@ -79,9 +79,12 @@ public class DisplayServCentMechListAdapter extends RecyclerView.Adapter<Display
         }
 
         holder.Mech_Type.setText(model.getMech_type());
-        if (model.getMech_type().equals("on-call"))
+        if (model.getMech_type().equals("on-call")){
             holder.rateBtn.setVisibility(View.VISIBLE);
-        else
+
+            holder.EditBtn.setVisibility(View.GONE);
+
+        } else
             holder.rateBtn.setVisibility(View.GONE);
 
 

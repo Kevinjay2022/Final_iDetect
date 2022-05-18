@@ -132,7 +132,7 @@ public class DisplayMechOnCallAdapter extends RecyclerView.Adapter<DisplayMechOn
                 hashMap.put("key", key);
                 FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").child(key).setValue(hashMap);
 
-                String key1 = FirebaseDatabase.getInstance().getReference().child("MECHANIC_NOTIFY").push().getKey();
+                String key1 = FirebaseDatabase.getInstance().getReference().child("MECHANIC_REQUEST").push().getKey();
                 HashMap<String, Object> hashMap1 = new HashMap<>();
                 hashMap1.put("ID", model.getMechID());
                 hashMap1.put("shopID", FirebaseAuth.getInstance().getCurrentUser().getUid());
