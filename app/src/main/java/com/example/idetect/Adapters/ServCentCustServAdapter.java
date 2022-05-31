@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.idetect.Models.ItemsModel;
+import com.example.idetect.Models.ServCentCustHistModel;
 import com.example.idetect.Models.ServCentCustomerService;
 import com.example.idetect.Notify.Constant;
 import com.example.idetect.Notify.Data;
@@ -102,7 +103,15 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){
+                                for(DataSnapshot ds: snapshot.getChildren()){
+                                    ServCentCustHistModel histModel = ds.getValue(ServCentCustHistModel.class);
+                                    if (histModel.getID().equals(model.getID())) {
+                                        holder.histCheck = true;
+                                        break;
+                                    }
+
+                                }
+                                if(holder.histCheck){
                                     holder.addCustomerBTN.setVisibility(View.GONE);
                                 }else
                                     holder.addCustomerBTN.setVisibility(View.VISIBLE);
@@ -348,7 +357,7 @@ public class ServCentCustServAdapter extends RecyclerView.Adapter<ServCentCustSe
         LinearLayout custServExpand;
         Button acceptBTN, cancelBTN, finishBTN, addCustomerBTN;
         ImageView sign;
-        boolean notify = false;
+        boolean notify = false, histCheck = false;
 
 
         public ViewHolder(@NonNull View itemView) {

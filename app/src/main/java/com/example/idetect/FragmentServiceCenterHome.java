@@ -335,11 +335,27 @@ public class FragmentServiceCenterHome extends Fragment {
                 }
             }
         });
+        FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("shopID").equalTo(MainID)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        servModel.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
+                            servModel.add(model);
+                        }
+                        custServDispAdapter = new ServCentCustServAdapter(getActivity(), servModel);
+                        custServView.setAdapter(custServDispAdapter);
+                        custServDispAdapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
 
         customerCardBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                servModel.clear();
                 FirebaseDatabase.getInstance().getReference().child("USERS").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @SuppressLint("SetTextI18n")
@@ -361,23 +377,6 @@ public class FragmentServiceCenterHome extends Fragment {
                                                 orderLayoutExpandable.setVisibility(View.GONE);
                                                 myOrderLayoutExpandable.setVisibility(View.GONE);
                                                 newIssueCardView.setVisibility(View.GONE);
-                                                FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").orderByChild("shopID").equalTo(MainID)
-                                                                .addValueEventListener(new ValueEventListener() {
-                                                                    @Override
-                                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                                                        for (DataSnapshot ds : snapshot.getChildren()) {
-                                                                            ServCentCustomerService model = ds.getValue(ServCentCustomerService.class);
-                                                                            servModel.add(model);
-                                                                        }
-                                                                        custServDispAdapter = new ServCentCustServAdapter(getActivity(), servModel);
-                                                                        custServView.setAdapter(custServDispAdapter);
-                                                                        custServDispAdapter.notifyDataSetChanged();
-                                                                    }
-                                                                    @Override
-                                                                    public void onCancelled(@NonNull DatabaseError error) {
-                                                                    }
-                                                                });
 
                                             } else {
                                                 newIssueCardView.setVisibility(View.GONE);
@@ -386,7 +385,6 @@ public class FragmentServiceCenterHome extends Fragment {
                                                     HashMap<String, Object> hashMap = new HashMap<>();
                                                     hashMap.put("seen", "old");
                                                     FirebaseDatabase.getInstance().getReference().child("DRIVER_SERVICE_CENT_ISSUE").child(re.getKey()).updateChildren(hashMap);
-
                                                 }
                                         }
                                         }
